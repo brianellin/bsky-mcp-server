@@ -1045,7 +1045,7 @@ server.tool(
   "Get a list of users that a person follows",
   {
     user: z.string().describe("The handle or DID of the user (e.g., alice.bsky.social)"),
-    limit: z.number().min(1).max(100).default(100).describe("Maximum number of follows to fetch (1-100)"),
+    limit: z.number().min(1).max(500).default(500).describe("Maximum number of follows to fetch (1-500)"),
   },
   async ({ user, limit }) => {
     if (!agent) {
@@ -1065,24 +1065,54 @@ server.tool(
         // Use the display name in the summary if available
         const displayName = profileResponse.data.displayName || user;
         
-        // Now fetch who this user follows
-        const response = await currentAgent.app.bsky.graph.getFollows({
-          actor: user,
-          limit
-        });
+        // Now fetch who this user follows with pagination
+        const MAX_BATCH_SIZE = 100; // Maximum number of follows per API call
+        const MAX_BATCHES = 5;      // Maximum number of API calls to make (100 x 5 = 500)
+        let allFollows: any[] = [];
+        let nextCursor: string | undefined = undefined;
+        let batchCount = 0;
         
-        if (!response.success) {
-          return createErrorResponse(`Failed to fetch follows for ${user}.`);
+        // Loop to fetch follows with pagination
+        while (batchCount < MAX_BATCHES && allFollows.length < limit) {
+          // Calculate how many follows to fetch in this batch
+          const batchLimit = Math.min(MAX_BATCH_SIZE, limit - allFollows.length);
+          
+          // Make the API call with cursor if we have one
+          const response = await currentAgent.app.bsky.graph.getFollows({
+            actor: user,
+            limit: batchLimit,
+            cursor: nextCursor
+          });
+          
+          if (!response.success) {
+            // If we've already fetched some follows, return those
+            if (allFollows.length > 0) {
+              break;
+            }
+            return createErrorResponse(`Failed to fetch follows for ${user}.`);
+          }
+          
+          const { follows, cursor } = response.data;
+          
+          // Add the fetched follows to our collection
+          allFollows = allFollows.concat(follows);
+          
+          // Update cursor for the next batch
+          nextCursor = cursor;
+          batchCount++;
+          
+          // If no cursor returned or we've reached our limit, stop paginating
+          if (!cursor || allFollows.length >= limit) {
+            break;
+          }
         }
         
-        const { follows } = response.data;
-        
-        if (follows.length === 0) {
+        if (allFollows.length === 0) {
           return createSuccessResponse(`@${user} doesn't follow anyone.`);
         }
         
         // Format the follows list
-        const formattedFollows = follows.map((follow: any, index: number) => {
+        const formattedFollows = allFollows.map((follow: any, index: number) => {
           return `User #${index + 1}:
 Display Name: ${follow.displayName || 'No display name'}
 Handle: @${follow.handle}
@@ -1096,7 +1126,7 @@ ${follow.indexedAt ? `Following since: ${new Date(follow.indexedAt).toLocaleStri
         }).join("\n\n");
         
         // Create a summary
-        const summaryText = `Retrieved ${follows.length} users that @${user} follows.${response.data.cursor ? ' More results are available.' : ''}`;
+        const summaryText = `Retrieved ${allFollows.length} users that @${user} follows.${nextCursor ? ' More results are available.' : ''}`;
         
         return createSuccessResponse(`${summaryText}\n\n${formattedFollows}`);
         
