@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "es2020",
+      "module": "nodenext",
+      "moduleResolution": "nodenext",
+      "outDir": "build",
+      "rootDir": ".",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "composite": true,
+      "declaration": true
+    },
+    "include": ["src/**/*", "scripts/**/*", "test/**/*"]
+  }

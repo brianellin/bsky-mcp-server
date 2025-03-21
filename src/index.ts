@@ -1,0 +1,1056 @@
+#!/usr/bin/env node
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+import { AtpAgent } from "@atproto/api";
+import * as dotenv from "dotenv";
+import { 
+  createErrorResponse, 
+  createSuccessResponse, 
+  fetchFeedPosts, 
+  fetchPostsFromListMembers, 
+  fetchUserPosts, 
+  formatPost, 
+  formatSummaryText, 
+  getFeedNameFromId, 
+  validateUri,
+} from './utils.js';
+
+// Load environment variables
+dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env.local', override: true });
+
+// Create server instance
+const server = new McpServer({
+  name: "bluesky-integration",
+  version: "1.0.0",
+});
+
+// Initialize ATP agent and session
+let agent: AtpAgent | null = null;
+
+// Connect to Bluesky using environment variables
+async function initializeBlueskyConnection() {
+  const identifier = process.env.BLUESKY_IDENTIFIER;
+  const password = process.env.BLUESKY_APP_PASSWORD;
+  const service = process.env.BLUESKY_SERVICE_URL || "https://bsky.social";
+
+  if (!identifier || !password) {
+    console.error("Error: BLUESKY_IDENTIFIER and BLUESKY_APP_PASSWORD environment variables must be set");
+    return false;
+  }
+
+  try {
+    agent = new AtpAgent({ service });
+    const result = await agent.login({ identifier, password });
+    
+    if (result.success) {
+      console.error(`Successfully logged in as ${result.data.handle} (${result.data.did})`);
+      return true;
+    } else {
+      console.error("Login failed: Invalid credentials.");
+      return false;
+    }
+  } catch (error) {
+    console.error(`Login failed: ${error instanceof Error ? error.message : String(error)}`);
+    return false;
+  }
+}
+
+
+server.tool(
+  "get-timeline",
+  "Fetch your home timeline from Bluesky",
+  {
+    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+  },
+  async ({ limit }) => {
+    try {
+      if (!agent) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Not connected to Bluesky. Check your environment variables.",
+            },
+          ],
+        };
+      }
+
+      const MAX_TOTAL_POSTS = 1000; // Safety limit to prevent excessive API calls
+      
+      // Initial fetch using at most 100 posts per request
+      const initialFetchLimit = Math.min(100, limit);
+      
+      const response = await agent.getTimeline({ limit: initialFetchLimit });
+      
+      if (!response.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Failed to fetch timeline.",
+            },
+          ],
+        };
+      }
+
+      const allPosts: any[] = response.data.feed;
+      let nextCursor = response.data.cursor;
+      
+      // If we have more posts available (cursor exists),
+      // keep paginating until we reach the maximum post limit
+      if (nextCursor && allPosts.length < MAX_TOTAL_POSTS) {
+        // For safety, don't fetch more than 10 pages
+        let paginationCount = 0;
+        while (nextCursor && paginationCount < 10 && allPosts.length < MAX_TOTAL_POSTS) {
+          paginationCount++;
+          
+          try {
+            const nextPage = await agent.getTimeline({
+              cursor: nextCursor,
+              limit: initialFetchLimit
+            });
+            
+            if (nextPage.success) {
+              allPosts.push(...nextPage.data.feed);
+              nextCursor = nextPage.data.cursor;
+            } else {
+              // If we hit an error, just use what we have
+              break;
+            }
+          } catch (error) {
+            // If we hit an error, just use what we have
+            break;
+          }
+        }
+      }
+      
+      // Parse and format posts
+      const filteredFeed = [...allPosts];
+      
+      // Limit the posts to the requested limit
+      const finalPosts = filteredFeed.length > limit
+        ? filteredFeed.slice(0, limit)
+        : filteredFeed;
+      
+      if (finalPosts.length === 0) {
+        return createSuccessResponse("Your timeline is empty.");
+      }
+      
+      // Use the enhanced formatter for each post
+      const timelineData = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+      
+      const summaryText = formatSummaryText(finalPosts.length, "timeline");
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: `${summaryText}\n\n${timelineData}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error fetching timeline: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "post",
+  "Create a new post on Bluesky",
+  {
+    text: z.string().max(300).describe("The content of your post"),
+    replyTo: z.string().optional().describe("Optional URI of post to reply to"),
+  },
+  async ({ text, replyTo }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not connected to Bluesky. Check your environment variables.",
+          },
+        ],
+      };
+    }
+
+    try {
+      const record: any = {
+        text,
+        createdAt: new Date().toISOString(),
+      };
+
+      let replyRef;
+      if (replyTo) {
+        // Handle reply format
+        try {
+          const parts = replyTo.split('/');
+          const did = parts[2];
+          const rkey = parts[parts.length - 1];
+          const collection = parts[parts.length - 2] === 'app.bsky.feed.post' ? 'app.bsky.feed.post' : parts[parts.length - 2];
+          
+          // Resolve the CID of the post we're replying to
+          const cidResponse = await agent.app.bsky.feed.getPostThread({ uri: replyTo });
+          if (!cidResponse.success) {
+            throw new Error('Could not get post information');
+          }
+          
+          const threadPost = cidResponse.data.thread as any;
+          const parentCid = threadPost.post.cid;
+          
+          // Add reply information to the record
+          record.reply = {
+            parent: { uri: replyTo, cid: parentCid },
+            root: { uri: replyTo, cid: parentCid }
+          };
+
+        } catch (error) {
+          return {
+            isError: true,
+            content: [
+              {
+                type: "text",
+                text: `Error parsing reply URI: ${error instanceof Error ? error.message : String(error)}`,
+              },
+            ],
+          };
+        }
+      }
+
+      const response = await agent.post(record);
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Post created successfully! URI: ${response.uri}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error creating post: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "get-profile",
+  "Get a user's profile from Bluesky",
+  {
+    handle: z.string().describe("The handle of the user (e.g., alice.bsky.social)"),
+  },
+  async ({ handle }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    try {
+      const response = await agent.getProfile({ actor: handle });
+      
+      if (!response.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: `Failed to get profile for ${handle}.`,
+            },
+          ],
+        };
+      }
+
+      const profile = response.data;
+      
+      let profileText = `Profile for ${profile.displayName || handle} (@${profile.handle})
+DID: ${profile.did}
+${profile.description ? `Bio: ${profile.description}` : ''}
+Followers: ${profile.followersCount || 0}
+Following: ${profile.followsCount || 0}
+Posts: ${profile.postsCount || 0}
+${profile.labels?.length ? `Labels: ${profile.labels.map((l: any) => l.val).join(', ')}` : ''}`;
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: profileText,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error fetching profile: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "search-posts",
+  "Search for posts on Bluesky",
+  {
+    query: z.string().describe("Search query"),
+    limit: z.number().min(1).max(100).default(50).describe("Number of results to fetch (1-100)"),
+    sort: z.enum(["top", "latest"]).default("top").describe("Sort order for search results - 'top' for most relevant or 'latest' for most recent"),
+  },
+  async ({ query, limit, sort }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    try {
+      const response = await agent.app.bsky.feed.searchPosts({ q: query, limit, sort });
+      
+      if (!response.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Failed to search posts.",
+            },
+          ],
+        };
+      }
+
+      const { posts } = response.data;
+      
+      if (posts.length === 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `No results found for query: "${query}"`,
+            },
+          ],
+        };
+      }
+
+      const results = posts.map((post: any, index: number) => {
+        const author = post.author;
+        
+        return `Result #${index + 1}:
+Author: ${author.displayName || author.handle} (@${author.handle})
+Content: ${post.record.text}
+${post.likeCount !== undefined ? `Likes: ${post.likeCount}` : ''}
+${post.repostCount !== undefined ? `Reposts: ${post.repostCount}` : ''}
+URI: ${post.uri}
+Posted: ${new Date(post.indexedAt).toLocaleString()}
+---`;
+      }).join("\n\n");
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: results,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error searching posts: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "search-people",
+  "Search for users/actors on Bluesky",
+  {
+    query: z.string().describe("Search query for finding users"),
+    limit: z.number().min(1).max(100).default(20).describe("Number of results to fetch (1-100)"),
+  },
+  async ({ query, limit }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    try {
+      const response = await agent.app.bsky.actor.searchActors({ q: query, limit });
+      
+      if (!response.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Failed to search for users.",
+            },
+          ],
+        };
+      }
+
+      const { actors } = response.data;
+      
+      if (actors.length === 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `No users found for query: "${query}"`,
+            },
+          ],
+        };
+      }
+
+      const results = actors.map((actor: any, index: number) => {
+        return `User #${index + 1}:
+Display Name: ${actor.displayName || 'No display name'}
+Handle: @${actor.handle}
+DID: ${actor.did}
+${actor.description ? `Bio: ${actor.description}` : 'Bio: No bio provided'}
+${actor.followersCount !== undefined ? `Followers: ${actor.followersCount}` : ''}
+${actor.followsCount !== undefined ? `Following: ${actor.followsCount}` : ''}
+${actor.postsCount !== undefined ? `Posts: ${actor.postsCount}` : ''}
+${actor.indexedAt ? `Indexed At: ${new Date(actor.indexedAt).toLocaleString()}` : ''}
+---`;
+      }).join("\n\n");
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: results,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error searching for users: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "search-feeds",
+  "Search for custom feeds on Bluesky",
+  {
+    query: z.string().describe("Search query for finding feeds"),
+    limit: z.number().min(1).max(100).default(10).describe("Number of results to fetch (1-100)"),
+  },
+  async ({ query, limit }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    try {
+      const response = await agent.api.app.bsky.unspecced.getPopularFeedGenerators({ 
+        query, 
+        limit 
+      });
+      
+      if (!response.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Failed to search for feeds.",
+            },
+          ],
+        };
+      }
+
+      const { feeds } = response.data;
+      
+      if (!feeds || feeds.length === 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `No feeds found for query: "${query}"`,
+            },
+          ],
+        };
+      }
+
+      const results = feeds.map((feed: any, index: number) => {
+        return `Feed #${index + 1}:
+Name: ${feed.displayName || 'Unnamed Feed'}
+URI: ${feed.uri}
+${feed.description ? `Description: ${feed.description}` : ''}
+Creator: @${feed.creator.handle} ${feed.creator.displayName ? `(${feed.creator.displayName})` : ''}
+Likes: ${feed.likeCount || 0}
+${feed.indexedAt ? `Indexed At: ${new Date(feed.indexedAt).toLocaleString()}` : ''}
+---`;
+      }).join("\n\n");
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: results,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error searching for feeds: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+
+server.tool(
+  "like-post",
+  "Like a post on Bluesky",
+  {
+    uri: z.string().describe("The URI of the post to like"),
+  },
+  async ({ uri }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    try {
+      // First, we need to get the CID of the post
+      const parts = uri.split('/');
+      const repo = parts[2]; // The DID
+      const collection = parts[4]; // Usually app.bsky.feed.post
+      const rkey = parts[5]; // The record key
+      
+      const response = await agent.app.bsky.feed.getPostThread({ uri });
+      
+      if (!response.success || response.data.thread.$type !== 'app.bsky.feed.defs#threadViewPost') {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Failed to get post information.",
+            },
+          ],
+        };
+      }
+      
+      // Type assertion to tell TypeScript this is a post
+      const threadPost = response.data.thread as any;
+      const post = threadPost.post;
+      const cid = post.cid;
+      
+      await agent.like(uri, cid);
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Post liked successfully!",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error liking post: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "follow-user",
+  "Follow a user on Bluesky",
+  {
+    handle: z.string().describe("The handle of the user to follow"),
+  },
+  async ({ handle }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    try {
+      // Resolve the handle to a DID
+      const resolveResponse = await agent.resolveHandle({ handle });
+      
+      if (!resolveResponse.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: `Failed to resolve handle: ${handle}`,
+            },
+          ],
+        };
+      }
+      
+      const did = resolveResponse.data.did;
+      await agent.follow(did);
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Successfully followed @${handle}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error following user: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "get-pinned-feeds",
+  "Get the authenticated user's pinned feeds and lists.",
+  {},
+  async () => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not connected to Bluesky. Check your environment variables.",
+          },
+        ],
+      };
+    }
+
+    try {
+      // Get user preferences which include pinned feeds
+      const response = await agent.app.bsky.actor.getPreferences();
+      
+      if (!response.success) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Failed to get user preferences.",
+            },
+          ],
+        };
+      }
+
+      // Find the savedFeedsPrefV2 in preferences
+      const savedFeedsPref = response.data.preferences.find((pref: any) => 
+        pref.$type === 'app.bsky.actor.defs#savedFeedsPrefV2'
+      ) as { $type: string, items: Array<{ id: string, pinned: boolean, type: string, value: string }> } | undefined;
+      
+      if (!savedFeedsPref || !savedFeedsPref.items) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: "No saved feeds found in user preferences.",
+            },
+          ],
+        };
+      }
+
+      // Get the pinned feeds
+      const pinnedFeeds = savedFeedsPref.items.filter((item: any) => item.pinned);
+      
+      if (pinnedFeeds.length === 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: "You don't have any pinned feeds.",
+            },
+          ],
+        };
+      }
+
+      // Get additional details for each feed
+      const feedDetails = await Promise.all(
+        pinnedFeeds.map(async (feed: any) => {
+          try {
+            // Custom feeds (regular feeds)
+            if (feed.type === 'feed' && feed.value) {
+              const feedInfo = await agent?.app.bsky.feed.getFeedGenerator({ 
+                feed: feed.value 
+              });
+              
+              if (feedInfo?.success) {
+                return {
+                  id: feed.id,
+                  uri: feed.value,
+                  name: feedInfo.data.view.displayName,
+                  description: feedInfo.data.view.description || 'No description',
+                  creator: `@${feedInfo.data.view.creator.handle}`,
+                  type: 'Custom Feed'
+                };
+              }
+            }
+            
+            // Lists
+            else if (feed.type === 'list' && feed.value) {
+              const listInfo = await agent?.app.bsky.graph.getList({ 
+                list: feed.value 
+              });
+              
+              if (listInfo?.success) {
+                const list = listInfo.data.list;
+                const memberCount = listInfo.data.items.length;
+                
+                return {
+                  id: feed.id,
+                  uri: feed.value,
+                  name: list.name,
+                  description: list.description || 'No description',
+                  creator: `@${list.creator.handle}`,
+                  members: memberCount,
+                  purpose: list.purpose === 'app.bsky.graph.defs#curatelist' ? 'Curated List' : 
+                          list.purpose === 'app.bsky.graph.defs#modlist' ? 'Moderation List' : 
+                          'Unknown Purpose',
+                  type: 'List'
+                };
+              }
+            }
+            
+            // For built-in feeds or if feed generator info failed
+            return {
+              id: feed.id,
+              uri: feed.value || 'N/A',
+              name: getFeedNameFromId(feed.id),
+              description: 'Built-in feed',
+              creator: 'Bluesky',
+              type: feed.type
+            };
+          } catch (error) {
+            return {
+              id: feed.id,
+              uri: feed.value || 'N/A',
+              name: getFeedNameFromId(feed.id),
+              description: 'Error fetching details',
+              type: feed.type
+            };
+          }
+        })
+      );
+
+      const formattedFeeds = feedDetails.map((feed: any, index: number) => {
+        // Common fields
+        let output = `Feed #${index + 1}:
+Name: ${feed.name}
+Type: ${feed.type}
+${feed.uri !== 'N/A' ? `URI: ${feed.uri}` : ''}
+${feed.description ? `Description: ${feed.description}` : ''}
+${feed.creator ? `Creator: ${feed.creator}` : ''}`;
+
+        // List-specific fields
+        if (feed.type === 'List') {
+          output += `\n${feed.members !== undefined ? `Members: ${feed.members}` : ''}
+${feed.purpose ? `Purpose: ${feed.purpose}` : ''}`;
+        }
+
+        output += '\n---';
+        return output;
+      }).join("\n\n");
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Your Pinned Feeds:\n\n${formattedFeeds}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Error fetching pinned feeds: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
+server.tool(
+  "get-feed-posts",
+  "Fetch posts from a specified feed",
+  {
+    feed: z.string().describe("The URI of the feed to fetch posts from (e.g., at://did:plc:abcdef/app.bsky.feed.generator/whats-hot)"),
+    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+  },
+  async ({ feed, limit }) => {
+    if (!agent) {
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // First, validate the feed by getting its info
+      const feedInfo = await validateUri(currentAgent, feed, 'feed');
+      if (!feedInfo) {
+        return createErrorResponse(`Invalid feed URI or feed not found: ${feed}.`);
+      }
+
+      const maxPostsToFetch = 500; // For time-based fetching, we might need to retrieve more posts
+      
+      // Fetch posts from the feed
+      const { posts: allPosts } = await fetchFeedPosts(currentAgent, feed, {
+        maxPosts: maxPostsToFetch,
+      });
+
+      // Limit the posts to the requested limit
+      const finalPosts = allPosts.length > limit 
+        ? allPosts.slice(0, limit) 
+        : allPosts;
+
+      // If no posts were found after filtering
+      if (finalPosts.length === 0) {
+        return createSuccessResponse(`No posts found in the feed: ${feed}`);
+      }
+
+      // Format the posts
+      const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+
+      // Add summary information
+      const summaryText = formatSummaryText(finalPosts.length, "feed");
+
+      return createSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
+    } catch (error) {
+      return createErrorResponse(`Error fetching posts: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
+  "get-list-posts",
+  "Fetch posts from users in a specified list",
+  {
+    list: z.string().describe("The URI of the list (e.g., at://did:plc:abcdef/app.bsky.graph.list/listname)"),
+    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+  },
+  async ({ list, limit }) => {
+    if (!agent) {
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // Validate the list by getting its info
+      const listInfo = await validateUri(currentAgent, list, 'list');
+      if (!listInfo) {
+        return createErrorResponse(`Invalid list URI or list not found: ${list}.`);
+      }
+
+      // Get the list members
+      const members = listInfo.items.map((item: any) => item.subject.did);
+      
+      if (members.length === 0) {
+        return createSuccessResponse(`The list ${listInfo.list.name} doesn't have any members.`);
+      }
+
+      const maxPostsToFetch = 500; // For time-based fetching, we might need to retrieve more posts
+      
+      // Fetch posts from list members
+      const allPosts = await fetchPostsFromListMembers(currentAgent, members, {
+        maxPosts: maxPostsToFetch,
+      });
+
+      // Limit the posts to the requested limit
+      const finalPosts = allPosts.length > limit 
+        ? allPosts.slice(0, limit) 
+        : allPosts;
+
+      // If no posts were found after filtering
+      if (finalPosts.length === 0) {
+        return createSuccessResponse(`No posts found from list members.`);
+      }
+
+      // Format the posts
+      const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+
+      // Add summary information
+      const summaryText = formatSummaryText(finalPosts.length, "list");
+
+      return createSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
+    } catch (error) {
+      return createErrorResponse(`Error fetching list posts: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
+  "get-user-posts",
+  "Fetch posts from a specific user",
+  {
+    user: z.string().describe("The handle or DID of the user (e.g., alice.bsky.social)"),
+    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+  },
+  async ({ user, limit }) => {
+    if (!agent) {
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // Verify the user exists by trying to get their profile
+      try {
+        const profileResponse = await currentAgent.getProfile({ actor: user });
+        if (!profileResponse.success) {
+          return createErrorResponse(`User not found: ${user}`);
+        }
+        
+        // Use the display name in the summary if available
+        const displayName = profileResponse.data.displayName || user;
+        
+        const maxPostsToFetch = 500; // For time-based fetching, we might need to retrieve more posts
+        
+        // Fetch posts from the user
+        const { posts: allPosts } = await fetchUserPosts(currentAgent, user, {
+          maxPosts: maxPostsToFetch,
+        });
+
+        // Limit the posts to the requested limit
+        const finalPosts = allPosts.length > limit 
+          ? allPosts.slice(0, limit) 
+          : allPosts;
+
+        // If no posts were found after filtering
+        if (finalPosts.length === 0) {
+          return createSuccessResponse(`No posts found from @${user}.`);
+        }
+
+        // Format the posts
+        const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+
+        // Add summary information
+        const summaryText = formatSummaryText(finalPosts.length, "user");
+
+        return createSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
+      } catch (profileError) {
+        return createErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
+      }
+    } catch (error) {
+      return createErrorResponse(`Error fetching user posts: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+// Start the server
+(async function() {
+  try {
+    // Initialize Bluesky connection
+    await initializeBlueskyConnection();
+    
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error("Bluesky MCP Server running on stdio");
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+})();

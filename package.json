@@ -1,0 +1,37 @@
+{
+  "name": "bsky-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Bluesky integration",
+  "main": "build/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && chmod 755 build/src/index.js && mkdir -p build/test && cp test/feed_example.json build/test/",
+    "start": "node build/src/index.js",
+    "dev": "tsc && node build/src/index.js",
+    "test": "pnpm run build && node build/test/final-test.js",
+    "test:enhanced": "pnpm run build && node build/test/test-enhanced-formatter.js",
+    "test:format": "pnpm run build && node build/test/test-format-post.js",
+    "test:specific": "pnpm run build && node build/test/test-specific-post.js",
+    "test:all": "pnpm run build && node build/test/final-test.js && node build/test/test-enhanced-formatter.js && node build/test/test-format-post.js && node build/test/test-specific-post.js",
+    "format-feed": "pnpm run build && node build/scripts/format-feed-to-file.js"
+  },
+  "keywords": [
+    "bluesky",
+    "mcp",
+    "atproto"
+  ],
+  "author": "Brian Ellin",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0",
+  "dependencies": {
+    "@atproto/api": "^0.14.9",
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
