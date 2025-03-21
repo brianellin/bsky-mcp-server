@@ -2,11 +2,10 @@
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server that connects to [Bluesky](https://bsky.app/) and provides tools to interact with the ATProtocol.
 
-You can use this MCP server to bring context from various Bluesky / ATProtocol API endpoings directly into the context window of your LLM based application. For example, you can add the server to Claude Desktop and then use it as a natural language Bluesky client. 
+You can use this MCP server to bring context from various Bluesky / ATProtocol API endpoints directly into the context window of your LLM based application. For example, you can add this server to Claude Desktop and then use it as a natural language Bluesky client. 
 
 ## Features & Tools
 
-- Authentication with Bluesky via environment variables
 - Interact with common Bluesky features via natural language (e.g. "Get recent posts from David Roberts")
 - Fetch and and analyze feeds ("Find me a feed about Seattle and tell me what people are talking about")
 - Fetch and analyze lists of followers ("What types of accounts does Mark Cuban follow? Give me a detailed report")
@@ -15,21 +14,18 @@ You can use this MCP server to bring context from various Bluesky / ATProtocol A
 
 Here's the current list of tools provided:
 
-Read only tools:
-- get-pinned-feeds: returns the set of all "pinned" items from the authenticated user's preferences.
-- get-timeline-posts: returns posts from the authenticated user's home timeline
-- get-feed-posts: returns posts from the specified feed
-- get-list-posts: returns posts from the specified list
-- get-user-posts: returns the specified user's posts
-- get-profile: returns the profile details of the specified user
-- get-follows: returns the set of followes this user follows
-- search-posts: returns posts for a given query. can specify top or lateest
-- search-people: returns people for a given search query
-
-Write tools
-- like-post: like a post with a specific URI
-- create-post: publish a post 
-- follow-user: follow a specific user
+- **get-pinned-feeds**: returns the set of all "pinned" items from the authenticated user's preferences.
+- **get-timeline-posts**: returns posts from the authenticated user's home timeline
+- **get-feed-posts**: returns posts from the specified feed
+- **get-list-posts**: returns posts from the specified list
+- **get-user-posts**: returns the specified user's posts
+- **get-profile**: returns the profile details of the specified user
+- **get-follows**: returns the set of followes this user follows
+- **search-posts**: returns posts for a given query. can specify top or lateest
+- **search-people**: returns people for a given search query
+- **like-post**: like a post with a specific URI
+- **create-post**: publish a post 
+- **follow-user**: follow a specific user
 
 ## Installation
 
