@@ -1040,6 +1040,75 @@ server.tool(
   }
 );
 
+server.tool(
+  "get-follows",
+  "Get a list of users that a person follows",
+  {
+    user: z.string().describe("The handle or DID of the user (e.g., alice.bsky.social)"),
+    limit: z.number().min(1).max(100).default(100).describe("Maximum number of follows to fetch (1-100)"),
+  },
+  async ({ user, limit }) => {
+    if (!agent) {
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // First, verify the user exists by trying to get their profile
+      try {
+        const profileResponse = await currentAgent.getProfile({ actor: user });
+        if (!profileResponse.success) {
+          return createErrorResponse(`User not found: ${user}`);
+        }
+        
+        // Use the display name in the summary if available
+        const displayName = profileResponse.data.displayName || user;
+        
+        // Now fetch who this user follows
+        const response = await currentAgent.app.bsky.graph.getFollows({
+          actor: user,
+          limit
+        });
+        
+        if (!response.success) {
+          return createErrorResponse(`Failed to fetch follows for ${user}.`);
+        }
+        
+        const { follows } = response.data;
+        
+        if (follows.length === 0) {
+          return createSuccessResponse(`@${user} doesn't follow anyone.`);
+        }
+        
+        // Format the follows list
+        const formattedFollows = follows.map((follow: any, index: number) => {
+          return `User #${index + 1}:
+Display Name: ${follow.displayName || 'No display name'}
+Handle: @${follow.handle}
+DID: ${follow.did}
+${follow.description ? `Bio: ${follow.description.substring(0, 100)}${follow.description.length > 100 ? '...' : ''}` : 'Bio: No bio provided'}
+${follow.followersCount !== undefined ? `Followers: ${follow.followersCount}` : ''}
+${follow.followsCount !== undefined ? `Following: ${follow.followsCount}` : ''}
+${follow.postsCount !== undefined ? `Posts: ${follow.postsCount}` : ''}
+${follow.indexedAt ? `Following since: ${new Date(follow.indexedAt).toLocaleString()}` : ''}
+---`;
+        }).join("\n\n");
+        
+        // Create a summary
+        const summaryText = `Retrieved ${follows.length} users that @${user} follows.${response.data.cursor ? ' More results are available.' : ''}`;
+        
+        return createSuccessResponse(`${summaryText}\n\n${formattedFollows}`);
+        
+      } catch (profileError) {
+        return createErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
+      }
+    } catch (error) {
+      return createErrorResponse(`Error fetching follows: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
 // Start the server
 (async function() {
   try {
