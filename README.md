@@ -1,16 +1,36 @@
 # Bluesky MCP Server
 
-A Model Context Protocol (MCP) server that connects to Bluesky and provides tools to interact with the ATProtocol.
+A [Model Context Protocol](https://modelcontextprotocol.io/) server that connects to [Bluesky](https://bsky.app/) and provides tools to interact with the ATProtocol.
 
-## Features
+You can use this MCP server to bring context from various Bluesky / ATProtocol API endpoings directly into the context window of your LLM based application. For example, you can add the server to Claude Desktop and then use it as a natural language Bluesky client. 
+
+## Features & Tools
 
 - Authentication with Bluesky via environment variables
-- Fetch and display your home timeline
-- Get pinned feeds, and feed and list content
-- Search for people, posts, and feeds
-- Write posts! 
-- Post, like, and follow functionality
-- Access to raw profile and timeline data
+- Interact with common Bluesky features via natural language (e.g. "Get recent posts from David Roberts")
+- Fetch and and analyze feeds ("Find me a feed about Seattle and tell me what people are talking about")
+- Fetch and analyze lists of followers ("What types of accounts does Mark Cuban follow? Give me a detailed report")
+- Use an LLM to write a post and then post it for you 😱 ("Write a haiku about today's weather in my area and post it to bluesky")
+- Search for feeds, posts, and people ("Find posts about the #teslatakedown and give me a summary of revent events")
+
+Here's the current list of tools provided:
+
+Read only tools:
+- get-pinned-feeds: returns the set of all "pinned" items from the authenticated user's preferences.
+- get-timeline-posts: returns posts from the authenticated user's home timeline
+- get-feed-posts: returns posts from the specified feed
+- get-list-posts: returns posts from the specified list
+- get-user-posts: returns the specified user's posts
+- get-profile: returns the profile details of the specified user
+- get-follows: returns the set of followes this user follows
+- get-likes: returns recent posts the specified user has liked
+- search-posts: returns posts for a given query. can specify top or lateest
+- search-people: returns people for a given search query
+
+Write tools
+- like-post: like a post with a specific URI
+- create-post: publish a post 
+- follow-user: follow a specific user
 
 ## Installation
 
@@ -26,13 +46,13 @@ pnpm run build
 
 ### Testing with MCP Inspector
 
-You can test tools directly with the amazing [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector). First make sure you have built the server and then run:
+You can test the bluesky tools directly without connecting to an LLM via the amazing [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector). First make sure you have built the server and then run:
 
 ```bash
 npx @modelcontextprotocol/inspector node build/src/index.js
 ```
 
-Set your BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD, and BLUESKY_SERVICE_URL environment variables from the panel on the left to start testing.
+Navigate to the local URL provided in your terminal, and then set your BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD, and BLUESKY_SERVICE_URL environment variables from the panel on the left. Try the get-timeline tool to see the most revent posts from your home timeline. 
 
 ## MCP Client Configuration 
 

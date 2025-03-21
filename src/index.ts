@@ -65,9 +65,8 @@ async function initializeBlueskyConnection() {
   }
 }
 
-
 server.tool(
-  "get-timeline",
+  "get-timeline-posts",
   "Fetch your home timeline from Bluesky",
   {
     limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
@@ -176,7 +175,7 @@ server.tool(
 );
 
 server.tool(
-  "post",
+  "create-post",
   "Create a new post on Bluesky",
   {
     text: z.string().max(300).describe("The content of your post"),
