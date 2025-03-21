@@ -23,6 +23,7 @@ Here's the current list of tools provided:
 - **get-follows**: returns the set of followes this user follows
 - **search-posts**: returns posts for a given query. can specify top or lateest
 - **search-people**: returns people for a given search query
+- **search-feeds**: returns feeds for a given query
 - **like-post**: like a post with a specific URI
 - **create-post**: publish a post 
 - **follow-user**: follow a specific user
