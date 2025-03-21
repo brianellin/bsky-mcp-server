@@ -71,8 +71,6 @@ Follow the steps to set up MCP with your client of choice. For example, to set u
 
 For more details about running MCP servers in Claude for desktop, see https://modelcontextprotocol.io/quickstart/user
 
-## Available Tools
-
 
 ## Creating App Passwords
 
@@ -81,7 +79,7 @@ To use this MCP server, you need to create an app password for your Bluesky acco
 1. Log in to Bluesky
 2. Go to Settings > App Passwords
 3. Create a new app password specifically for this integration
-4. Use this app password with the `login` tool (not your regular account password)
+4. Set the app password using the BLUESKY_APP_PASSWORD environment variable
 
 ## Security Notes
 
