@@ -16,6 +16,7 @@ import {
   validateUri,
 } from './utils.js';
 import { registerResources, resourcesList } from './resources.js';
+import { registerPrompts } from './prompts.js';
 
 // Load environment variables
 dotenv.config({ path: '.env' });
@@ -29,6 +30,9 @@ const server = new McpServer({
 
 // Register resources from the resources.ts file
 registerResources(server);
+
+// Register prompts from the prompts.ts file
+registerPrompts(server);
 
 // Initialize ATP agent and session
 let agent: AtpAgent | null = null;

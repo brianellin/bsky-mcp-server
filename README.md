@@ -14,11 +14,9 @@ A Model Context Protocol (MCP) server that connects to Bluesky and provides tool
 
 ## Installation
 
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd bluesky-mcp-server
+First clone this repo, then install dependencies and build the server:
 
+```bash
 # Install dependencies
 pnpm install
 
@@ -26,9 +24,19 @@ pnpm install
 pnpm run build
 ```
 
-## Configuration
+### Testing with MCP Inspector
 
-Follow the steps to set up MCP with your client of choice. For example, to set up Claude for desktop to connect to Bluesky, 
+You can test this server using the amazing [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector). First make sure you have built the server and then:
+
+```bash
+npx @modelcontextprotocol/inspector node build/index.js
+```
+
+Set your BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD, and BLUESKY_SERVICE_URL environment variables from the panel on the left to start testing. 
+
+## MCP Client Configuration 
+
+Follow the steps to set up MCP with your client of choice. For example, to set up Claude for desktop to connect to Bluesky, add the following to bluesky section to your claude_desktop_config.json:
 
 ```json
 {
@@ -46,70 +54,9 @@ Follow the steps to set up MCP with your client of choice. For example, to set u
   }
 ```
 
-## Usage
-
-### Running the server
-
-```bash
-pnpm start
-```
-
-### Testing with MCP Inspector
-
-You can test this server using the MCP Inspector:
-
-```bash
-pnpm exec @modelcontextprotocol/inspector node build/index.js
-```
-
-### Running Tests
-
-The project includes several tests for the post formatting utilities:
-
-```bash
-# Run all tests
-pnpm test:all
-
-# Run individual test suites
-pnpm test           # Run the final comprehensive test
-pnpm test:enhanced  # Test enhanced formatter with real data
-pnpm test:format    # Test basic formatting functions
-pnpm test:specific  # Test with specific complex posts
-```
-
-See the [test directory README](./test/README.md) for more details on the testing structure.
-
-### Integrating with Claude for Desktop
-
-To use this server with Claude for Desktop, add it to your `claude_desktop_config.json` file:
-
-```json
-{
-  "mcpServers": {
-    "bluesky": {
-      "command": "node",
-      "args": ["/path/to/bsky-mcp-server/build/index.js"]
-    }
-  }
-}
-```
-
-## Project Structure
-
-```
-├── src/           # Source code
-│   ├── index.ts   # Main server entry point  
-│   └── utils.ts   # Utility functions
-├── test/          # Test files
-│   ├── final-test.ts              # Comprehensive end-to-end test
-│   ├── test-enhanced-formatter.ts # Tests for enhanced post formatter
-│   ├── test-format-post.ts        # Basic formatter tests
-│   └── test-specific-post.ts      # Tests with specific complex posts
-└── build/         # Compiled JavaScript output
-```
+For more details about running MCP servers in Claude for desktop, see https://modelcontextprotocol.io/quickstart/user
 
 ## Available Tools
-
 
 
 ## Creating App Passwords
