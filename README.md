@@ -23,7 +23,6 @@ Read only tools:
 - get-user-posts: returns the specified user's posts
 - get-profile: returns the profile details of the specified user
 - get-follows: returns the set of followes this user follows
-- get-likes: returns recent posts the specified user has liked
 - search-posts: returns posts for a given query. can specify top or lateest
 - search-people: returns people for a given search query
 
