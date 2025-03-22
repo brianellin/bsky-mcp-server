@@ -578,6 +578,156 @@ ${feed.indexedAt ? `Indexed At: ${new Date(feed.indexedAt).toLocaleString()}` : 
   }
 );
 
+server.tool(
+  "get-likes",
+  "Get a list of posts that the authenticated user has liked",
+  {
+    limit: z.number().min(1).max(100).default(50).describe("Maximum number of liked posts to fetch (1-100)"),
+  },
+  async ({ limit }) => {
+    if (!agent) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: "Not logged in. Please use the login tool first.",
+          },
+        ],
+      };
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // We can only get likes for the authenticated user
+      if (!currentAgent.session?.handle) {
+        return createErrorResponse("Not properly authenticated. Please check your credentials.");
+      }
+      
+      const authenticatedUser = currentAgent.session.handle;
+      
+      // Now fetch the authenticated user's likes with pagination
+      const MAX_BATCH_SIZE = 100; // Maximum number of likes per API call
+      const MAX_BATCHES = 5;      // Maximum number of API calls to make (100 x 5 = 500)
+      let allLikes: any[] = [];
+      let nextCursor: string | undefined = undefined;
+      let batchCount = 0;
+      
+      // Loop to fetch likes with pagination
+      while (batchCount < MAX_BATCHES && allLikes.length < limit) {
+        // Calculate how many likes to fetch in this batch
+        const batchLimit = Math.min(MAX_BATCH_SIZE, limit - allLikes.length);
+        
+        // Make the API call with cursor if we have one
+        const response = await currentAgent.app.bsky.feed.getActorLikes({
+          actor: authenticatedUser,
+          limit: batchLimit,
+          cursor: nextCursor || undefined
+        });
+        
+        if (!response.success) {
+          // If we've already fetched some likes, return those
+          if (allLikes.length > 0) {
+            break;
+          }
+          return createErrorResponse(`Failed to fetch your likes.`);
+        }
+        
+        const { feed, cursor } = response.data;
+        
+        // Add the fetched likes to our collection
+        allLikes = allLikes.concat(feed);
+        
+        // Update cursor for the next batch
+        nextCursor = cursor;
+        batchCount++;
+        
+        // If no cursor returned or we've reached our limit, stop paginating
+        if (!cursor || allLikes.length >= limit) {
+          break;
+        }
+      }
+      
+      if (allLikes.length === 0) {
+        return createSuccessResponse(`You haven't liked any posts.`);
+      }
+      
+      // Format the likes list, focusing on the posts rather than user info
+      const formattedLikes = allLikes.map((like: any, index: number) => {
+        const post = like.post;
+        return formatPost(post, index);
+      }).join("\n\n");
+      
+      // Create a summary
+      const summaryText = formatSummaryText(allLikes.length, "liked posts");
+      
+      return createSuccessResponse(`${summaryText}\n\n${formattedLikes}`);
+      
+    } catch (error) {
+      return createErrorResponse(`Error fetching likes: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
+  "get-trends",
+  "Get current trending topics on Bluesky",
+  {
+    limit: z.number().min(1).max(50).default(10).describe("Number of trending topics to fetch (1-50)"),
+    includeSuggested: z.boolean().default(false).describe("Whether to include suggested topics in addition to trending topics"),
+  },
+  async ({ limit, includeSuggested }) => {
+    if (!agent) {
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // Call the unspecced API endpoint for trending topics
+      const response = await currentAgent.api.app.bsky.unspecced.getTrendingTopics({
+        limit: Math.min(50, limit) // API accepts up to 50 per call
+      });
+      
+      if (!response.success) {
+        return createErrorResponse("Failed to fetch trending topics.");
+      }
+
+      const { topics, suggested } = response.data;
+      
+      if (!topics || topics.length === 0) {
+        return createSuccessResponse("No trending topics found at this time.");
+      }
+
+      // Format trending topics
+      const formattedTopics = topics.map((topic: any, index: number) => {
+        const startTime = new Date(topic.startTime).toLocaleString();
+        return `#${index + 1}: ${topic.topic}
+Post Count: ${topic.postCount} posts
+Started Trending: ${startTime}
+Feed Link: https://bsky.app${topic.link}
+---`;
+      }).join("\n\n");
+
+      // Format suggested topics if requested
+      let suggestedContent = "";
+      if (includeSuggested && suggested && suggested.length > 0) {
+        const formattedSuggested = suggested.map((topic: any, index: number) => {
+          return `#${index + 1}: ${topic.topic}
+Feed Link: https://bsky.app${topic.link}
+---`;
+        }).join("\n\n");
+        
+        suggestedContent = `\n\n## Suggested Topics for Exploration\n\n${formattedSuggested}`;
+      }
+
+      return createSuccessResponse(`## Current Trending Topics on Bluesky\n\n${formattedTopics}${suggestedContent}`);
+    } catch (error) {
+      return createErrorResponse(`Error fetching trending topics: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
 
 server.tool(
   "like-post",
