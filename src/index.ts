@@ -579,7 +579,7 @@ ${feed.indexedAt ? `Indexed At: ${new Date(feed.indexedAt).toLocaleString()}` : 
 );
 
 server.tool(
-  "get-likes",
+  "get-liked-posts",
   "Get a list of posts that the authenticated user has liked",
   {
     limit: z.number().min(1).max(100).default(50).describe("Maximum number of liked posts to fetch (1-100)"),
