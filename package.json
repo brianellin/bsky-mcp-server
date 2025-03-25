@@ -4,6 +4,9 @@
   "description": "MCP server for Bluesky",
   "main": "build/src/index.js",
   "type": "module",
+  "bin": {
+    "bsky-server": "./build/src/index.js"
+  },
   "scripts": {
     "build": "tsc && chmod 755 build/src/index.js && mkdir -p build/test && cp test/feed_example.json build/test/",
     "start": "node build/src/index.js",
