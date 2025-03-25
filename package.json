@@ -1,5 +1,5 @@
 {
-  "name": "bsky-mcp-server",
+  "name": "@gthumb/bsky-mcp-server",
   "version": "1.0.0",
   "description": "MCP server for Bluesky",
   "main": "build/src/index.js",
@@ -33,5 +33,16 @@
     "@types/node": "^22.13.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GreenThumbMarket/bsky-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GreenThumbMarket/bsky-mcp-server/issues"
+  },
+  "homepage": "https://github.com/GreenThumbMarket/bsky-mcp-server#readme"
 }
