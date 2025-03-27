@@ -17,6 +17,7 @@ import {
 } from './utils.js';
 import { registerResources, resourcesList } from './resources.js';
 import { registerPrompts } from './prompts.js';
+import fs from 'fs';
 
 // Load environment variables
 dotenv.config({ path: '.env' });
@@ -195,9 +196,21 @@ server.tool(
     }
 
     try {
+      const imageUrl = new URL("garden.jpg", import.meta.url);
+      const image = fs.readFileSync(imageUrl);
+      const {data} = await agent.uploadBlob(image);
+
       const record: any = {
         text,
         createdAt: new Date().toISOString(),
+        embed: {
+          $type: 'app.bsky.embed.images',
+          images: [
+            {
+              alt: 'nice image',
+              image: data.blob,
+            }],
+        },
       };
 
       let replyRef;
