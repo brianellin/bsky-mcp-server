@@ -51,7 +51,7 @@ async function initializeBlueskyConnection() {
   try {
     agent = new AtpAgent({ service });
     const result = await agent.login({ identifier, password });
-    
+
     if (result.success) {
       console.error(`Successfully logged in as ${result.data.handle} (${result.data.did})`);
       return true;
@@ -67,7 +67,7 @@ async function initializeBlueskyConnection() {
 
 server.tool(
   "get-timeline-posts",
-  "Fetch your home timeline from Bluesky",
+  "Fetch your home timeline from Bluesky, which includes posts from all of the people you follow in reverse chronological order",
   {
     limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
   },
@@ -1292,6 +1292,76 @@ ${follow.indexedAt ? `Following since: ${new Date(follow.indexedAt).toLocaleStri
       }
     } catch (error) {
       return createErrorResponse(`Error fetching follows: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
+  "get-post-likes",
+  "Get information about users who have liked a specific post",
+  {
+    uri: z.string().describe("The URI of the post to get likes for (e.g., at://did:plc:abcdef/app.bsky.feed.post/123)"),
+    limit: z.number().min(1).max(100).default(100).describe("Maximum number of likes to fetch (1-100)"),
+  },
+  async ({ uri, limit }) => {
+    if (!agent) {
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // First, we need to get the post's CID
+      const response = await currentAgent.app.bsky.feed.getPostThread({ uri });
+      
+      if (!response.success || response.data.thread.$type !== 'app.bsky.feed.defs#threadViewPost') {
+        return createErrorResponse("Failed to get post information.");
+      }
+      
+      // Get the post's CID
+      const threadPost = response.data.thread as any;
+      const post = threadPost.post;
+      const cid = post.cid;
+      
+      // Now fetch the likes
+      const likesResponse = await currentAgent.app.bsky.feed.getLikes({
+        uri,
+        cid,
+        limit
+      });
+      
+      if (!likesResponse.success) {
+        return createErrorResponse("Failed to fetch likes for the post.");
+      }
+      
+      const { likes } = likesResponse.data;
+      
+      if (!likes || likes.length === 0) {
+        return createSuccessResponse("No likes found for this post.");
+      }
+      
+      // Format the likes list
+      const formattedLikes = likes.map((like: any, index: number) => {
+        const actor = like.actor;
+        return `User #${index + 1}:
+Display Name: ${actor.displayName || 'No display name'}
+Handle: @${actor.handle}
+DID: ${actor.did}
+${actor.description ? `Bio: ${actor.description.substring(0, 100)}${actor.description.length > 100 ? '...' : ''}` : 'Bio: No bio provided'}
+${actor.followersCount !== undefined ? `Followers: ${actor.followersCount}` : ''}
+${actor.followsCount !== undefined ? `Following: ${actor.followsCount}` : ''}
+${actor.postsCount !== undefined ? `Posts: ${actor.postsCount}` : ''}
+${like.indexedAt ? `Liked at: ${new Date(like.indexedAt).toLocaleString()}` : ''}
+---`;
+      }).join("\n\n");
+      
+      // Create a summary
+      const summaryText = `Retrieved ${likes.length} likes for the post.${likesResponse.data.cursor ? ' More likes are available.' : ''}`;
+      
+      return createSuccessResponse(`${summaryText}\n\n${formattedLikes}`);
+      
+    } catch (error) {
+      return createErrorResponse(`Error fetching post likes: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
