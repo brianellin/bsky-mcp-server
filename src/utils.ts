@@ -552,7 +552,7 @@ export function formatSummaryText(postsCount: number, entityType: string = 'feed
 /**
  * Create a standardized error response
  */
-export function createErrorResponse(message: string): McpErrorResponse {
+export function mcpErrorResponse(message: string): McpErrorResponse {
   return {
     isError: true,
     content: [{
@@ -565,7 +565,7 @@ export function createErrorResponse(message: string): McpErrorResponse {
 /**
  * Create a standardized success response
  */
-export function createSuccessResponse(text: string): McpSuccessResponse {
+export function mcpSuccessResponse(text: string): McpSuccessResponse {
   return {
     content: [{
       type: "text",

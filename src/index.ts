@@ -5,8 +5,8 @@ import { z } from "zod";
 import { AtpAgent } from "@atproto/api";
 import * as dotenv from "dotenv";
 import { 
-  createErrorResponse, 
-  createSuccessResponse,  
+  mcpErrorResponse, 
+  mcpSuccessResponse,  
   formatPost, 
   formatSummaryText, 
   getFeedNameFromId, 
@@ -72,7 +72,7 @@ server.tool(
   async ({ count, type }) => {
     try {
       if (!agent) {
-        return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+        return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
       }
 
       const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
@@ -145,7 +145,7 @@ server.tool(
         : allPosts;
       
       if (finalPosts.length === 0) {
-        return createSuccessResponse("Your timeline is empty.");
+        return mcpSuccessResponse("Your timeline is empty.");
       }
       
       // Format the posts
@@ -153,10 +153,10 @@ server.tool(
       
       const summaryText = formatSummaryText(finalPosts.length, "timeline");
       
-      return createSuccessResponse(`${summaryText}\n\n${timelineData}`);
+      return mcpSuccessResponse(`${summaryText}\n\n${timelineData}`);
       
     } catch (error) {
-      return createErrorResponse(`Error fetching timeline: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching timeline: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -170,7 +170,7 @@ server.tool(
   },
   async ({ text, replyTo }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     try {
@@ -204,15 +204,15 @@ server.tool(
           };
 
         } catch (error) {
-          return createErrorResponse(`Error parsing reply URI: ${error instanceof Error ? error.message : String(error)}`);
+          return mcpErrorResponse(`Error parsing reply URI: ${error instanceof Error ? error.message : String(error)}`);
         }
       }
 
       const response = await agent.post(record);
       
-      return createSuccessResponse(`Post created successfully! URI: ${response.uri}`);
+      return mcpSuccessResponse(`Post created successfully! URI: ${response.uri}`);
     } catch (error) {
-      return createErrorResponse(`Error creating post: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error creating post: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -225,14 +225,14 @@ server.tool(
   },
   async ({ handle }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
       const response = await agent.getProfile({ actor: handle });
       
       if (!response.success) {
-        return createErrorResponse(`Failed to get profile for ${handle}.`);
+        return mcpErrorResponse(`Failed to get profile for ${handle}.`);
       }
 
       const profile = response.data;
@@ -245,9 +245,9 @@ Following: ${profile.followsCount || 0}
 Posts: ${profile.postsCount || 0}
 ${profile.labels?.length ? `Labels: ${profile.labels.map((l: any) => l.val).join(', ')}` : ''}`;
 
-      return createSuccessResponse(profileText);
+      return mcpSuccessResponse(profileText);
     } catch (error) {
-      return createErrorResponse(`Error fetching profile: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching profile: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -262,20 +262,20 @@ server.tool(
   },
   async ({ query, limit, sort }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
       const response = await agent.app.bsky.feed.searchPosts({ q: query, limit, sort });
       
       if (!response.success) {
-        return createErrorResponse("Failed to search posts.");
+        return mcpErrorResponse("Failed to search posts.");
       }
 
       const { posts } = response.data;
       
       if (posts.length === 0) {
-        return createSuccessResponse(`No results found for query: "${query}"`);
+        return mcpSuccessResponse(`No results found for query: "${query}"`);
       }
 
       const results = posts.map((post: any, index: number) => {
@@ -291,9 +291,9 @@ Posted: ${new Date(post.indexedAt).toLocaleString()}
 ---`;
       }).join("\n\n");
 
-      return createSuccessResponse(results);
+      return mcpSuccessResponse(results);
     } catch (error) {
-      return createErrorResponse(`Error searching posts: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error searching posts: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -307,20 +307,20 @@ server.tool(
   },
   async ({ query, limit }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
       const response = await agent.app.bsky.actor.searchActors({ q: query, limit });
       
       if (!response.success) {
-        return createErrorResponse("Failed to search for users.");
+        return mcpErrorResponse("Failed to search for users.");
       }
 
       const { actors } = response.data;
       
       if (actors.length === 0) {
-        return createSuccessResponse(`No users found for query: "${query}"`);
+        return mcpSuccessResponse(`No users found for query: "${query}"`);
       }
 
       const results = actors.map((actor: any, index: number) => {
@@ -336,9 +336,9 @@ ${actor.indexedAt ? `Indexed At: ${new Date(actor.indexedAt).toLocaleString()}` 
 ---`;
       }).join("\n\n");
 
-      return createSuccessResponse(results);
+      return mcpSuccessResponse(results);
     } catch (error) {
-      return createErrorResponse(`Error searching for users: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error searching for users: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -352,7 +352,7 @@ server.tool(
   },
   async ({ query, limit }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
@@ -362,13 +362,13 @@ server.tool(
       });
       
       if (!response.success) {
-        return createErrorResponse("Failed to search for feeds.");
+        return mcpErrorResponse("Failed to search for feeds.");
       }
 
       const { feeds } = response.data;
       
       if (!feeds || feeds.length === 0) {
-        return createSuccessResponse(`No feeds found for query: "${query}"`);
+        return mcpSuccessResponse(`No feeds found for query: "${query}"`);
       }
 
       const results = feeds.map((feed: any, index: number) => {
@@ -382,9 +382,9 @@ ${feed.indexedAt ? `Indexed At: ${new Date(feed.indexedAt).toLocaleString()}` : 
 ---`;
       }).join("\n\n");
 
-      return createSuccessResponse(results);
+      return mcpSuccessResponse(results);
     } catch (error) {
-      return createErrorResponse(`Error searching for feeds: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error searching for feeds: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -397,7 +397,7 @@ server.tool(
   },
   async ({ limit }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -405,7 +405,7 @@ server.tool(
     try {
       // We can only get likes for the authenticated user
       if (!currentAgent.session?.handle) {
-        return createErrorResponse("Not properly authenticated. Please check your credentials.");
+        return mcpErrorResponse("Not properly authenticated. Please check your credentials.");
       }
       
       const authenticatedUser = currentAgent.session.handle;
@@ -434,7 +434,7 @@ server.tool(
           if (allLikes.length > 0) {
             break;
           }
-          return createErrorResponse(`Failed to fetch your likes.`);
+          return mcpErrorResponse(`Failed to fetch your likes.`);
         }
         
         const { feed, cursor } = response.data;
@@ -453,7 +453,7 @@ server.tool(
       }
       
       if (allLikes.length === 0) {
-        return createSuccessResponse(`You haven't liked any posts.`);
+        return mcpSuccessResponse(`You haven't liked any posts.`);
       }
       
       // Format the likes list, focusing on the posts rather than user info
@@ -465,10 +465,10 @@ server.tool(
       // Create a summary
       const summaryText = formatSummaryText(allLikes.length, "liked posts");
       
-      return createSuccessResponse(`${summaryText}\n\n${formattedLikes}`);
+      return mcpSuccessResponse(`${summaryText}\n\n${formattedLikes}`);
       
     } catch (error) {
-      return createErrorResponse(`Error fetching likes: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching likes: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -482,7 +482,7 @@ server.tool(
   },
   async ({ limit, includeSuggested }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -494,13 +494,13 @@ server.tool(
       });
       
       if (!response.success) {
-        return createErrorResponse("Failed to fetch trending topics.");
+        return mcpErrorResponse("Failed to fetch trending topics.");
       }
 
       const { topics, suggested } = response.data;
       
       if (!topics || topics.length === 0) {
-        return createSuccessResponse("No trending topics found at this time.");
+        return mcpSuccessResponse("No trending topics found at this time.");
       }
 
       // Format trending topics
@@ -525,9 +525,9 @@ Feed Link: https://bsky.app${topic.link}
         suggestedContent = `\n\n## Suggested Topics for Exploration\n\n${formattedSuggested}`;
       }
 
-      return createSuccessResponse(`## Current Trending Topics on Bluesky\n\n${formattedTopics}${suggestedContent}`);
+      return mcpSuccessResponse(`## Current Trending Topics on Bluesky\n\n${formattedTopics}${suggestedContent}`);
     } catch (error) {
-      return createErrorResponse(`Error fetching trending topics: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching trending topics: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -540,7 +540,7 @@ server.tool(
   },
   async ({ uri }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
@@ -553,7 +553,7 @@ server.tool(
       const response = await agent.app.bsky.feed.getPostThread({ uri });
       
       if (!response.success || response.data.thread.$type !== 'app.bsky.feed.defs#threadViewPost') {
-        return createErrorResponse("Failed to get post information.");
+        return mcpErrorResponse("Failed to get post information.");
       }
       
       // Type assertion to tell TypeScript this is a post
@@ -563,9 +563,9 @@ server.tool(
       
       await agent.like(uri, cid);
       
-      return createSuccessResponse("Post liked successfully!");
+      return mcpSuccessResponse("Post liked successfully!");
     } catch (error) {
-      return createErrorResponse(`Error liking post: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error liking post: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -578,7 +578,7 @@ server.tool(
   },
   async ({ handle }) => {
     if (!agent) {
-      return createErrorResponse("Not logged in. Please check your environment variables.");
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
@@ -586,15 +586,15 @@ server.tool(
       const resolveResponse = await agent.resolveHandle({ handle });
       
       if (!resolveResponse.success) {
-        return createErrorResponse(`Failed to resolve handle: ${handle}`);
+        return mcpErrorResponse(`Failed to resolve handle: ${handle}`);
       }
       
       const did = resolveResponse.data.did;
       await agent.follow(did);
       
-      return createSuccessResponse(`Successfully followed @${handle}`);
+      return mcpSuccessResponse(`Successfully followed @${handle}`);
     } catch (error) {
-      return createErrorResponse(`Error following user: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error following user: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -605,7 +605,7 @@ server.tool(
   {},
   async () => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     try {
@@ -613,7 +613,7 @@ server.tool(
       const response = await agent.app.bsky.actor.getPreferences();
       
       if (!response.success) {
-        return createErrorResponse("Failed to get user preferences.");
+        return mcpErrorResponse("Failed to get user preferences.");
       }
 
       // Find the savedFeedsPrefV2 in preferences
@@ -622,14 +622,14 @@ server.tool(
       ) as { $type: string, items: Array<{ id: string, pinned: boolean, type: string, value: string }> } | undefined;
       
       if (!savedFeedsPref || !savedFeedsPref.items) {
-        return createSuccessResponse("No saved feeds found in user preferences.");
+        return mcpSuccessResponse("No saved feeds found in user preferences.");
       }
 
       // Get the pinned feeds
       const pinnedFeeds = savedFeedsPref.items.filter((item: any) => item.pinned);
       
       if (pinnedFeeds.length === 0) {
-        return createSuccessResponse("You don't have any pinned feeds.");
+        return mcpSuccessResponse("You don't have any pinned feeds.");
       }
 
       // Get additional details for each feed
@@ -719,9 +719,9 @@ ${feed.purpose ? `Purpose: ${feed.purpose}` : ''}`;
         return output;
       }).join("\n\n");
 
-      return createSuccessResponse(`Your Pinned Feeds:\n\n${formattedFeeds}`);
+      return mcpSuccessResponse(`Your Pinned Feeds:\n\n${formattedFeeds}`);
     } catch (error) {
-      return createErrorResponse(`Error fetching pinned feeds: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching pinned feeds: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -736,7 +736,7 @@ server.tool(
   },
   async ({ feed, count, type }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -745,7 +745,7 @@ server.tool(
       // First, validate the feed by getting its info
       const feedInfo = await validateUri(currentAgent, feed, 'feed');
       if (!feedInfo) {
-        return createErrorResponse(`Invalid feed URI or feed not found: ${feed}.`);
+        return mcpErrorResponse(`Invalid feed URI or feed not found: ${feed}.`);
       }
 
       const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
@@ -820,7 +820,7 @@ server.tool(
 
       // If no posts were found after filtering
       if (finalPosts.length === 0) {
-        return createSuccessResponse(`No posts found in the feed: ${feed}`);
+        return mcpSuccessResponse(`No posts found in the feed: ${feed}`);
       }
 
       // Format the posts
@@ -829,9 +829,9 @@ server.tool(
       // Add summary information
       const summaryText = formatSummaryText(finalPosts.length, "feed");
 
-      return createSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
+      return mcpSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
     } catch (error) {
-      return createErrorResponse(`Error fetching posts: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching posts: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -846,7 +846,7 @@ server.tool(
   },
   async ({ list, count, type }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -855,7 +855,7 @@ server.tool(
       // Validate the list by getting its info
       const listInfo = await validateUri(currentAgent, list, 'list');
       if (!listInfo) {
-        return createErrorResponse(`Invalid list URI or list not found: ${list}.`);
+        return mcpErrorResponse(`Invalid list URI or list not found: ${list}.`);
       }
 
       const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
@@ -930,7 +930,7 @@ server.tool(
 
       // If no posts were found after filtering
       if (finalPosts.length === 0) {
-        return createSuccessResponse(`No posts found from the list.`);
+        return mcpSuccessResponse(`No posts found from the list.`);
       }
 
       // Format the posts
@@ -939,9 +939,9 @@ server.tool(
       // Add summary information
       const summaryText = formatSummaryText(finalPosts.length, "list");
 
-      return createSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
+      return mcpSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
     } catch (error) {
-      return createErrorResponse(`Error fetching list posts: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching list posts: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -956,7 +956,7 @@ server.tool(
   },
   async ({ user, count, type }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -966,7 +966,7 @@ server.tool(
       try {
         const profileResponse = await currentAgent.getProfile({ actor: user });
         if (!profileResponse.success) {
-          return createErrorResponse(`User not found: ${user}`);
+          return mcpErrorResponse(`User not found: ${user}`);
         }
         
         const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
@@ -1041,7 +1041,7 @@ server.tool(
 
         // If no posts were found after filtering
         if (finalPosts.length === 0) {
-          return createSuccessResponse(`No posts found from @${user}.`);
+          return mcpSuccessResponse(`No posts found from @${user}.`);
         }
 
         // Format the posts
@@ -1050,12 +1050,12 @@ server.tool(
         // Add summary information
         const summaryText = formatSummaryText(finalPosts.length, "user");
 
-        return createSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
+        return mcpSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
       } catch (profileError) {
-        return createErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
+        return mcpErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
       }
     } catch (error) {
-      return createErrorResponse(`Error fetching user posts: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching user posts: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -1069,7 +1069,7 @@ server.tool(
   },
   async ({ user, limit }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -1079,7 +1079,7 @@ server.tool(
       try {
         const profileResponse = await currentAgent.getProfile({ actor: user });
         if (!profileResponse.success) {
-          return createErrorResponse(`User not found: ${user}`);
+          return mcpErrorResponse(`User not found: ${user}`);
         }
         
         // Use the display name in the summary if available
@@ -1109,7 +1109,7 @@ server.tool(
             if (allFollows.length > 0) {
               break;
             }
-            return createErrorResponse(`Failed to fetch follows for ${user}.`);
+            return mcpErrorResponse(`Failed to fetch follows for ${user}.`);
           }
           
           const { follows, cursor } = response.data;
@@ -1128,7 +1128,7 @@ server.tool(
         }
         
         if (allFollows.length === 0) {
-          return createSuccessResponse(`@${user} doesn't follow anyone.`);
+          return mcpSuccessResponse(`@${user} doesn't follow anyone.`);
         }
         
         // Format the follows list
@@ -1148,13 +1148,13 @@ ${follow.indexedAt ? `Following since: ${new Date(follow.indexedAt).toLocaleStri
         // Create a summary
         const summaryText = `Retrieved ${allFollows.length} users that @${user} follows.${nextCursor ? ' More results are available.' : ''}`;
         
-        return createSuccessResponse(`${summaryText}\n\n${formattedFollows}`);
+        return mcpSuccessResponse(`${summaryText}\n\n${formattedFollows}`);
         
       } catch (profileError) {
-        return createErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
+        return mcpErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
       }
     } catch (error) {
-      return createErrorResponse(`Error fetching follows: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching follows: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -1168,7 +1168,7 @@ server.tool(
   },
   async ({ uri, limit }) => {
     if (!agent) {
-      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -1178,7 +1178,7 @@ server.tool(
       const response = await currentAgent.app.bsky.feed.getPostThread({ uri });
       
       if (!response.success || response.data.thread.$type !== 'app.bsky.feed.defs#threadViewPost') {
-        return createErrorResponse("Failed to get post information.");
+        return mcpErrorResponse("Failed to get post information.");
       }
       
       // Get the post's CID
@@ -1194,13 +1194,13 @@ server.tool(
       });
       
       if (!likesResponse.success) {
-        return createErrorResponse("Failed to fetch likes for the post.");
+        return mcpErrorResponse("Failed to fetch likes for the post.");
       }
       
       const { likes } = likesResponse.data;
       
       if (!likes || likes.length === 0) {
-        return createSuccessResponse("No likes found for this post.");
+        return mcpSuccessResponse("No likes found for this post.");
       }
       
       // Format the likes list
@@ -1221,10 +1221,10 @@ ${like.indexedAt ? `Liked at: ${new Date(like.indexedAt).toLocaleString()}` : ''
       // Create a summary
       const summaryText = `Retrieved ${likes.length} likes for the post.${likesResponse.data.cursor ? ' More likes are available.' : ''}`;
       
-      return createSuccessResponse(`${summaryText}\n\n${formattedLikes}`);
+      return mcpSuccessResponse(`${summaryText}\n\n${formattedLikes}`);
       
     } catch (error) {
-      return createErrorResponse(`Error fetching post likes: ${error instanceof Error ? error.message : String(error)}`);
+      return mcpErrorResponse(`Error fetching post likes: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -1242,7 +1242,7 @@ Description: ${resource.description}
 ---`;
     }).join("\n\n");
 
-    return createSuccessResponse(`Available MCP Resources:\n\n${formattedResources}\n\nTo use these resources, reference them by URI in your prompts or queries.`);
+    return mcpSuccessResponse(`Available MCP Resources:\n\n${formattedResources}\n\nTo use these resources, reference them by URI in your prompts or queries.`);
   }
 );
 
