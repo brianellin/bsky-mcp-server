@@ -230,7 +230,7 @@ export function formatPost(item: any, index: number): string {
             }
             // Extract mentions
             else if (feature.$type === 'app.bsky.richtext.facet#mention' && feature.did) {
-              mentions.push(feature.did);
+              mentions.push(`${feature.did}`);
             }
             // Extract hashtags
             else if (feature.$type === 'app.bsky.richtext.facet#tag' && feature.tag) {

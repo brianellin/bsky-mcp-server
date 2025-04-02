@@ -13,7 +13,8 @@
     "test:format": "pnpm run build && node build/test/test-format-post.js",
     "test:specific": "pnpm run build && node build/test/test-specific-post.js",
     "test:all": "pnpm run build && node build/test/final-test.js && node build/test/test-enhanced-formatter.js && node build/test/test-format-post.js && node build/test/test-specific-post.js",
-    "format-feed": "pnpm run build && node build/scripts/format-feed-to-file.js"
+    "format-feed": "pnpm run build && node build/scripts/format-feed-to-file.js",
+    "process-feed": "pnpm run build && node build/src/scripts/process-feed-example.js"
   },
   "keywords": [
     "bluesky",
