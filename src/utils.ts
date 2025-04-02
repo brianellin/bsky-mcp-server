@@ -1,11 +1,19 @@
 import { AtpAgent } from "@atproto/api";
 
+/**
+ * Represents a text content item in an MCP response.
+ * This is the most basic type of content that can be returned.
+ */
 export interface TextContent {
   type: "text";
   text: string;
   [key: string]: unknown;
 }
 
+/**
+ * Represents an image content item in an MCP response.
+ * Contains the image data as a base64 string and its MIME type.
+ */
 export interface ImageContent {
   type: "image";
   data: string;
@@ -13,6 +21,11 @@ export interface ImageContent {
   [key: string]: unknown;
 }
 
+/**
+ * Represents a resource content item in an MCP response.
+ * Can contain either a text-based resource with URI or a blob-based resource.
+ * Used for linking to external content or providing structured data.
+ */
 export interface ResourceContent {
   type: "resource";
   resource: {
@@ -29,13 +42,25 @@ export interface ResourceContent {
   [key: string]: unknown;
 }
 
+/**
+ * Union type representing all possible content types that can be included in an MCP response.
+ * Can be a text content, image content, or resource content.
+ */
 export type McpResponseContent = Array<TextContent | ImageContent | ResourceContent>;
 
+/**
+ * Represents a successful response from the MCP server.
+ * Contains an array of content items that can be of any supported type.
+ */
 export interface McpSuccessResponse {
   content: McpResponseContent;
   [key: string]: unknown;
 }
 
+/**
+ * Represents an error response from the MCP server.
+ * Contains an error flag and an array of content items explaining the error.
+ */
 export interface McpErrorResponse {
   isError: true;
   content: McpResponseContent;
