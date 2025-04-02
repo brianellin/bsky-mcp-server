@@ -8,8 +8,6 @@ import {
   createErrorResponse, 
   createSuccessResponse, 
   fetchFeedPosts, 
-  fetchPostsFromListMembers, 
-  fetchUserPosts, 
   formatPost, 
   formatSummaryText, 
   getFeedNameFromId, 
