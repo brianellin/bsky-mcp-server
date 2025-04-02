@@ -69,9 +69,10 @@ server.tool(
   "get-timeline-posts",
   "Fetch your home timeline from Bluesky, which includes posts from all of the people you follow in reverse chronological order",
   {
-    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+    hoursLimit: z.number().min(1).max(168).optional().describe("Number of hours posts to attempt to fetch"),
+    limit: z.number().min(1).max(100).optional().describe("Number of posts to fetch (1-100)")
   },
-  async ({ limit }) => {
+  async ({ limit, hoursLimit }) => {
     try {
       if (!agent) {
         return {
@@ -85,91 +86,94 @@ server.tool(
         };
       }
 
-      const MAX_TOTAL_POSTS = 1000; // Safety limit to prevent excessive API calls
-      
-      // Initial fetch using at most 100 posts per request
-      const initialFetchLimit = Math.min(100, limit);
-      
-      const response = await agent.getTimeline({ limit: initialFetchLimit });
-      
-      if (!response.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Failed to fetch timeline.",
-            },
-          ],
-        };
+      // Validate that not both parameters are provided
+      if (limit !== undefined && hoursLimit !== undefined) {
+        return createErrorResponse("Cannot specify both limit and hoursLimit - please use only one of them");
       }
 
-      const allPosts: any[] = response.data.feed;
-      let nextCursor = response.data.cursor;
+      const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
+      const DEFAULT_HOURS = 8; // Default hours if no parameters specified
       
-      // If we have more posts available (cursor exists),
-      // keep paginating until we reach the maximum post limit
-      if (nextCursor && allPosts.length < MAX_TOTAL_POSTS) {
-        // For safety, don't fetch more than 10 pages
-        let paginationCount = 0;
-        while (nextCursor && paginationCount < 10 && allPosts.length < MAX_TOTAL_POSTS) {
-          paginationCount++;
-          
-          try {
-            const nextPage = await agent.getTimeline({
-              cursor: nextCursor,
-              limit: initialFetchLimit
-            });
-            
-            if (nextPage.success) {
-              allPosts.push(...nextPage.data.feed);
-              nextCursor = nextPage.data.cursor;
-            } else {
-              // If we hit an error, just use what we have
-              break;
+      let allPosts: any[] = [];
+      let nextCursor: string | undefined = undefined;
+      let shouldContinueFetching = true;
+      
+      // Determine if we're using hours-based or count-based fetching
+      const useHoursLimit = hoursLimit !== undefined || (limit === undefined && hoursLimit === undefined);
+      const targetHours = hoursLimit || DEFAULT_HOURS;
+      const targetDate = new Date(Date.now() - targetHours * 60 * 60 * 1000);
+      
+      while (shouldContinueFetching && allPosts.length < MAX_TOTAL_POSTS) {
+        // Calculate how many posts to fetch in this batch
+        const batchLimit = Math.min(100, limit || 100);
+        
+        const response = await agent.getTimeline({ 
+          limit: batchLimit,
+          cursor: nextCursor
+        });
+        
+        if (!response.success) {
+          break;
+        }
+        
+        const { feed, cursor } = response.data;
+        
+        // Filter posts based on time window if using hours limit
+        let filteredFeed = feed;
+        if (useHoursLimit) {
+          filteredFeed = feed.filter(post => {
+            const createdAt = post?.post?.record?.createdAt;
+            if (!createdAt || typeof createdAt !== 'string') return false;
+            const postDate = new Date(createdAt);
+            return postDate >= targetDate;
+          });
+        }
+        
+        // Add the filtered posts to our collection
+        allPosts = allPosts.concat(filteredFeed);
+        
+        // Update cursor for the next batch
+        nextCursor = cursor;
+        
+        // Check if we should continue fetching based on the mode
+        if (useHoursLimit) {
+          // Check if we've reached posts older than our target date
+          const oldestPost = feed[feed.length - 1];
+          if (oldestPost?.post?.record?.createdAt && typeof oldestPost.post.record.createdAt === 'string') {
+            const postDate = new Date(oldestPost.post.record.createdAt);
+            if (postDate < targetDate) {
+              shouldContinueFetching = false;
             }
-          } catch (error) {
-            // If we hit an error, just use what we have
-            break;
           }
+        } else if (limit !== undefined) {
+          // If we're using count-based fetching, stop when we have enough posts
+          shouldContinueFetching = allPosts.length < limit;
+        }
+        
+        // Stop if we don't have a cursor for the next page
+        if (!cursor) {
+          shouldContinueFetching = false;
         }
       }
       
-      // Parse and format posts
-      const filteredFeed = [...allPosts];
-      
-      // Limit the posts to the requested limit
-      const finalPosts = filteredFeed.length > limit
-        ? filteredFeed.slice(0, limit)
-        : filteredFeed;
+      // If we're using count-based fetching, limit the posts to the requested count
+      const finalPosts = !useHoursLimit && limit !== undefined
+        ? allPosts.slice(0, limit)
+        : allPosts;
       
       if (finalPosts.length === 0) {
         return createSuccessResponse("Your timeline is empty.");
       }
       
-      // Use the enhanced formatter for each post
+      // Format the posts
       const timelineData = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
       
       const summaryText = formatSummaryText(finalPosts.length, "timeline");
       
-      return {
-        content: [
-          {
-            type: "text",
-            text: `${summaryText}\n\n${timelineData}`,
-          },
-        ],
-      };
+      return createSuccessResponse(`${summaryText}\n\n${timelineData}`);
+      
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error fetching timeline: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error fetching timeline: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
