@@ -1,4 +1,7 @@
 import { AtpAgent } from "@atproto/api";
+import { RichText } from '@atproto/api'
+
+
 
 /**
  * Represents a text content item in an MCP response.
@@ -81,6 +84,37 @@ export function getFeedNameFromId(id: string): string {
   
   return knownFeeds[id] || id;
 }
+
+
+/**
+ * Convert Bluesky post text + facets into Markdown
+ * @param text The post text content
+ * @param facets Optional array of facets from the post
+ * @returns Markdown formatted text with proper links and mentions
+ */
+export function facetsToMarkdown(text: string, facets?: any[]): string {
+  if (!text) return '';
+  
+  // Initialize RichText with the text and facets
+  const rt = new RichText({ text, facets: facets ?? [] });
+  
+  // Transform segments into Markdown
+  let markdown = '';
+  for (const segment of rt.segments()) {
+    if (segment.isLink()) {
+      markdown += `[${segment.text}](${segment.link?.uri})`;
+    } else if (segment.isMention()) {
+      markdown += `[${segment.text}](https://bsky.app/profile/${segment.mention?.did})`;
+    } else if (segment.isTag()) {
+      markdown += `#${segment.tag?.tag}`;
+    } else {
+      markdown += segment.text;
+    }
+  }
+  
+  return markdown;
+}
+
 
 /**
  * Format a post for display in the response
