@@ -69,10 +69,10 @@ server.tool(
   "get-timeline-posts",
   "Fetch your home timeline from Bluesky, which includes posts from all of the people you follow in reverse chronological order",
   {
-    hoursLimit: z.number().min(1).max(168).optional().describe("Number of hours posts to attempt to fetch"),
-    limit: z.number().min(1).max(100).optional().describe("Number of posts to fetch (1-100)")
+    count: z.number().min(1).max(500).describe("Number of posts to fetch or hours to look back"),
+    type: z.enum(["posts", "hours"]).describe("Whether count represents number of posts or hours to look back")
   },
-  async ({ limit, hoursLimit }) => {
+  async ({ count, type }) => {
     try {
       if (!agent) {
         return {
@@ -86,11 +86,6 @@ server.tool(
         };
       }
 
-      // Validate that not both parameters are provided
-      if (limit !== undefined && hoursLimit !== undefined) {
-        return createErrorResponse("Cannot specify both limit and hoursLimit - please use only one of them");
-      }
-
       const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
       const DEFAULT_HOURS = 8; // Default hours if no parameters specified
       
@@ -98,14 +93,14 @@ server.tool(
       let nextCursor: string | undefined = undefined;
       let shouldContinueFetching = true;
       
-      // Determine if we're using hours-based or count-based fetching
-      const useHoursLimit = hoursLimit !== undefined || (limit === undefined && hoursLimit === undefined);
-      const targetHours = hoursLimit || DEFAULT_HOURS;
+      // Set up time-based or count-based fetching
+      const useHoursLimit = type === "hours";
+      const targetHours = count;
       const targetDate = new Date(Date.now() - targetHours * 60 * 60 * 1000);
       
       while (shouldContinueFetching && allPosts.length < MAX_TOTAL_POSTS) {
         // Calculate how many posts to fetch in this batch
-        const batchLimit = Math.min(100, limit || 100);
+        const batchLimit = 100;
         
         const response = await agent.getTimeline({ 
           limit: batchLimit,
@@ -145,9 +140,9 @@ server.tool(
               shouldContinueFetching = false;
             }
           }
-        } else if (limit !== undefined) {
+        } else {
           // If we're using count-based fetching, stop when we have enough posts
-          shouldContinueFetching = allPosts.length < limit;
+          shouldContinueFetching = allPosts.length < count;
         }
         
         // Stop if we don't have a cursor for the next page
@@ -157,8 +152,8 @@ server.tool(
       }
       
       // If we're using count-based fetching, limit the posts to the requested count
-      const finalPosts = !useHoursLimit && limit !== undefined
-        ? allPosts.slice(0, limit)
+      const finalPosts = !useHoursLimit
+        ? allPosts.slice(0, count)
         : allPosts;
       
       if (finalPosts.length === 0) {
