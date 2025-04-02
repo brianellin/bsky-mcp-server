@@ -75,19 +75,10 @@ server.tool(
   async ({ count, type }) => {
     try {
       if (!agent) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Not connected to Bluesky. Check your environment variables.",
-            },
-          ],
-        };
+        return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
       }
 
       const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
-      const DEFAULT_HOURS = 8; // Default hours if no parameters specified
       
       let allPosts: any[] = [];
       let nextCursor: string | undefined = undefined;
@@ -1067,6 +1058,18 @@ server.tool(
         return createSuccessResponse(`No posts found in the feed: ${feed}`);
       }
 
+      // Sort posts by createdAt date (most recent first)
+      allPosts.sort((a, b) => {
+        const aCreatedAt = a?.post?.record?.createdAt;
+        const bCreatedAt = b?.post?.record?.createdAt;
+        if (!aCreatedAt || !bCreatedAt || typeof aCreatedAt !== 'string' || typeof bCreatedAt !== 'string') {
+          return 0; // Keep original order if dates are invalid
+        }
+        const aTime = new Date(aCreatedAt).getTime();
+        const bTime = new Date(bCreatedAt).getTime();
+        return bTime - aTime;
+      });
+
       // Format the posts
       const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
 
@@ -1085,9 +1088,10 @@ server.tool(
   "Fetch posts from users in a specified list",
   {
     list: z.string().describe("The URI of the list (e.g., at://did:plc:abcdef/app.bsky.graph.list/listname)"),
-    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+    count: z.number().min(1).max(500).describe("Number of posts to fetch or hours to look back"),
+    type: z.enum(["posts", "hours"]).describe("Whether count represents number of posts or hours to look back")
   },
-  async ({ list, limit }) => {
+  async ({ list, count, type }) => {
     if (!agent) {
       return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
@@ -1101,28 +1105,79 @@ server.tool(
         return createErrorResponse(`Invalid list URI or list not found: ${list}.`);
       }
 
-      // Get the list members
-      const members = listInfo.items.map((item: any) => item.subject.did);
+      const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
       
-      if (members.length === 0) {
-        return createSuccessResponse(`The list ${listInfo.list.name} doesn't have any members.`);
+      let allPosts: any[] = [];
+      let nextCursor: string | undefined = undefined;
+      let shouldContinueFetching = true;
+      
+      // Set up time-based or count-based fetching
+      const useHoursLimit = type === "hours";
+      const targetHours = count;
+      const targetDate = new Date(Date.now() - targetHours * 60 * 60 * 1000);
+      
+      while (shouldContinueFetching && allPosts.length < MAX_TOTAL_POSTS) {
+        // Calculate how many posts to fetch in this batch
+        const batchLimit = 100;
+        
+        const response = await currentAgent.app.bsky.feed.getListFeed({ 
+          list,
+          limit: batchLimit,
+          cursor: nextCursor
+        });
+        
+        if (!response.success) {
+          break;
+        }
+        
+        const { feed, cursor } = response.data;
+        
+        // Filter posts based on time window if using hours limit
+        let filteredFeed = feed;
+        if (useHoursLimit) {
+          filteredFeed = feed.filter(post => {
+            const createdAt = post?.post?.record?.createdAt;
+            if (!createdAt || typeof createdAt !== 'string') return false;
+            const postDate = new Date(createdAt);
+            return postDate >= targetDate;
+          });
+        }
+        
+        // Add the filtered posts to our collection
+        allPosts = allPosts.concat(filteredFeed);
+        
+        // Update cursor for the next batch
+        nextCursor = cursor;
+        
+        // Check if we should continue fetching based on the mode
+        if (useHoursLimit) {
+          // Check if we've reached posts older than our target date
+          const oldestPost = feed[feed.length - 1];
+          if (oldestPost?.post?.record?.createdAt && typeof oldestPost.post.record.createdAt === 'string') {
+            const postDate = new Date(oldestPost.post.record.createdAt);
+            if (postDate < targetDate) {
+              shouldContinueFetching = false;
+            }
+          }
+        } else {
+          // If we're using count-based fetching, stop when we have enough posts
+          shouldContinueFetching = allPosts.length < count;
+        }
+        
+        // Stop if we don't have a cursor for the next page
+        if (!cursor) {
+          shouldContinueFetching = false;
+        }
       }
-
-      const maxPostsToFetch = 500; // For time-based fetching, we might need to retrieve more posts
       
-      // Fetch posts from list members
-      const allPosts = await fetchPostsFromListMembers(currentAgent, members, {
-        maxPosts: maxPostsToFetch,
-      });
-
-      // Limit the posts to the requested limit
-      const finalPosts = allPosts.length > limit 
-        ? allPosts.slice(0, limit) 
+      // If we're using count-based fetching, limit the posts to the requested count
+      const finalPosts = !useHoursLimit
+        ? allPosts.slice(0, count)
         : allPosts;
 
       // If no posts were found after filtering
       if (finalPosts.length === 0) {
-        return createSuccessResponse(`No posts found from list members.`);
+        return createSuccessResponse(`No posts found from the list.`);
       }
 
       // Format the posts
@@ -1179,6 +1234,18 @@ server.tool(
         if (finalPosts.length === 0) {
           return createSuccessResponse(`No posts found from @${user}.`);
         }
+
+        // Sort posts by createdAt date (most recent first)
+        allPosts.sort((a, b) => {
+          const aCreatedAt = a?.post?.record?.createdAt;
+          const bCreatedAt = b?.post?.record?.createdAt;
+          if (!aCreatedAt || !bCreatedAt || typeof aCreatedAt !== 'string' || typeof bCreatedAt !== 'string') {
+            return 0; // Keep original order if dates are invalid
+          }
+          const aTime = new Date(aCreatedAt).getTime();
+          const bTime = new Date(bCreatedAt).getTime();
+          return bTime - aTime;
+        });
 
         // Format the posts
         const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
