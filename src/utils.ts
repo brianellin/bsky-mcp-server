@@ -574,31 +574,6 @@ export function formatSummaryText(postsCount: number, entityType: string = 'feed
   return `Retrieved ${postsCount} posts from the ${entityType}.`;
 }
 
-/**
- * Create a standardized error response
- */
-export function mcpErrorResponse(message: string): McpErrorResponse {
-  return {
-    isError: true,
-    content: [{
-      type: "text",
-      text: message
-    }]
-  };
-}
-
-/**
- * Create a standardized success response
- */
-export function mcpSuccessResponse(text: string): McpSuccessResponse {
-  return {
-    content: [{
-      type: "text",
-      text
-    }]
-  };
-}
-
 
 /**
  * Validate a feed or list URI by fetching its information
@@ -630,7 +605,6 @@ export async function validateUri(
     return null;
   }
 }
-
 
 /**
  * Debugs the structure of a post to see where facets are stored
