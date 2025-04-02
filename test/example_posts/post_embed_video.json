@@ -1,0 +1,68 @@
+{
+    "post": {
+        "uri": "at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u",
+        "cid": "bafyreigjdw5aknep7wcom2awo4lnfhxu23m2eaexzroru3cd64ymwatfvi",
+        "author": {
+            "did": "did:plc:gfrmhdmjvxn2sjedzboeudef",
+            "handle": "cameron.pfiffer.org",
+            "displayName": "Mr. Dr. Cameron Pfiffer",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:gfrmhdmjvxn2sjedzboeudef/bafkreic6ucr6asd7qwpgmfwuvmb4so2zjwhl5i7hygbvmogkzuunmccbqa@jpeg",
+            "associated": {
+                "chat": {
+                    "allowIncoming": "all"
+                }
+            },
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3li65bg4nsv2d"
+            },
+            "labels": [],
+            "createdAt": "2023-05-05T13:12:14.376Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-02T21:11:14.228Z",
+            "embed": {
+                "$type": "app.bsky.embed.video",
+                "aspectRatio": {
+                    "height": 1080,
+                    "width": 1440
+                },
+                "video": {
+                    "$type": "blob",
+                    "ref": {
+                        "$link": "bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa"
+                    },
+                    "mimeType": "video/mp4",
+                    "size": 1425453
+                }
+            },
+            "langs": [
+                "en"
+            ],
+            "text": "Dude my left foot is swollen af (this is normal)"
+        },
+        "embed": {
+            "$type": "app.bsky.embed.video#view",
+            "cid": "bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa",
+            "playlist": "https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/playlist.m3u8",
+            "thumbnail": "https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/thumbnail.jpg",
+            "aspectRatio": {
+                "height": 1080,
+                "width": 1440
+            }
+        },
+        "replyCount": 3,
+        "repostCount": 0,
+        "likeCount": 2,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-02T21:11:14.876Z",
+        "viewer": {
+            "threadMuted": false,
+            "embeddingDisabled": false
+        },
+        "labels": []
+    }
+    
+}

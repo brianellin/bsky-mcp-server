@@ -1,0 +1,76 @@
+{
+    "post": {
+        "uri": "at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m",
+        "cid": "bafyreicg5plun2ejuh4dp2io3emk2bzvhbpuqjdbfcvft6g4mycl44psse",
+        "author": {
+            "did": "did:plc:uu5axsmbm2or2dngy4gwchec",
+            "handle": "futur.blue",
+            "displayName": "futur",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreic7oecaez5umv2if67py5mkglymppbh3mpky3tadlhroh426s4pxy@jpeg",
+            "associated": {
+                "chat": {
+                    "allowIncoming": "all"
+                }
+            },
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lhk73sa3fo2u"
+            },
+            "labels": [],
+            "createdAt": "2023-06-22T00:18:28.815Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-02T22:34:34.497Z",
+            "embed": {
+                "$type": "app.bsky.embed.images",
+                "images": [
+                    {
+                        "alt": "AI crawlers are wrecking the open internet.\n\nMy small side project - techpays .com - used to generate below 100GB of traffic per month. It’s on Render where 500GB/month included, above it’s $30 per 100GB.\n\nMeta’s AI crawler + other bots have pushed it to 700GB+ per month\n\nWTH",
+                        "aspectRatio": {
+                            "height": 326,
+                            "width": 916
+                        },
+                        "image": {
+                            "$type": "blob",
+                            "ref": {
+                                "$link": "bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba"
+                            },
+                            "mimeType": "image/jpeg",
+                            "size": 121227
+                        }
+                    }
+                ]
+            },
+            "langs": [
+                "en"
+            ],
+            "text": "have you tried not using a platform that charges you $30 / 100GB of bandwidth"
+        },
+        "embed": {
+            "$type": "app.bsky.embed.images#view",
+            "images": [
+                {
+                    "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg",
+                    "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg",
+                    "alt": "AI crawlers are wrecking the open internet.\n\nMy small side project - techpays .com - used to generate below 100GB of traffic per month. It’s on Render where 500GB/month included, above it’s $30 per 100GB.\n\nMeta’s AI crawler + other bots have pushed it to 700GB+ per month\n\nWTH",
+                    "aspectRatio": {
+                        "height": 326,
+                        "width": 916
+                    }
+                }
+            ]
+        },
+        "replyCount": 0,
+        "repostCount": 0,
+        "likeCount": 6,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-02T22:34:19.303Z",
+        "viewer": {
+            "threadMuted": false,
+            "embeddingDisabled": false
+        },
+        "labels": []
+    }
+}

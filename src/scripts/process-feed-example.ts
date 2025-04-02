@@ -3,7 +3,7 @@ import { join } from 'path';
 import { formatPost } from '../utils.js';
 
 // Read the feed example JSON
-const feedExamplePath = join(process.cwd(), 'test', 'feed_example.json');
+const feedExamplePath = join(process.cwd(), 'test', 'example_feeds','feed_example.json');
 const feedExample = JSON.parse(readFileSync(feedExamplePath, 'utf-8'));
 
 // Process each post and format it

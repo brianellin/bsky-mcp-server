@@ -1,0 +1,62 @@
+{
+    "post": {
+        "uri": "at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k",
+        "cid": "bafyreidhtyl56jr5hytwxknednyjsqom7m2imq32hshr73rlbfe5flwls4",
+        "author": {
+            "did": "did:plc:pxfxhbwjtscbmvbe62shdqbe",
+            "handle": "littleironwaltz.com",
+            "displayName": "Koji",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreibc7o6nw4w4rwdfze5xmjjap4azisfqpgeovehv2d2bllmsfsbb7m@jpeg",
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lli4baifal2n"
+            },
+            "labels": [],
+            "createdAt": "2024-10-27T10:29:30.346Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-02T21:57:19.934Z",
+            "embed": {
+                "$type": "app.bsky.embed.external",
+                "external": {
+                    "description": "Microsoft is collaborating with Anthropic to create an official C# SDK for the Model Context Protocol (MCP). MCP has seen rapid adoption in the AI community, and this partnership aims to enhance the i...",
+                    "thumb": {
+                        "$type": "blob",
+                        "ref": {
+                            "$link": "bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq"
+                        },
+                        "mimeType": "image/jpeg",
+                        "size": 577761
+                    },
+                    "title": "Microsoft partners with Anthropic to create official C# SDK for Model Context Protocol",
+                    "uri": "https://devblogs.microsoft.com/blog/microsoft-partners-with-anthropic-to-create-official-c-sdk-for-model-context-protocol"
+                }
+            },
+            "langs": [
+                "en"
+            ],
+            "text": "We have an official C# MCP SDK"
+        },
+        "embed": {
+            "$type": "app.bsky.embed.external#view",
+            "external": {
+                "uri": "https://devblogs.microsoft.com/blog/microsoft-partners-with-anthropic-to-create-official-c-sdk-for-model-context-protocol",
+                "title": "Microsoft partners with Anthropic to create official C# SDK for Model Context Protocol",
+                "description": "Microsoft is collaborating with Anthropic to create an official C# SDK for the Model Context Protocol (MCP). MCP has seen rapid adoption in the AI community, and this partnership aims to enhance the i...",
+                "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg"
+            }
+        },
+        "replyCount": 0,
+        "repostCount": 0,
+        "likeCount": 0,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-02T21:57:23.073Z",
+        "viewer": {
+            "threadMuted": false,
+            "embeddingDisabled": false
+        },
+        "labels": []
+    }
+}

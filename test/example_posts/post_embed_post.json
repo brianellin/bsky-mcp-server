@@ -1,0 +1,90 @@
+{
+    "post": {
+        "uri": "at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224",
+        "cid": "bafyreibphmdyf6eh4sez5g3oyuphvrcptrwunpckdhm6jkqd766xo32nra",
+        "author": {
+            "did": "did:plc:7r5xfysukluplxs2hufswhe4",
+            "handle": "nickcunningham.bsky.social",
+            "displayName": "Nick Cunningham",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:7r5xfysukluplxs2hufswhe4/bafkreifufpbbgjkrnb62em4thn7hh6bwmcqvzxg4jzo2xdtpiiw54cce5y@jpeg",
+            "associated": {
+                "chat": {
+                    "allowIncoming": "following"
+                }
+            },
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3laaw5nvpgi2c",
+                "followedBy": "at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.graph.follow/3lhzg2546722n"
+            },
+            "labels": [],
+            "createdAt": "2023-06-24T20:58:35.488Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-02T21:23:08.869Z",
+            "embed": {
+                "$type": "app.bsky.embed.record",
+                "record": {
+                    "cid": "bafyreiaavau4nyrwl43gfi5r7u56ae4c7nynv4nfn6ay3hhj5r4owvhf34",
+                    "uri": "at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g"
+                }
+            },
+            "langs": [
+                "en"
+            ],
+            "text": "Congress would impeach, and Democrats would vote with Republicans to remove him from office \n\nOr, you know, there'd be a coup"
+        },
+        "embed": {
+            "$type": "app.bsky.embed.record#view",
+            "record": {
+                "$type": "app.bsky.embed.record#viewRecord",
+                "uri": "at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g",
+                "cid": "bafyreiaavau4nyrwl43gfi5r7u56ae4c7nynv4nfn6ay3hhj5r4owvhf34",
+                "author": {
+                    "did": "did:plc:e62gb2ushvtvjvqcbrxeaw2n",
+                    "handle": "chrislhayes.bsky.social",
+                    "displayName": "Chris Hayes",
+                    "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:e62gb2ushvtvjvqcbrxeaw2n/bafkreignbhxunrcvqpwkgd6jshgjenc4at6rtbvfnwsyy5g32kq56cyfaq@jpeg",
+                    "associated": {
+                        "chat": {
+                            "allowIncoming": "following"
+                        }
+                    },
+                    "viewer": {
+                        "muted": false,
+                        "blockedBy": false
+                    },
+                    "labels": [],
+                    "createdAt": "2023-04-29T01:20:57.120Z"
+                },
+                "value": {
+                    "$type": "app.bsky.feed.post",
+                    "createdAt": "2025-04-02T20:41:12.011Z",
+                    "langs": [
+                        "en"
+                    ],
+                    "text": "Can’t help but feel that if President Bernie Sanders pulled this move the entirety of American business would try to get him pushed out of office immediately."
+                },
+                "labels": [],
+                "likeCount": 8213,
+                "replyCount": 300,
+                "repostCount": 1098,
+                "quoteCount": 112,
+                "indexedAt": "2025-04-02T20:41:12.474Z",
+                "embeds": []
+            }
+        },
+        "replyCount": 0,
+        "repostCount": 0,
+        "likeCount": 1,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-02T21:23:09.572Z",
+        "viewer": {
+            "threadMuted": false,
+            "embeddingDisabled": false
+        },
+        "labels": []
+    }
+}

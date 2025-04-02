@@ -5,15 +5,10 @@
   "main": "build/src/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && chmod 755 build/src/index.js && mkdir -p build/test && cp test/feed_example.json build/test/",
+    "build": "tsc && chmod 755 build/src/index.js && mkdir -p build/test && cp test/example_feeds/feed_example.json build/test/example_feed.json",
     "start": "node build/src/index.js",
     "dev": "tsc && node build/src/index.js",
     "test": "pnpm run build && node build/test/final-test.js",
-    "test:enhanced": "pnpm run build && node build/test/test-enhanced-formatter.js",
-    "test:format": "pnpm run build && node build/test/test-format-post.js",
-    "test:specific": "pnpm run build && node build/test/test-specific-post.js",
-    "test:all": "pnpm run build && node build/test/final-test.js && node build/test/test-enhanced-formatter.js && node build/test/test-format-post.js && node build/test/test-specific-post.js",
-    "format-feed": "pnpm run build && node build/scripts/format-feed-to-file.js",
     "process-feed": "pnpm run build && node build/src/scripts/process-feed-example.js"
   },
   "keywords": [
