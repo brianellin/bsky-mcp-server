@@ -6,8 +6,7 @@ import { AtpAgent } from "@atproto/api";
 import * as dotenv from "dotenv";
 import { 
   createErrorResponse, 
-  createSuccessResponse, 
-  fetchFeedPosts, 
+  createSuccessResponse,  
   formatPost, 
   formatSummaryText, 
   getFeedNameFromId, 
