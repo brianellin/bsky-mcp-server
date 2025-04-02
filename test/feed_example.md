@@ -13,10 +13,9 @@ URI: at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3lltvowz4yc2a
 Post #2:
 Author: David Roberts (@volts.wtf)
 Content: Everyone is rightly excited about the Wisconsin race, but don't sleep on what happened at the Naperville (Illinois) City Council. The fate of a giant, polluting coal plant was on the line. An anti-coal majority was elected & the plant will shut down on schedule! 🎉
-www.dailyherald.com/20250401/loc...
+<https://www.dailyherald.com/20250401/local-politics/white-gibson-in-early-lead-for-naperville-city-council/>
 Engagement: 385 likes, 85 reposts, 8 replies, 4 quotes
 Embeds:
-Links: https://www.dailyherald.com/20250401/local-politics/white-gibson-in-early-lead-for-naperville-city-council/
 Posted: 4/2/2025, 10:23:12 AM
 URI: at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3lltvo5unt22o
 ---
@@ -29,9 +28,8 @@ Thread: Reply
   Replying to: at://did:plc:lm6sjxwivmd4orwfopxnrfj4/app.bsky.feed.post/3lltsrtz3w22r
 Content: How does it behave when it encounters a ref to another lexicon doc?
 
-jsr.io/@lpm/core might be able to help you to resolve them automatically if that's interesting to you!
+<https://jsr.io/@lpm/core> might be able to help you to resolve them automatically if that's interesting to you!
 Engagement: 2 likes, 0 reposts, 1 replies, 0 quotes
-Links: https://jsr.io/@lpm/core
 Posted: 4/2/2025, 10:21:20 AM
 URI: at://did:plc:2xau7wbgdq4phuou2ypwuen7/app.bsky.feed.post/3lltvkw52bs2b
 ---
@@ -80,7 +78,6 @@ Author: Steve Sando and the Rancho Gordo staff (@ranchogordo.bsky.social)
 Content: What a nice breakfast! Left over cooked Mexican chorizo with garbanzo beans and scrambled eggs, plus fresh mozzarella and a good tortilla. 
 
 #cooking #breakfast #beansky #beans
-Hashtags: #cooking #breakfast #beansky #beans
 Engagement: 39 likes, 0 reposts, 1 replies, 1 quotes
 Embeds:
 Posted: 4/2/2025, 10:13:48 AM
@@ -93,10 +90,9 @@ Thread: Reply
 🧵 Reply in thread:
   Root: at://did:plc:tkc3xiya4k7uyx3jsei3bp65/app.bsky.feed.post/3llqzyncsq32u
   Replying to: at://did:plc:tjxj7gofpcwdg3ydtltif7sd/app.bsky.feed.post/3llrhq5jdw22y
-Content: Day 2: tailscale.com/blog/plan9-p...
+Content: Day 2: <https://tailscale.com/blog/plan9-port>
 Engagement: 0 likes, 0 reposts, 0 replies, 0 quotes
 Embeds:
-Links: https://tailscale.com/blog/plan9-port
 Posted: 4/2/2025, 10:13:16 AM
 URI: at://did:plc:7r2fy3b4u7mmnhgbdxnflovv/app.bsky.feed.post/3lltv4hzoxs23
 ---
@@ -132,10 +128,9 @@ URI: at://did:plc:44ybard66vv44zksje25o7dz/app.bsky.feed.post/3lltv25fl2c2u
 
 Post #11:
 Author: Tracy Chou (@triketora.com)
-Content: the internet was a mistake www.404media.co/t-mobile-sho...
+Content: the internet was a mistake <https://www.404media.co/t-mobile-shows-users-the-names-pictures-and-exact-locations-of-random-children/>
 Engagement: 16 likes, 4 reposts, 2 replies, 1 quotes
 Embeds:
-Links: https://www.404media.co/t-mobile-shows-users-the-names-pictures-and-exact-locations-of-random-children/
 Posted: 4/2/2025, 10:09:53 AM
 URI: at://did:plc:bt65fgandt7jb67me4bl7dr2/app.bsky.feed.post/3lltuwfptc22c
 ---
@@ -197,10 +192,9 @@ URI: at://did:plc:oisofpd7lj26yvgiivf3lxsi/app.bsky.feed.post/3lltujyfgws2b
 
 Post #17:
 Author: tachikoma (@tachikoma.elsewhereunbound.com)
-Content: arxiv.org/abs/2503.23674
+Content: <https://arxiv.org/abs/2503.23674>
 Engagement: 2 likes, 1 reposts, 1 replies, 0 quotes
 Embeds:
-Links: https://arxiv.org/abs/2503.23674
 Posted: 4/2/2025, 10:02:00 AM
 URI: at://did:plc:mpdezz4nkre7vyift2rttggl/app.bsky.feed.post/3lltuidkuck2j
 ---
@@ -211,29 +205,13 @@ Author: John Kostyack (@kostyack.bsky.social)
 Content: The world's 3d richest billionaire is apparently not at all happy that the 1st and 2d richest get to dominate our politics and mental health with their social media platforms and he doesn't.
 Engagement: 3 likes, 3 reposts, 0 replies, 0 quotes
 Embeds:
-💬 Quoted post:
-  Type: app.bsky.embed.record#viewRecord
-  URI: at://did:plc:xtg6uhgsy2j7k2a6qtcood2w/app.bsky.feed.post/3llts5ofoe22k
-  By: Karl Bode (@karlbode.com)
-  Content: so two of the leading bidders for big stakes in TikTok are Marc Andreesen (an overt authoritarian Trump ass kisser) and Jeff Bezos, who is currently busy destroying the Washington Post to make it friendlier to far right ideology
-  Stats: 575 likes, 141 reposts, 19 replies
-  Nested embeds:
-  Nested embed #1:
-  Nested content in quoted post:
-    🔗 Website card:
-      Title: Amazon Said to Make a Bid to Buy TikTok in the U.S.
-      Description: The e-commerce giant put in a last-minute offer for the popular video app, according to three people...
-      URL: https://www.nytimes.com/2025/04/02/business/media/amazon-tiktok-bid.html
-      Thumbnail: image/jpeg
-Links: https://www.nytimes.com/2025/04/02/business/media/amazon-tiktok-bid.html
 Posted: 4/2/2025, 9:37:26 AM
 URI: at://did:plc:zgh42tgpzddqoi3awnsetwau/app.bsky.feed.post/3lltt4fzrpc2n
 ---
 
 Post #19:
 Author: David Roberts (@volts.wtf)
-Content: Today on Volts: an interview with Rep. @seancasten.bsky.social of Illinois' 6th district, about the widespread failure of elites to stand up to Trump, the fate of the IRA tax credits, & the best way forward for clean energy advocates & developers. This one is a banger, y'all.
-Mentions: undefined is (did:plc:2tjnqjbnqampayvk4hez7q3h)
+Content: Today on Volts: an interview with Rep. [@seancasten.bsky.social](https://bsky.app/profile/did:plc:2tjnqjbnqampayvk4hez7q3h) of Illinois' 6th district, about the widespread failure of elites to stand up to Trump, the fate of the IRA tax credits, & the best way forward for clean energy advocates & developers. This one is a banger, y'all.
 Engagement: 43 likes, 9 reposts, 0 replies, 2 quotes
 Embeds:
 Posted: 4/2/2025, 9:59:33 AM
@@ -248,20 +226,6 @@ Thread: Reply
 Content: rebuttal
 Engagement: 2 likes, 0 reposts, 0 replies, 0 quotes
 Embeds:
-💬 Quoted post:
-  Type: app.bsky.embed.record#viewRecord
-  URI: at://did:plc:cq4gg3odxz2pzmkx2fuac3u3/app.bsky.feed.post/3lltseltndc2a
-  By: Sung Kim (@sungkim.bsky.social)
-  Content: They tested Google Gemini 2.5 Pro on the same test, and it performed really well. This chart provides some perspective.
-  Stats: 10 likes, 1 reposts, 2 replies
-  Nested embeds:
-  Nested embed #1:
-  Nested content in quoted post:
-    💬 Quoted post with media:
-      URI: at://did:plc:cq4gg3odxz2pzmkx2fuac3u3/app.bsky.feed.post/3llp7ezufsk2u
-      Attached media:
-        🖼️ 1 image attached
-          Image 1: aspect: 993:1159, type: image/jpeg
 Posted: 4/2/2025, 9:57:50 AM
 URI: at://did:plc:mpdezz4nkre7vyift2rttggl/app.bsky.feed.post/3lltuawndvs2u
 ---
@@ -293,12 +257,10 @@ URI: at://did:plc:mpdezz4nkre7vyift2rttggl/app.bsky.feed.post/3lltu5csirc2j
 Post #23:
 🔄 Reposted by: David Roberts (@volts.wtf) at 4/2/2025, 9:54:55 AM
 Author: Matt Lie-Paehlke (@mattliepaehlke.bsky.social)
-Content: Finally stopped being distracted by the news long enough to sit down and listen to the @volts.wtf interview with @chrislhayes.bsky.social about the attention economy and it was fantastic. We're wrecking our brains and society with the internet stimulation casino.
-www.volts.wtf/p/chris-haye...
-Mentions: undefined is (did:plc:twjze4qqf6fgxz33ct52wlnl), undefined is (did:plc:e62gb2ushvtvjvqcbrxeaw2n)
+Content: Finally stopped being distracted by the news long enough to sit down and listen to the [@volts.wtf](https://bsky.app/profile/did:plc:twjze4qqf6fgxz33ct52wlnl) interview with [@chrislhayes.bsky.social](https://bsky.app/profile/did:plc:e62gb2ushvtvjvqcbrxeaw2n) about the attention economy and it was fantastic. We're wrecking our brains and society with the internet stimulation casino.
+<https://www.volts.wtf/p/chris-hayes-on-the-attention-economy>
 Engagement: 33 likes, 2 reposts, 2 replies, 0 quotes
 Embeds:
-Links: https://www.volts.wtf/p/chris-hayes-on-the-attention-economy
 Posted: 4/2/2025, 6:55:24 AM
 URI: at://did:plc:wojlowhwokqdmtq5ml6iypzx/app.bsky.feed.post/3lltk2md3f22n
 ---
@@ -309,7 +271,6 @@ Author: Dr. Genevieve Guenther (she/they) (@doctorvive.bsky.social)
 Content: BREAKING 📢: BANKS WILLING TO MAKE PARTS OF OUR PLANET UNINHABITABLE AND KILL BILLIONS OF PEOPLE BECAUSE THE CLEAN-ENERGY TRANSITION ISN'T PROFITABLE!
 
 (Haha, just kidding. That's not news. That's been the major problem with solving #ClimateChange under capitalism all along.)
-Hashtags: #ClimateChange
 Engagement: 118 likes, 50 reposts, 5 replies, 2 quotes
 Embeds:
 Posted: 4/2/2025, 8:07:05 AM
@@ -322,7 +283,6 @@ Author: The Downballot (@the-downballot.com)
 Content: Because we've carefully collected data since forever, we're able to assemble this chart showing every D vs. R House special election compared to the most recent prior presidential election since Trump first won office.
 
 Last night's race in #FL01 saw the biggest Dem overperformance in 35 races.
-Hashtags: #FL01
 Engagement: 178 likes, 61 reposts, 5 replies, 6 quotes
 Embeds:
 Posted: 4/2/2025, 9:33:36 AM
@@ -347,10 +307,9 @@ Thread: Reply
 🧵 Reply in thread:
   Root: at://did:plc:6vxkf3dayl4uyc77vv6deraj/app.bsky.feed.post/3llsmmenos22j
   Replying to: at://did:plc:6vxkf3dayl4uyc77vv6deraj/app.bsky.feed.post/3llsmmeo3ic2j
-Content: here is the video of what happened; to be clear I'm not talking about voting to oppose the nominee. It's good that all but one democrat voted in opposition to the nominee www.senate.gov/legislative/... but I'm talking about procedural points of obstruction to use first bsky.app/profile/katz...
+Content: here is the video of what happened; to be clear I'm not talking about voting to oppose the nominee. It's good that all but one democrat voted in opposition to the nominee <https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00157.htm#position> but I'm talking about procedural points of obstruction to use first <https://bsky.app/profile/katz.theracket.news/post/3llsgxmq7gs2q>
 Engagement: 21 likes, 3 reposts, 1 replies, 0 quotes
 Embeds:
-Links: https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00157.htm#position, https://bsky.app/profile/katz.theracket.news/post/3llsgxmq7gs2q
 Posted: 4/2/2025, 9:42:58 AM
 URI: at://did:plc:6vxkf3dayl4uyc77vv6deraj/app.bsky.feed.post/3llttgc5byk2c
 ---
@@ -369,21 +328,6 @@ Author: Dan Hon (@danhon.com)
 Content: NYT: Against The Backdrop of a Powerful New Trump Administration, Nintendo Launches New Video Game Console
 Engagement: 8 likes, 1 reposts, 0 replies, 0 quotes
 Embeds:
-💬 Quoted post:
-  Type: app.bsky.embed.record#viewRecord
-  URI: at://did:plc:4nnote6ffpzmdnt4rmh77bgk/app.bsky.feed.post/3lltt3itagk2b
-  By: NBC Select (@nbcselect.nbcnews.com)
-  Content: Here's everything we know so far.
-  Stats: 14 likes, 1 reposts, 1 replies
-  Nested embeds:
-  Nested embed #1:
-  Nested content in quoted post:
-    🔗 Website card:
-      Title: Nintendo Switch 2 is coming June 5th — it’s bigger, faster and comes with new a Mario Kart
-      Description: The Switch 2 is bigger, faster and more feature rich.
-      URL: https://www.nbcnews.com/select/shopping/nintendo-switch-2-revealed-release-date-rcna199288?cid=sm_npd_nns_bsky_co_241118
-      Thumbnail: image/jpeg
-Links: https://www.nbcnews.com/select/shopping/nintendo-switch-2-revealed-release-date-rcna199288?cid=sm_npd_nns_bsky_co_241118
 Posted: 4/2/2025, 9:44:29 AM
 URI: at://did:plc:okcllivvkleedwsmroggepzd/app.bsky.feed.post/3llttizbnjs2c
 ---

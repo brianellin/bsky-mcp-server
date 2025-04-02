@@ -102,7 +102,8 @@ export function facetsToMarkdown(text: string, facets?: any[]): string {
   let markdown = '';
   for (const segment of rt.segments()) {
     if (segment.isLink()) {
-      markdown += `[${segment.text}](${segment.link?.uri})`;
+      //markdown += `[${segment.text}](${segment.link?.uri})`;
+      markdown += `<${segment.link?.uri}>`; // use the markdown auto-link syntax for simplicity for the LLM instead of linking the text fragment
     } else if (segment.isMention()) {
       markdown += `[${segment.text}](https://bsky.app/profile/${segment.mention?.did})`;
     } else if (segment.isTag()) {
@@ -233,308 +234,9 @@ export function formatPost(item: any, index: number): string {
     }
   }
   
-  // Extract rich text elements from facets (links, mentions, hashtags)
-  let links: string[] = [];
-  let mentions: string[] = [];
-  let hashtags: string[] = [];
-  let nestedLinks: {[uri: string]: string[]} = {};
-  
-  // Try to find facets in different possible locations
-  const possibleFacets = [
-    post.record?.facets,
-    post.facets,
-    post.embed?.record?.facets,
-    post.embed?.recordWithMedia?.record?.facets
-  ].filter(Boolean);
-  
-  // For nested content facets, we'll track them separately
-  const nestedFacets = [
-    post.embed?.record?.value?.facets
-  ].filter(Boolean);
-  
-  // Process all possible facet locations for the main post
-  possibleFacets.forEach((facets: any[]) => {
-    if (Array.isArray(facets)) {
-      facets.forEach((facet) => {
-        if (facet.features && Array.isArray(facet.features)) {
-          facet.features.forEach((feature: any) => {
-            // Extract links
-            if (feature.$type === 'app.bsky.richtext.facet#link' && feature.uri) {
-              links.push(feature.uri);
-            }
-            // Extract mentions
-            else if (feature.$type === 'app.bsky.richtext.facet#mention' && feature.did) {
-              mentions.push(`${feature.did}`);
-            }
-            // Extract hashtags
-            else if (feature.$type === 'app.bsky.richtext.facet#tag' && feature.tag) {
-              hashtags.push(feature.tag);
-            }
-          });
-        }
-      });
-    }
-  });
-  
-  // Process nested facets separately to track which quoted post they belong to
-  nestedFacets.forEach((facets: any[]) => {
-    if (Array.isArray(facets)) {
-      // Identify which post these facets belong to
-      const parentUri = post.embed?.record?.uri || 'unknown';
-      
-      if (!nestedLinks[parentUri]) {
-        nestedLinks[parentUri] = [];
-      }
-      
-      facets.forEach((facet) => {
-        if (facet.features && Array.isArray(facet.features)) {
-          facet.features.forEach((feature: any) => {
-            // Extract links from nested content
-            if (feature.$type === 'app.bsky.richtext.facet#link' && feature.uri) {
-              nestedLinks[parentUri].push(feature.uri);
-            }
-          });
-        }
-      });
-    }
-  });
-  
-  // Extract embed information from the post with improved nested structure handling
-  let embedInfo: string[] = [];
-  
-  // Process embeds recursively to handle nested content
-  function processEmbed(embed: any, depth: number = 0): void {
-    if (!embed) return;
-    
-    const indent = '  '.repeat(depth);
-    
-    // Handle image embeds
-    if (embed.$type === 'app.bsky.embed.images' && embed.images) {
-      const imageCount = Array.isArray(embed.images) ? embed.images.length : 0;
-      embedInfo.push(`${indent}🖼️ ${imageCount} image${imageCount !== 1 ? 's' : ''} attached`);
-      
-      // Add image details if available
-      if (imageCount > 0 && Array.isArray(embed.images)) {
-        embed.images.forEach((img: any, idx: number) => {
-          const details: string[] = [];
-          
-          if (img.alt && img.alt.trim()) {
-            details.push(`alt: "${img.alt}"`);
-          }
-          
-          if (img.aspectRatio) {
-            details.push(`aspect: ${img.aspectRatio.width}:${img.aspectRatio.height}`);
-          }
-          
-          if (img.image?.mimeType) {
-            details.push(`type: ${img.image.mimeType}`);
-          }
-          
-          if (details.length > 0) {
-            embedInfo.push(`${indent}  Image ${idx + 1}: ${details.join(', ')}`);
-          }
-        });
-      }
-    }
-    
-    // External link embeds (website cards)
-    else if (embed.$type === 'app.bsky.embed.external' && embed.external) {
-      const external = embed.external;
-      embedInfo.push(`${indent}🔗 Website card:`);
-      
-      if (external.title) {
-        embedInfo.push(`${indent}  Title: ${external.title}`);
-      }
-      
-      if (external.description) {
-        embedInfo.push(`${indent}  Description: ${external.description.substring(0, 100)}${external.description.length > 100 ? '...' : ''}`);
-      }
-      
-      if (external.uri) {
-        embedInfo.push(`${indent}  URL: ${external.uri}`);
-        links.push(external.uri);
-      }
-      
-      if (external.thumb) {
-        embedInfo.push(`${indent}  Thumbnail: ${external.thumb.mimeType || 'image'}`);
-      }
-    }
-    
-    // Special handling for app.bsky.embed.record#view which is different from app.bsky.embed.record
-    else if (embed.$type === 'app.bsky.embed.record#view' && embed.record) {
-      embedInfo.push(`${indent}💬 Quoted post:`);
-      
-      // Get the record details
-      const quotedRecord = embed.record;
-      
-      if (quotedRecord.$type) {
-        embedInfo.push(`${indent}  Type: ${quotedRecord.$type}`);
-      }
-      
-      if (quotedRecord.uri) {
-        embedInfo.push(`${indent}  URI: ${quotedRecord.uri}`);
-        
-        // Add nested links if they exist for this URI
-        if (nestedLinks[quotedRecord.uri] && nestedLinks[quotedRecord.uri].length > 0) {
-          const uniqueNestedLinks = [...new Set(nestedLinks[quotedRecord.uri])];
-          embedInfo.push(`${indent}  Links: ${uniqueNestedLinks.join(', ')}`);
-        }
-      }
-      
-      // Show author details
-      if (quotedRecord.author) {
-        const authorInfo = quotedRecord.author;
-        embedInfo.push(`${indent}  By: ${authorInfo.displayName || authorInfo.handle} (@${authorInfo.handle})`);
-      }
-      
-      // Show the content - prioritize value.text over record.text
-      const quotedText = quotedRecord.value?.text || quotedRecord.text;
-      if (quotedText) {
-        embedInfo.push(`${indent}  Content: ${quotedText}`);
-      }
-      
-      // Show statistics
-      if (quotedRecord.likeCount !== undefined || quotedRecord.repostCount !== undefined) {
-        const stats = [
-          quotedRecord.likeCount !== undefined ? `${quotedRecord.likeCount} likes` : null,
-          quotedRecord.repostCount !== undefined ? `${quotedRecord.repostCount} reposts` : null,
-          quotedRecord.replyCount !== undefined ? `${quotedRecord.replyCount} replies` : null
-        ].filter(Boolean).join(', ');
-        
-        if (stats) {
-          embedInfo.push(`${indent}  Stats: ${stats}`);
-        }
-      }
-      
-      // Process nested embeds
-      if (quotedRecord.embeds?.length > 0) {
-        embedInfo.push(`${indent}  Nested embeds:`);
-        
-        quotedRecord.embeds.forEach((nestedEmbed: any, idx: number) => {
-          embedInfo.push(`${indent}  Nested embed #${idx + 1}:`);
-          processEmbed(nestedEmbed, depth + 2);
-        });
-      }
-      
-      // Try to process nested embed in value if it exists
-      if (quotedRecord.value?.embed) {
-        embedInfo.push(`${indent}  Nested content in quoted post:`);
-        processEmbed(quotedRecord.value.embed, depth + 2);
-      }
-    }
-    
-    // Record embeds (quote posts)
-    else if (embed.$type === 'app.bsky.embed.record' && embed.record) {
-      embedInfo.push(`${indent}💬 Quoted post:`);
-      
-      // Add URI of quoted post
-      if (embed.record.uri) {
-        embedInfo.push(`${indent}  URI: ${embed.record.uri}`);
-      }
-      
-      // If the record is resolved and has data, show details
-      if (embed.record.value || embed.record.author) {
-        // Show the quoted author and text if available
-        const quotedAuthor = embed.record.author || (embed.record.value?.author);
-        const quotedText = embed.record.value?.text;
-        const quotedRecord = embed.record.value || embed.record;
-        
-        if (quotedAuthor) {
-          embedInfo.push(`${indent}  By: ${quotedAuthor.displayName || quotedAuthor.handle} (@${quotedAuthor.handle})`);
-        }
-        
-        if (quotedText) {
-          embedInfo.push(`${indent}  Content: ${quotedText}`);
-        }
-        
-        // Handle stats if available
-        if (embed.record.likeCount !== undefined || embed.record.repostCount !== undefined) {
-          const stats = [
-            embed.record.likeCount !== undefined ? `${embed.record.likeCount} likes` : null,
-            embed.record.repostCount !== undefined ? `${embed.record.repostCount} reposts` : null,
-            embed.record.replyCount !== undefined ? `${embed.record.replyCount} replies` : null
-          ].filter(Boolean).join(', ');
-          
-          if (stats) {
-            embedInfo.push(`${indent}  Stats: ${stats}`);
-          }
-        }
-        
-        // Handle nested embeds recursively
-        if (quotedRecord.embed || quotedRecord.embeds?.length > 0) {
-          embedInfo.push(`${indent}  Nested content:`);
-          
-          // Process main embed
-          if (quotedRecord.embed) {
-            processEmbed(quotedRecord.embed, depth + 2);
-          }
-          
-          // Process multiple embeds
-          if (Array.isArray(quotedRecord.embeds)) {
-            quotedRecord.embeds.forEach((nestedEmbed: any, idx: number) => {
-              embedInfo.push(`${indent}  Nested embed #${idx + 1}:`);
-              processEmbed(nestedEmbed, depth + 2);
-            });
-          }
-        }
-      }
-    }
-    
-    // Record with media embeds (quote posts with images)
-    else if (embed.$type === 'app.bsky.embed.recordWithMedia') {
-      embedInfo.push(`${indent}💬 Quoted post with media:`);
-      
-      // Handle the record part
-      if (embed.record?.record) {
-        if (embed.record.record.uri) {
-          embedInfo.push(`${indent}  URI: ${embed.record.record.uri}`);
-        }
-        
-        // If the record is resolved and has data, show details
-        if (embed.record.record.value || embed.record.record.author) {
-          const quotedAuthor = embed.record.record.author || (embed.record.record.value?.author);
-          const quotedText = embed.record.record.value?.text;
-          const quotedRecord = embed.record.record.value || embed.record.record;
-          
-          if (quotedAuthor) {
-            embedInfo.push(`${indent}  By: ${quotedAuthor.displayName || quotedAuthor.handle} (@${quotedAuthor.handle})`);
-          }
-          
-          if (quotedText) {
-            embedInfo.push(`${indent}  Content: ${quotedText}`);
-          }
-          
-          // Process nested embeds in the record
-          if (quotedRecord.embed) {
-            embedInfo.push(`${indent}  Nested content in quote:`);
-            processEmbed(quotedRecord.embed, depth + 2);
-          }
-        }
-      }
-      
-      // Handle the media part
-      if (embed.media) {
-        embedInfo.push(`${indent}  Attached media:`);
-        processEmbed(embed.media, depth + 2);
-      }
-    }
-    
-    // If embed has its own embeds array (nested embeds)
-    if (embed.embeds && Array.isArray(embed.embeds)) {
-      embedInfo.push(`${indent}Multiple embedded content items:`);
-      embed.embeds.forEach((subEmbed: any, idx: number) => {
-        embedInfo.push(`${indent}Item #${idx + 1}:`);
-        processEmbed(subEmbed, depth + 1);
-      });
-    }
-  }
-  
-  // Start embed processing from the top level
-  const embed = post.embed || post.record?.embed;
-  if (embed) {
-    embedInfo.push('Embeds:');
-    processEmbed(embed);
-  }
+  // Extract post text and facets
+  const postText = post.record?.text || post.text || '';
+  const postFacets = post.record?.facets || post.facets || [];
   
   // Format the post content with improved layout
   let formattedPost = `Post #${index + 1}:`;
@@ -556,18 +258,8 @@ export function formatPost(item: any, index: number): string {
     formattedPost += `\n${threadInfo.join('\n')}`;
   }
   
-  // Add post content
-  formattedPost += `\nContent: ${post.record?.text || post.text || ''}`;
-  
-  // Add hashtags if present
-  if (hashtags.length > 0) {
-    formattedPost += `\nHashtags: ${hashtags.map(tag => `#${tag}`).join(' ')}`;
-  }
-  
-  // Add mentions if present
-  if (mentions.length > 0) {
-    formattedPost += `\nMentions: ${mentions.join(', ')}`;
-  }
+  // Add post content using facetsToMarkdown
+  formattedPost += `\nContent: ${facetsToMarkdown(postText, postFacets)}`;
   
   // Add engagement metrics
   const engagementMetrics = [
@@ -582,15 +274,115 @@ export function formatPost(item: any, index: number): string {
   }
 
   // Add embed information if present
-  if (embedInfo.length > 0) {
-    formattedPost += `\n${embedInfo.join('\n')}`;
-  }
-
-  // Add links if they exist and aren't already shown in embeds
-  if (links.length > 0) {
-    // Remove duplicates from links array
-    const uniqueLinks = [...new Set(links)];
-    formattedPost += `\nLinks: ${uniqueLinks.join(', ')}`;
+  if (post.embed) {
+    formattedPost += '\nEmbeds:';
+    // Process embeds recursively to handle nested content
+    function processEmbed(embed: any, depth: number = 0): void {
+      if (!embed) return;
+      
+      const indent = '  '.repeat(depth);
+      
+      // Handle image embeds
+      if (embed.$type === 'app.bsky.embed.images' && embed.images) {
+        const imageCount = Array.isArray(embed.images) ? embed.images.length : 0;
+        formattedPost += `\n${indent}🖼️ ${imageCount} image${imageCount !== 1 ? 's' : ''} attached`;
+        
+        // Add image details if available
+        if (imageCount > 0 && Array.isArray(embed.images)) {
+          embed.images.forEach((img: any, idx: number) => {
+            const details: string[] = [];
+            
+            if (img.alt && img.alt.trim()) {
+              details.push(`alt: "${img.alt}"`);
+            }
+            
+            if (img.aspectRatio) {
+              details.push(`aspect: ${img.aspectRatio.width}:${img.aspectRatio.height}`);
+            }
+            
+            if (img.image?.mimeType) {
+              details.push(`type: ${img.image.mimeType}`);
+            }
+            
+            if (details.length > 0) {
+              formattedPost += `\n${indent}  Image ${idx + 1}: ${details.join(', ')}`;
+            }
+          });
+        }
+      }
+      
+      // External link embeds (website cards)
+      else if (embed.$type === 'app.bsky.embed.external' && embed.external) {
+        const external = embed.external;
+        formattedPost += `\n${indent}🔗 Website card:`;
+        
+        if (external.title) {
+          formattedPost += `\n${indent}  Title: ${external.title}`;
+        }
+        
+        if (external.description) {
+          formattedPost += `\n${indent}  Description: ${external.description.substring(0, 100)}${external.description.length > 100 ? '...' : ''}`;
+        }
+        
+        if (external.uri) {
+          formattedPost += `\n${indent}  URL: ${external.uri}`;
+        }
+        
+        if (external.thumb) {
+          formattedPost += `\n${indent}  Thumbnail: ${external.thumb.mimeType || 'image'}`;
+        }
+      }
+      
+      // Record embeds (quote posts)
+      else if (embed.$type === 'app.bsky.embed.record' && embed.record) {
+        formattedPost += `\n${indent}💬 Quoted post:`;
+        
+        // Add URI of quoted post
+        if (embed.record.uri) {
+          formattedPost += `\n${indent}  URI: ${embed.record.uri}`;
+        }
+        
+        // If the record is resolved and has data, show details
+        if (embed.record.value || embed.record.author) {
+          // Show the quoted author and text if available
+          const quotedAuthor = embed.record.author || (embed.record.value?.author);
+          const quotedText = embed.record.value?.text;
+          const quotedRecord = embed.record.value || embed.record;
+          
+          if (quotedAuthor) {
+            formattedPost += `\n${indent}  By: ${quotedAuthor.displayName || quotedAuthor.handle} (@${quotedAuthor.handle})`;
+          }
+          
+          if (quotedText) {
+            formattedPost += `\n${indent}  Content: ${quotedText}`;
+          }
+          
+          // Handle stats if available
+          if (embed.record.likeCount !== undefined || embed.record.repostCount !== undefined) {
+            const stats = [
+              embed.record.likeCount !== undefined ? `${embed.record.likeCount} likes` : null,
+              embed.record.repostCount !== undefined ? `${embed.record.repostCount} reposts` : null,
+              embed.record.replyCount !== undefined ? `${embed.record.replyCount} replies` : null
+            ].filter(Boolean).join(', ');
+            
+            if (stats) {
+              formattedPost += `\n${indent}  Stats: ${stats}`;
+            }
+          }
+        }
+      }
+      
+      // If embed has its own embeds array (nested embeds)
+      if (embed.embeds && Array.isArray(embed.embeds)) {
+        formattedPost += `\n${indent}Multiple embedded content items:`;
+        embed.embeds.forEach((subEmbed: any, idx: number) => {
+          formattedPost += `\n${indent}Item #${idx + 1}:`;
+          processEmbed(subEmbed, depth + 1);
+        });
+      }
+    }
+    
+    processEmbed(post.embed);
   }
   
   // Add post timestamp and URI
