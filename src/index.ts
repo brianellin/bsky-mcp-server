@@ -170,15 +170,7 @@ server.tool(
   },
   async ({ text, replyTo }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not connected to Bluesky. Check your environment variables.",
-          },
-        ],
-      };
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     try {
@@ -212,38 +204,15 @@ server.tool(
           };
 
         } catch (error) {
-          return {
-            isError: true,
-            content: [
-              {
-                type: "text",
-                text: `Error parsing reply URI: ${error instanceof Error ? error.message : String(error)}`,
-              },
-            ],
-          };
+          return createErrorResponse(`Error parsing reply URI: ${error instanceof Error ? error.message : String(error)}`);
         }
       }
 
       const response = await agent.post(record);
       
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Post created successfully! URI: ${response.uri}`,
-          },
-        ],
-      };
+      return createSuccessResponse(`Post created successfully! URI: ${response.uri}`);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error creating post: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error creating post: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -256,30 +225,14 @@ server.tool(
   },
   async ({ handle }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
       const response = await agent.getProfile({ actor: handle });
       
       if (!response.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: `Failed to get profile for ${handle}.`,
-            },
-          ],
-        };
+        return createErrorResponse(`Failed to get profile for ${handle}.`);
       }
 
       const profile = response.data;
@@ -292,24 +245,9 @@ Following: ${profile.followsCount || 0}
 Posts: ${profile.postsCount || 0}
 ${profile.labels?.length ? `Labels: ${profile.labels.map((l: any) => l.val).join(', ')}` : ''}`;
 
-      return {
-        content: [
-          {
-            type: "text",
-            text: profileText,
-          },
-        ],
-      };
+      return createSuccessResponse(profileText);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error fetching profile: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error fetching profile: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -324,43 +262,20 @@ server.tool(
   },
   async ({ query, limit, sort }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
       const response = await agent.app.bsky.feed.searchPosts({ q: query, limit, sort });
       
       if (!response.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Failed to search posts.",
-            },
-          ],
-        };
+        return createErrorResponse("Failed to search posts.");
       }
 
       const { posts } = response.data;
       
       if (posts.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `No results found for query: "${query}"`,
-            },
-          ],
-        };
+        return createSuccessResponse(`No results found for query: "${query}"`);
       }
 
       const results = posts.map((post: any, index: number) => {
@@ -376,24 +291,9 @@ Posted: ${new Date(post.indexedAt).toLocaleString()}
 ---`;
       }).join("\n\n");
 
-      return {
-        content: [
-          {
-            type: "text",
-            text: results,
-          },
-        ],
-      };
+      return createSuccessResponse(results);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error searching posts: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error searching posts: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -407,43 +307,20 @@ server.tool(
   },
   async ({ query, limit }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
       const response = await agent.app.bsky.actor.searchActors({ q: query, limit });
       
       if (!response.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Failed to search for users.",
-            },
-          ],
-        };
+        return createErrorResponse("Failed to search for users.");
       }
 
       const { actors } = response.data;
       
       if (actors.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `No users found for query: "${query}"`,
-            },
-          ],
-        };
+        return createSuccessResponse(`No users found for query: "${query}"`);
       }
 
       const results = actors.map((actor: any, index: number) => {
@@ -459,24 +336,9 @@ ${actor.indexedAt ? `Indexed At: ${new Date(actor.indexedAt).toLocaleString()}` 
 ---`;
       }).join("\n\n");
 
-      return {
-        content: [
-          {
-            type: "text",
-            text: results,
-          },
-        ],
-      };
+      return createSuccessResponse(results);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error searching for users: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error searching for users: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -490,15 +352,7 @@ server.tool(
   },
   async ({ query, limit }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
@@ -508,28 +362,13 @@ server.tool(
       });
       
       if (!response.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Failed to search for feeds.",
-            },
-          ],
-        };
+        return createErrorResponse("Failed to search for feeds.");
       }
 
       const { feeds } = response.data;
       
       if (!feeds || feeds.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `No feeds found for query: "${query}"`,
-            },
-          ],
-        };
+        return createSuccessResponse(`No feeds found for query: "${query}"`);
       }
 
       const results = feeds.map((feed: any, index: number) => {
@@ -543,24 +382,9 @@ ${feed.indexedAt ? `Indexed At: ${new Date(feed.indexedAt).toLocaleString()}` : 
 ---`;
       }).join("\n\n");
 
-      return {
-        content: [
-          {
-            type: "text",
-            text: results,
-          },
-        ],
-      };
+      return createSuccessResponse(results);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error searching for feeds: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error searching for feeds: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -573,15 +397,7 @@ server.tool(
   },
   async ({ limit }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
@@ -724,15 +540,7 @@ server.tool(
   },
   async ({ uri }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
@@ -745,15 +553,7 @@ server.tool(
       const response = await agent.app.bsky.feed.getPostThread({ uri });
       
       if (!response.success || response.data.thread.$type !== 'app.bsky.feed.defs#threadViewPost') {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Failed to get post information.",
-            },
-          ],
-        };
+        return createErrorResponse("Failed to get post information.");
       }
       
       // Type assertion to tell TypeScript this is a post
@@ -763,24 +563,9 @@ server.tool(
       
       await agent.like(uri, cid);
       
-      return {
-        content: [
-          {
-            type: "text",
-            text: "Post liked successfully!",
-          },
-        ],
-      };
+      return createSuccessResponse("Post liked successfully!");
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error liking post: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error liking post: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -793,15 +578,7 @@ server.tool(
   },
   async ({ handle }) => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not logged in. Please use the login tool first.",
-          },
-        ],
-      };
+      return createErrorResponse("Not logged in. Please check your environment variables.");
     }
 
     try {
@@ -809,38 +586,15 @@ server.tool(
       const resolveResponse = await agent.resolveHandle({ handle });
       
       if (!resolveResponse.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: `Failed to resolve handle: ${handle}`,
-            },
-          ],
-        };
+        return createErrorResponse(`Failed to resolve handle: ${handle}`);
       }
       
       const did = resolveResponse.data.did;
       await agent.follow(did);
       
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Successfully followed @${handle}`,
-          },
-        ],
-      };
+      return createSuccessResponse(`Successfully followed @${handle}`);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error following user: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error following user: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
@@ -851,15 +605,7 @@ server.tool(
   {},
   async () => {
     if (!agent) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: "Not connected to Bluesky. Check your environment variables.",
-          },
-        ],
-      };
+      return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
 
     try {
@@ -867,15 +613,7 @@ server.tool(
       const response = await agent.app.bsky.actor.getPreferences();
       
       if (!response.success) {
-        return {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: "Failed to get user preferences.",
-            },
-          ],
-        };
+        return createErrorResponse("Failed to get user preferences.");
       }
 
       // Find the savedFeedsPrefV2 in preferences
@@ -884,28 +622,14 @@ server.tool(
       ) as { $type: string, items: Array<{ id: string, pinned: boolean, type: string, value: string }> } | undefined;
       
       if (!savedFeedsPref || !savedFeedsPref.items) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: "No saved feeds found in user preferences.",
-            },
-          ],
-        };
+        return createSuccessResponse("No saved feeds found in user preferences.");
       }
 
       // Get the pinned feeds
       const pinnedFeeds = savedFeedsPref.items.filter((item: any) => item.pinned);
       
       if (pinnedFeeds.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: "You don't have any pinned feeds.",
-            },
-          ],
-        };
+        return createSuccessResponse("You don't have any pinned feeds.");
       }
 
       // Get additional details for each feed
@@ -995,24 +719,9 @@ ${feed.purpose ? `Purpose: ${feed.purpose}` : ''}`;
         return output;
       }).join("\n\n");
 
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Your Pinned Feeds:\n\n${formattedFeeds}`,
-          },
-        ],
-      };
+      return createSuccessResponse(`Your Pinned Feeds:\n\n${formattedFeeds}`);
     } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: "text",
-            text: `Error fetching pinned feeds: ${error instanceof Error ? error.message : String(error)}`,
-          },
-        ],
-      };
+      return createErrorResponse(`Error fetching pinned feeds: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );
