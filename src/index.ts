@@ -1198,9 +1198,10 @@ server.tool(
   "Fetch posts from a specific user",
   {
     user: z.string().describe("The handle or DID of the user (e.g., alice.bsky.social)"),
-    limit: z.number().min(1).max(100).default(50).describe("Number of posts to fetch (1-100)"),
+    count: z.number().min(1).max(500).describe("Number of posts to fetch or hours to look back"),
+    type: z.enum(["posts", "hours"]).describe("Whether count represents number of posts or hours to look back")
   },
-  async ({ user, limit }) => {
+  async ({ user, count, type }) => {
     if (!agent) {
       return createErrorResponse("Not connected to Bluesky. Check your environment variables.");
     }
@@ -1215,37 +1216,80 @@ server.tool(
           return createErrorResponse(`User not found: ${user}`);
         }
         
-        // Use the display name in the summary if available
-        const displayName = profileResponse.data.displayName || user;
+        const MAX_TOTAL_POSTS = 500; // Safety limit to prevent excessive API calls
         
-        const maxPostsToFetch = 500; // For time-based fetching, we might need to retrieve more posts
+        let allPosts: any[] = [];
+        let nextCursor: string | undefined = undefined;
+        let shouldContinueFetching = true;
         
-        // Fetch posts from the user
-        const { posts: allPosts } = await fetchUserPosts(currentAgent, user, {
-          maxPosts: maxPostsToFetch,
-        });
-
-        // Limit the posts to the requested limit
-        const finalPosts = allPosts.length > limit 
-          ? allPosts.slice(0, limit) 
+        // Set up time-based or count-based fetching
+        const useHoursLimit = type === "hours";
+        const targetHours = count;
+        const targetDate = new Date(Date.now() - targetHours * 60 * 60 * 1000);
+        
+        while (shouldContinueFetching && allPosts.length < MAX_TOTAL_POSTS) {
+          // Calculate how many posts to fetch in this batch
+          const batchLimit = 100;
+          
+          const response = await currentAgent.app.bsky.feed.getAuthorFeed({ 
+            actor: profileResponse.data.did,
+            limit: batchLimit,
+            cursor: nextCursor
+          });
+          
+          if (!response.success) {
+            break;
+          }
+          
+          const { feed, cursor } = response.data;
+          
+          // Filter posts based on time window if using hours limit
+          let filteredFeed = feed;
+          if (useHoursLimit) {
+            filteredFeed = feed.filter(post => {
+              const createdAt = post?.post?.record?.createdAt;
+              if (!createdAt || typeof createdAt !== 'string') return false;
+              const postDate = new Date(createdAt);
+              return postDate >= targetDate;
+            });
+          }
+          
+          // Add the filtered posts to our collection
+          allPosts = allPosts.concat(filteredFeed);
+          
+          // Update cursor for the next batch
+          nextCursor = cursor;
+          
+          // Check if we should continue fetching based on the mode
+          if (useHoursLimit) {
+            // Check if we've reached posts older than our target date
+            const oldestPost = feed[feed.length - 1];
+            if (oldestPost?.post?.record?.createdAt && typeof oldestPost.post.record.createdAt === 'string') {
+              const postDate = new Date(oldestPost.post.record.createdAt);
+              if (postDate < targetDate) {
+                shouldContinueFetching = false;
+              }
+            }
+          } else {
+            // If we're using count-based fetching, stop when we have enough posts
+            shouldContinueFetching = allPosts.length < count;
+          }
+          
+          // Stop if we don't have a cursor for the next page
+          if (!cursor) {
+            shouldContinueFetching = false;
+          }
+        }
+        
+        // If we're using count-based fetching, limit the posts to the requested count
+        const finalPosts = !useHoursLimit
+          ? allPosts.slice(0, count)
           : allPosts;
 
         // If no posts were found after filtering
         if (finalPosts.length === 0) {
           return createSuccessResponse(`No posts found from @${user}.`);
         }
-
-        // Sort posts by createdAt date (most recent first)
-        allPosts.sort((a, b) => {
-          const aCreatedAt = a?.post?.record?.createdAt;
-          const bCreatedAt = b?.post?.record?.createdAt;
-          if (!aCreatedAt || !bCreatedAt || typeof aCreatedAt !== 'string' || typeof bCreatedAt !== 'string') {
-            return 0; // Keep original order if dates are invalid
-          }
-          const aTime = new Date(aCreatedAt).getTime();
-          const bTime = new Date(bCreatedAt).getTime();
-          return bTime - aTime;
-        });
 
         // Format the posts
         const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
