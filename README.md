@@ -1,5 +1,7 @@
 # Bluesky MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@brianellin/bsky-mcp-server)](https://smithery.ai/server/@brianellin/bsky-mcp-server)
+
 A [Model Context Protocol](https://modelcontextprotocol.io/) server that connects to [Bluesky](https://bsky.app/) and provides tools to interact with the ATProtocol.
 
 You can use this MCP server to bring context from various Bluesky / ATProtocol API endpoints directly into the context window of your LLM based application. For example, you can add this server to Claude Desktop and then use it as a natural language Bluesky client. 
@@ -32,6 +34,15 @@ Here's the current list of tools provided:
 
 ## Installation
 
+### Installing via Smithery
+
+To install Bluesky MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@brianellin/bsky-mcp-server):
+
+```bash
+npx -y @smithery/cli install @brianellin/bsky-mcp-server --client claude
+```
+
+### Installing Manually
 First clone this repo, then install dependencies and build the server:
 
 ```bash
