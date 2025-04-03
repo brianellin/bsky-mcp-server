@@ -260,18 +260,7 @@ export function formatPost(item: any, index: number): string {
   
   // Add post content using facetsToMarkdown
   formattedPost += `\nContent: ${facetsToMarkdown(postText, postFacets)}`;
-  
-  // Add engagement metrics
-  const engagementMetrics = [
-    post.likeCount !== undefined ? `${post.likeCount} likes` : null,
-    post.repostCount !== undefined ? `${post.repostCount} reposts` : null,
-    post.replyCount !== undefined ? `${post.replyCount} replies` : null,
-    post.quoteCount !== undefined ? `${post.quoteCount} quotes` : null
-  ].filter(Boolean);
-  
-  if (engagementMetrics.length > 0) {
-    formattedPost += `\nEngagement: ${engagementMetrics.join(', ')}`;
-  }
+
 
   // Add embed information if present
   if (post.embed) {
@@ -283,7 +272,7 @@ export function formatPost(item: any, index: number): string {
       const indent = '  '.repeat(depth);
       
       // Handle image embeds
-      if (embed.$type === 'app.bsky.embed.images' && embed.images) {
+      if (embed.$type === 'app.bsky.embed.images#view' && embed.images) {
         const imageCount = Array.isArray(embed.images) ? embed.images.length : 0;
         formattedPost += `\n${indent}🖼️ ${imageCount} image${imageCount !== 1 ? 's' : ''} attached`;
         
@@ -293,19 +282,15 @@ export function formatPost(item: any, index: number): string {
             const details: string[] = [];
             
             if (img.alt && img.alt.trim()) {
-              details.push(`alt: "${img.alt}"`);
+              details.push(`Image description: "${img.alt}"`);
             }
-            
-            if (img.aspectRatio) {
-              details.push(`aspect: ${img.aspectRatio.width}:${img.aspectRatio.height}`);
-            }
-            
-            if (img.image?.mimeType) {
-              details.push(`type: ${img.image.mimeType}`);
+          
+            if (img.thumb) {
+              details.push(`Image url: ${img.thumb}`);
             }
             
             if (details.length > 0) {
-              formattedPost += `\n${indent}  Image ${idx + 1}: ${details.join(', ')}`;
+              formattedPost += `\n${indent}  Image ${idx + 1}: ${details.join('\n')}`;
             }
           });
         }
@@ -387,6 +372,18 @@ export function formatPost(item: any, index: number): string {
   
   // Add post timestamp and URI
   formattedPost += `\nPosted: ${new Date(post.indexedAt).toLocaleString()}`;
+
+   // Add engagement metrics
+   const engagementMetrics = [
+    post.likeCount !== undefined ? `${post.likeCount} likes` : null,
+    post.repostCount !== undefined ? `${post.repostCount} reposts` : null,
+    post.replyCount !== undefined ? `${post.replyCount} replies` : null,
+    post.quoteCount !== undefined ? `${post.quoteCount} quotes` : null
+  ].filter(Boolean);
+  
+  if (engagementMetrics.length > 0) {
+    formattedPost += `\nEngagement: ${engagementMetrics.join(', ')}`;
+  }
   formattedPost += `\nURI: ${post.uri}`;
   formattedPost += `\nURL: https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`;
   formattedPost += `\n---`;

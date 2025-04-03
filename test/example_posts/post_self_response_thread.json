@@ -1,0 +1,234 @@
+{
+    "post": {
+        "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o",
+        "cid": "bafyreid7bipmpl2dphwkdlhc4c7trihvfu62drgvmawoyvwbxvjad6q3ui",
+        "author": {
+            "did": "did:plc:twjze4qqf6fgxz33ct52wlnl",
+            "handle": "volts.wtf",
+            "displayName": "David Roberts",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreicdtr7zuoxvzstvxnofn5irtvoxkro6ohrp76rqfnolbyltcaehzi@jpeg",
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lhcj4qqgqg22"
+            },
+            "labels": [],
+            "createdAt": "2023-04-30T19:34:15.547Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-03T18:42:11.447Z",
+            "embed": {
+                "$type": "app.bsky.embed.external",
+                "external": {
+                    "description": "So many ways to wreck an economy, and Trump is trying them all",
+                    "thumb": {
+                        "$type": "blob",
+                        "ref": {
+                            "$link": "bafkreifubqddrwlp2pvtr3x4xnmwflyfvw7u7tkyxntv7hzka33iojwyhi"
+                        },
+                        "mimeType": "image/jpeg",
+                        "size": 439934
+                    },
+                    "title": "Hands off...the future",
+                    "uri": "https://billmckibben.substack.com/p/hands-offthe-future?publication_id=438146&post_id=159935925&isFreemail=true&r=bzxnl&triedRedirect=true"
+                }
+            },
+            "facets": [
+                {
+                    "$type": "app.bsky.richtext.facet",
+                    "features": [
+                        {
+                            "$type": "app.bsky.richtext.facet#mention",
+                            "did": "did:plc:t6ylzujdaa3f6mlpxn6gjqf5"
+                        }
+                    ],
+                    "index": {
+                        "byteEnd": 64,
+                        "byteStart": 39
+                    }
+                }
+            ],
+            "langs": [
+                "en"
+            ],
+            "reply": {
+                "parent": {
+                    "cid": "bafyreiakq7ebhw67w62za6rxjyhaw6qiwsyphqskhyoesuq44kay4uusci",
+                    "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o"
+                },
+                "root": {
+                    "cid": "bafyreihcbsr46ano4mmiuciu4e6rgrfrmimc3j7jlz523sgxf4hdls45ii",
+                    "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o"
+                }
+            },
+            "text": "By the way, these links came to me via @billmckibben.bsky.social's excellent newsletter, to which I assume you are all already subscribed."
+        },
+        "embed": {
+            "$type": "app.bsky.embed.external#view",
+            "external": {
+                "uri": "https://billmckibben.substack.com/p/hands-offthe-future?publication_id=438146&post_id=159935925&isFreemail=true&r=bzxnl&triedRedirect=true",
+                "title": "Hands off...the future",
+                "description": "So many ways to wreck an economy, and Trump is trying them all",
+                "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreifubqddrwlp2pvtr3x4xnmwflyfvw7u7tkyxntv7hzka33iojwyhi@jpeg"
+            }
+        },
+        "replyCount": 0,
+        "repostCount": 2,
+        "likeCount": 13,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-03T18:42:14.669Z",
+        "viewer": {
+            "threadMuted": false,
+            "embeddingDisabled": false
+        },
+        "labels": []
+    },
+    "reply": {
+        "root": {
+            "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o",
+            "cid": "bafyreihcbsr46ano4mmiuciu4e6rgrfrmimc3j7jlz523sgxf4hdls45ii",
+            "author": {
+                "did": "did:plc:twjze4qqf6fgxz33ct52wlnl",
+                "handle": "volts.wtf",
+                "displayName": "David Roberts",
+                "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreicdtr7zuoxvzstvxnofn5irtvoxkro6ohrp76rqfnolbyltcaehzi@jpeg",
+                "viewer": {
+                    "muted": false,
+                    "blockedBy": false,
+                    "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lhcj4qqgqg22"
+                },
+                "labels": [],
+                "createdAt": "2023-04-30T19:34:15.547Z"
+            },
+            "record": {
+                "$type": "app.bsky.feed.post",
+                "createdAt": "2025-04-03T18:25:18.356Z",
+                "embed": {
+                    "$type": "app.bsky.embed.external",
+                    "external": {
+                        "description": "Trump’s environmental directives are gutting basic protections for Americans and the agencies designed to deliver them.",
+                        "thumb": {
+                            "$type": "blob",
+                            "ref": {
+                                "$link": "bafkreievgqtxe7hs324ptrzvjxarvefdzaxlgdegvdn4dvua3y66aexs4a"
+                            },
+                            "mimeType": "image/jpeg",
+                            "size": 452965
+                        },
+                        "title": "Years of Climate Action Demolished in Days: A Timeline",
+                        "uri": "https://www.bloomberg.com/opinion/features/2025-03-26/years-of-climate-action-are-being-demolished-in-days-by-trump-a-timeline"
+                    }
+                },
+                "langs": [
+                    "en"
+                ],
+                "text": "\"nothing could have prepared us for the breadth or intensity of the assault on climate action that Trump has unleashed during his first months back in office.\"\n\nI know it's hard to keep Trump's horrors straight, but in the fullness of history, this is likely to be seen as the worst."
+            },
+            "embed": {
+                "$type": "app.bsky.embed.external#view",
+                "external": {
+                    "uri": "https://www.bloomberg.com/opinion/features/2025-03-26/years-of-climate-action-are-being-demolished-in-days-by-trump-a-timeline",
+                    "title": "Years of Climate Action Demolished in Days: A Timeline",
+                    "description": "Trump’s environmental directives are gutting basic protections for Americans and the agencies designed to deliver them.",
+                    "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreievgqtxe7hs324ptrzvjxarvefdzaxlgdegvdn4dvua3y66aexs4a@jpeg"
+                }
+            },
+            "replyCount": 19,
+            "repostCount": 155,
+            "likeCount": 331,
+            "quoteCount": 10,
+            "indexedAt": "2025-04-03T18:25:20.888Z",
+            "viewer": {
+                "threadMuted": false,
+                "embeddingDisabled": false
+            },
+            "labels": [],
+            "$type": "app.bsky.feed.defs#postView"
+        },
+        "parent": {
+            "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o",
+            "cid": "bafyreiakq7ebhw67w62za6rxjyhaw6qiwsyphqskhyoesuq44kay4uusci",
+            "author": {
+                "did": "did:plc:twjze4qqf6fgxz33ct52wlnl",
+                "handle": "volts.wtf",
+                "displayName": "David Roberts",
+                "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreicdtr7zuoxvzstvxnofn5irtvoxkro6ohrp76rqfnolbyltcaehzi@jpeg",
+                "viewer": {
+                    "muted": false,
+                    "blockedBy": false,
+                    "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lhcj4qqgqg22"
+                },
+                "labels": [],
+                "createdAt": "2023-04-30T19:34:15.547Z"
+            },
+            "record": {
+                "$type": "app.bsky.feed.post",
+                "createdAt": "2025-04-03T18:38:51.138Z",
+                "embed": {
+                    "$type": "app.bsky.embed.external",
+                    "external": {
+                        "description": "The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach...",
+                        "thumb": {
+                            "$type": "blob",
+                            "ref": {
+                                "$link": "bafkreiek2sc42h2th5ld4qfmejsj2r572qabn5updwaevzj7nndfubeq4q"
+                            },
+                            "mimeType": "image/jpeg",
+                            "size": 441178
+                        },
+                        "title": "Climate Change Could Wipe 40% Off Global Economy, Study Predicts",
+                        "uri": "https://www.sciencealert.com/climate-change-could-wipe-40-off-global-economy-study-predicts"
+                    }
+                },
+                "langs": [
+                    "en"
+                ],
+                "reply": {
+                    "parent": {
+                        "cid": "bafyreieiohyjlesy2jltj7zpgetg6vk4jrkteipfl75eq2r73qzeefo37q",
+                        "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwk2hawsk2o"
+                    },
+                    "root": {
+                        "cid": "bafyreihcbsr46ano4mmiuciu4e6rgrfrmimc3j7jlz523sgxf4hdls45ii",
+                        "uri": "at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o"
+                    }
+                },
+                "text": "Meanwhile: \"The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach of extreme weather and its aftermath.\""
+            },
+            "embed": {
+                "$type": "app.bsky.embed.external#view",
+                "external": {
+                    "uri": "https://www.sciencealert.com/climate-change-could-wipe-40-off-global-economy-study-predicts",
+                    "title": "Climate Change Could Wipe 40% Off Global Economy, Study Predicts",
+                    "description": "The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach...",
+                    "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreiek2sc42h2th5ld4qfmejsj2r572qabn5updwaevzj7nndfubeq4q@jpeg"
+                }
+            },
+            "replyCount": 2,
+            "repostCount": 12,
+            "likeCount": 52,
+            "quoteCount": 1,
+            "indexedAt": "2025-04-03T18:38:54.185Z",
+            "viewer": {
+                "threadMuted": false,
+                "embeddingDisabled": false
+            },
+            "labels": [],
+            "$type": "app.bsky.feed.defs#postView"
+        },
+        "grandparentAuthor": {
+            "did": "did:plc:twjze4qqf6fgxz33ct52wlnl",
+            "handle": "volts.wtf",
+            "displayName": "David Roberts",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreicdtr7zuoxvzstvxnofn5irtvoxkro6ohrp76rqfnolbyltcaehzi@jpeg",
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lhcj4qqgqg22"
+            },
+            "labels": [],
+            "createdAt": "2023-04-30T19:34:15.547Z"
+        }
+    }
+}

@@ -1,0 +1,92 @@
+{
+    "post": {
+        "uri": "at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o",
+        "cid": "bafyreifh27prt7odhkd4aoh4ykumfkv3ek4k4p5mw5btdotgefazmfwtu4",
+        "author": {
+            "did": "did:plc:6tr6tuzlx2db3rduzr2d6r24",
+            "handle": "prisonculture.bsky.social",
+            "displayName": "Prisonculture",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:6tr6tuzlx2db3rduzr2d6r24/bafkreib5ucmmqgacdr2ddux3c6w47p3onirapaxrac3h7wzcpik3yjhnwy@jpeg",
+            "associated": {
+                "chat": {
+                    "allowIncoming": "following"
+                }
+            },
+            "viewer": {
+                "muted": false,
+                "blockedBy": false
+            },
+            "labels": [
+                {
+                    "src": "did:plc:6tr6tuzlx2db3rduzr2d6r24",
+                    "uri": "at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.actor.profile/self",
+                    "cid": "bafyreihykvh2hvfsjqh6quxvelolnz22mfzguxo5gb65vvd2yvwg5kfpbu",
+                    "val": "!no-unauthenticated",
+                    "cts": "1970-01-01T00:00:00.000Z"
+                }
+            ],
+            "createdAt": "2023-05-05T20:33:41.901Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-03T17:55:45.358Z",
+            "langs": [
+                "en"
+            ],
+            "text": "People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that \"sacrifice\" and it's so ridiculous."
+        },
+        "replyCount": 12,
+        "repostCount": 108,
+        "likeCount": 523,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-03T17:55:45.574Z",
+        "viewer": {
+            "threadMuted": false,
+            "replyDisabled": true,
+            "embeddingDisabled": true
+        },
+        "labels": [],
+        "threadgate": {
+            "uri": "at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.threadgate/3llwhxehrac2o",
+            "cid": "bafyreiepm62uxzvvd7ea4yp27z34fkhyrniyosjlgupl4qmdbq3apky74i",
+            "record": {
+                "$type": "app.bsky.feed.threadgate",
+                "allow": [
+                    {
+                        "$type": "app.bsky.feed.threadgate#followerRule"
+                    },
+                    {
+                        "$type": "app.bsky.feed.threadgate#followingRule"
+                    }
+                ],
+                "createdAt": "2025-04-03T17:55:45.361Z",
+                "hiddenReplies": [],
+                "post": "at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o"
+            },
+            "lists": []
+        }
+    },
+    "reason": {
+        "$type": "app.bsky.feed.defs#reasonRepost",
+        "by": {
+            "did": "did:plc:okcllivvkleedwsmroggepzd",
+            "handle": "danhon.com",
+            "displayName": "Dan Hon",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:okcllivvkleedwsmroggepzd/bafkreic2v5p4rbipuwg4imlxyjuu4po24hcnzxfttdl2sp4vtqf6vv54ny@jpeg",
+            "associated": {
+                "chat": {
+                    "allowIncoming": "all"
+                }
+            },
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lkyreclm7m2u",
+                "followedBy": "at://did:plc:okcllivvkleedwsmroggepzd/app.bsky.graph.follow/3lkytnlvlhd26"
+            },
+            "labels": [],
+            "createdAt": "2023-05-16T20:13:29.897Z"
+        },
+        "indexedAt": "2025-04-03T18:21:24.475Z"
+    }
+}
