@@ -388,6 +388,7 @@ export function formatPost(item: any, index: number): string {
   // Add post timestamp and URI
   formattedPost += `\nPosted: ${new Date(post.indexedAt).toLocaleString()}`;
   formattedPost += `\nURI: ${post.uri}`;
+  formattedPost += `\nURL: https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`;
   formattedPost += `\n---`;
 
   return formattedPost;

@@ -48,7 +48,7 @@ async function processPostExamples() {
         }
       });
       
-      markdownContent += '---\n\n';
+      markdownContent += '\n\n';
     } catch (error) {
       markdownContent += `Error processing file ${file}:\n\`\`\`\n${error}\n\`\`\`\n\n`;
     }
