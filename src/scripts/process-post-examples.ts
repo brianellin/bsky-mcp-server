@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { formatPost } from '../utils.js';
+import { formatPost, formatFeed } from '../llm-formatter.js';
 
 async function processPostExamples() {
   // Define paths
@@ -32,21 +32,35 @@ async function processPostExamples() {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     
     try {
-      const posts = JSON.parse(fileContent);
-      
-      // Handle both single post and array of posts
-      const postsArray = Array.isArray(posts) ? posts : [posts];
+      const postData = JSON.parse(fileContent);
       
       markdownContent += `## File: ${file}\n\n`;
       
-      postsArray.forEach((post, index) => {
-        try {
-          const formattedPost = formatPost(post, index);
-          markdownContent += formattedPost + '\n\n';
-        } catch (error) {
-          markdownContent += `Error processing post ${index + 1}:\n\`\`\`\n${error}\n\`\`\`\n\n`;
+      try {
+        // Create a FeedItem object to pass to formatPost
+        const feedItem = {
+          post: postData.post,
+          reply: postData.reply,
+          reason: postData.reason
+        };
+        
+        // Format the post using the new formatter
+        const formattedPost = formatPost(feedItem, '1');
+        markdownContent += "### Individual Post:\n```xml\n" + formattedPost + "\n```\n\n";
+        
+        // If it's a thread with reply, also show a full feed example
+        if (postData.reply) {
+          // Create a simple feed with this post
+          const feed = {
+            items: [feedItem]
+          };
+          
+          const formattedFeed = formatFeed(feed);
+          markdownContent += "### Full Feed:\n```xml\n" + formattedFeed + "\n```\n\n";
         }
-      });
+      } catch (error) {
+        markdownContent += `Error processing file:\n\`\`\`\n${error}\n\`\`\`\n\n`;
+      }
       
       markdownContent += '\n\n';
     } catch (error) {
