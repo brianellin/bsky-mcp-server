@@ -12,7 +12,7 @@ import {
   McpErrorResponse,
   McpSuccessResponse
 } from './utils.js';
-import { formatPost as formatPostNew } from "./llm-preprocessor.js";
+import { preprocessPost, preprocessPosts } from "./llm-preprocessor.js";
 import { registerResources, resourcesList } from './resources.js';
 import { registerPrompts } from './prompts.js';
 
@@ -195,8 +195,8 @@ server.tool(
       }
       
       // Format the posts
-      const timelineData = finalPosts.map((item, index) => formatPostNew(item, index.toString())).join("\n\n");
-      
+      const timelineData = preprocessPosts(finalPosts);
+
       const summaryText = formatSummaryText(finalPosts.length, "timeline");
       
       return mcpSuccessResponse(`${summaryText}\n\n${timelineData}`);

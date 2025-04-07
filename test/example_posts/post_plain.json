@@ -1,0 +1,51 @@
+{
+    "post": {
+        "uri": "at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.feed.post/3lmagyhnygs2b",
+        "cid": "bafyreienqqmhnlcql2diasxrjbwbjr77i3dilxsgpo23y6salkygtvumuy",
+        "author": {
+            "did": "did:plc:ad4m72ykh2evfdqen3qowxmg",
+            "handle": "tessa.germnetwork.com",
+            "displayName": "tessalaprofessa",
+            "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:ad4m72ykh2evfdqen3qowxmg/bafkreia33e5ujxrws42ildiv6llm7o2jfdgh6e7aabdazcon3godl6qsaq@jpeg",
+            "associated": {
+                "chat": {
+                    "allowIncoming": "following"
+                }
+            },
+            "viewer": {
+                "muted": false,
+                "blockedBy": false,
+                "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3lluhb7wrun2w",
+                "followedBy": "at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.graph.follow/3llugxzy3em26"
+            },
+            "labels": [
+                {
+                    "src": "did:plc:ad4m72ykh2evfdqen3qowxmg",
+                    "uri": "at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.actor.profile/self",
+                    "cid": "bafyreigtq5bgnbmkvxyxqnu7vep5su7mg25uhp3q3vupzes6b7tpb4afqi",
+                    "val": "!no-unauthenticated",
+                    "cts": "1970-01-01T00:00:00.000Z"
+                }
+            ],
+            "createdAt": "2024-01-07T21:29:39.178Z"
+        },
+        "record": {
+            "$type": "app.bsky.feed.post",
+            "createdAt": "2025-04-07T17:05:05.903Z",
+            "langs": [
+                "en"
+            ],
+            "text": "you know it's bad when you're checking the 10 year range"
+        },
+        "replyCount": 0,
+        "repostCount": 0,
+        "likeCount": 1,
+        "quoteCount": 0,
+        "indexedAt": "2025-04-07T17:05:06.075Z",
+        "viewer": {
+            "threadMuted": false,
+            "embeddingDisabled": false
+        },
+        "labels": []
+    }
+}

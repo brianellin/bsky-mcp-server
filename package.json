@@ -10,7 +10,7 @@
     "dev": "tsc && node build/src/index.js",
     "test": "pnpm run build && node build/test/final-test.js",
     "process-feed": "pnpm run build && node build/src/scripts/process-feed-example.js",
-    "process-posts": "pnpm run build && node build/src/scripts/process-post-example.js",
+    "process-posts": "pnpm run build && node build/src/scripts/process-post-examples.js",
     "process-post-examples": "pnpm run build && node build/src/scripts/process-post-examples.js"
   },
   "keywords": [
