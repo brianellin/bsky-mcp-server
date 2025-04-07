@@ -70,6 +70,9 @@ export interface McpErrorResponse {
   [key: string]: unknown;
 }
 
+
+
+
 /**
  * Helper function to get a human-readable name for built-in feeds
  */
@@ -83,6 +86,28 @@ export function getFeedNameFromId(id: string): string {
   };
   
   return knownFeeds[id] || id;
+}
+
+/**
+ * Cleans a handle or DID string
+ * @param input A string that could be a DID or handle (potentially with @ prefix)
+ * @returns The cleaned handle with @ removed or the original DID
+ */
+export function cleanHandle(input: string): string {
+  if (!input) return '';
+  
+  // If it's a DID, return it as is
+  if (input.startsWith('did:')) {
+    return input;
+  }
+  
+  // If it has a leading @, remove it
+  if (input.startsWith('@')) {
+    return input.substring(1);
+  }
+  
+  // Otherwise return as is
+  return input;
 }
 
 
@@ -117,279 +142,6 @@ export function facetsToMarkdown(text: string, facets?: any[]): string {
 }
 
 
-/**
- * Format a post for display in the response
- */
-export function formatPost(item: any, index: number): string {
-  // Handle both scenarios - when passed just a post or a full item with post and reason
-  let post: any;
-  let reason: any = null;
-  
-  // Check if this is an item with post property (feed item) or a direct post
-  if (item && item.post) {
-    post = item.post;
-    reason = item.reason;
-  } else {
-    post = item;
-    // For backwards compatibility, also check if the post itself has a reason
-    if (post && post.reason) {
-      reason = post.reason;
-    }
-  }
-  
-  // Check if this is a repost and extract repost information
-  let isRepost = false;
-  let reposter: any = null;
-  
-  if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost' && reason.by) {
-    isRepost = true;
-    reposter = reason.by;
-  }
-  
-  // For reposts, the author is in post.author
-  const author = post.author;
-  
-  // Safeguard against missing author
-  if (!author) {
-    return `Post #${index + 1}: Error - Could not determine author of post`;
-  }
-  
-  // Extract and process thread/reply context
-  let threadInfo: string[] = [];
-  let isReply = false;
-  
-  // Check if post is a reply
-  if (post.record?.reply || post.reply) {
-    isReply = true;
-    const replyInfo = post.record?.reply || post.reply;
-    
-    if (replyInfo) {
-      threadInfo.push('🧵 Reply in thread:');
-      
-      // Add root post info if available
-      if (replyInfo.root) {
-        if (replyInfo.root.uri) {
-          threadInfo.push(`  Root: ${replyInfo.root.uri}`);
-        }
-        
-        if (replyInfo.root.author) {
-          const rootAuthor = replyInfo.root.author;
-          threadInfo.push(`  Root author: ${rootAuthor.displayName || rootAuthor.handle} (@${rootAuthor.handle})`);
-        }
-      }
-      
-      // Add parent post info if different from root
-      if (replyInfo.parent && 
-         (!replyInfo.root || replyInfo.parent.uri !== replyInfo.root.uri)) {
-        if (replyInfo.parent.uri) {
-          threadInfo.push(`  Replying to: ${replyInfo.parent.uri}`);
-        }
-        
-        if (replyInfo.parent.author) {
-          const parentAuthor = replyInfo.parent.author;
-          threadInfo.push(`  Replying to: ${parentAuthor.displayName || parentAuthor.handle} (@${parentAuthor.handle})`);
-        }
-      }
-    }
-  }
-  
-  // Handle cases where the reply info is at the top level of the post object
-  if (post.reply && !isReply) {
-    isReply = true;
-    threadInfo.push('🧵 Reply in thread:');
-    
-    // Add root info if available
-    if (post.reply.root) {
-      if (post.reply.root.uri) {
-        threadInfo.push(`  Thread root: ${post.reply.root.uri}`);
-      }
-      const rootAuthor = post.reply.root.author;
-      if (rootAuthor) {
-        threadInfo.push(`  Thread started by: ${rootAuthor.displayName || rootAuthor.handle} (@${rootAuthor.handle})`);
-        
-        // Add root post content preview
-        if (post.reply.root.record?.text) {
-          const rootText = post.reply.root.record.text;
-          threadInfo.push(`  Original post: ${rootText.length > 80 ? rootText.substring(0, 80) + '...' : rootText}`);
-        }
-      }
-    }
-    
-    // Add parent info if available and different from root
-    if (post.reply.parent && 
-       (!post.reply.root || post.reply.parent.uri !== post.reply.root.uri)) {
-      if (post.reply.parent.uri) {
-        threadInfo.push(`  Replying to: ${post.reply.parent.uri}`);
-      }
-      const parentAuthor = post.reply.parent.author;
-      if (parentAuthor) {
-        threadInfo.push(`  Replying to: ${parentAuthor.displayName || parentAuthor.handle} (@${parentAuthor.handle})`);
-        
-        // Add parent post content preview
-        if (post.reply.parent.record?.text) {
-          const parentText = post.reply.parent.record.text;
-          threadInfo.push(`  Parent post: ${parentText.length > 80 ? parentText.substring(0, 80) + '...' : parentText}`);
-        }
-      }
-    }
-  }
-  
-  // Extract post text and facets
-  const postText = post.record?.text || post.text || '';
-  const postFacets = post.record?.facets || post.facets || [];
-  
-  // Format the post content with improved layout
-  let formattedPost = `Post #${index + 1}:`;
-  
-  // Add repost information if applicable
-  if (isRepost && reposter) {
-    formattedPost += `\n🔄 Reposted by: ${reposter.displayName || reposter.handle} (@${reposter.handle})`;
-    if (reason.indexedAt) {
-      formattedPost += ` at ${new Date(reason.indexedAt).toLocaleString()}`;
-    }
-  }
-  
-  // Add author information with richer details
-  formattedPost += `\nAuthor: ${author.displayName || author.handle} (@${author.handle})`;
-  
-  // Add thread context if available
-  if (isReply && threadInfo.length > 0) {
-    formattedPost += `\nThread: ${isReply ? 'Reply' : 'Thread starter'}`;
-    formattedPost += `\n${threadInfo.join('\n')}`;
-  }
-  
-  // Add post content using facetsToMarkdown
-  formattedPost += `\nContent: ${facetsToMarkdown(postText, postFacets)}`;
-
-
-  // Add embed information if present
-  if (post.embed) {
-    formattedPost += '\nEmbeds:';
-    // Process embeds recursively to handle nested content
-    function processEmbed(embed: any, depth: number = 0): void {
-      if (!embed) return;
-      
-      const indent = '  '.repeat(depth);
-      
-      // Handle image embeds
-      if (embed.$type === 'app.bsky.embed.images#view' && embed.images) {
-        const imageCount = Array.isArray(embed.images) ? embed.images.length : 0;
-        formattedPost += `\n${indent}🖼️ ${imageCount} image${imageCount !== 1 ? 's' : ''} attached`;
-        
-        // Add image details if available
-        if (imageCount > 0 && Array.isArray(embed.images)) {
-          embed.images.forEach((img: any, idx: number) => {
-            const details: string[] = [];
-            
-            if (img.alt && img.alt.trim()) {
-              details.push(`Image description: "${img.alt}"`);
-            }
-          
-            if (img.thumb) {
-              details.push(`Image url: ${img.thumb}`);
-            }
-            
-            if (details.length > 0) {
-              formattedPost += `\n${indent}  Image ${idx + 1}: ${details.join('\n')}`;
-            }
-          });
-        }
-      }
-      
-      // External link embeds (website cards)
-      else if (embed.$type === 'app.bsky.embed.external' && embed.external) {
-        const external = embed.external;
-        formattedPost += `\n${indent}🔗 Website card:`;
-        
-        if (external.title) {
-          formattedPost += `\n${indent}  Title: ${external.title}`;
-        }
-        
-        if (external.description) {
-          formattedPost += `\n${indent}  Description: ${external.description.substring(0, 100)}${external.description.length > 100 ? '...' : ''}`;
-        }
-        
-        if (external.uri) {
-          formattedPost += `\n${indent}  URL: ${external.uri}`;
-        }
-        
-        if (external.thumb) {
-          formattedPost += `\n${indent}  Thumbnail: ${external.thumb.mimeType || 'image'}`;
-        }
-      }
-      
-      // Record embeds (quote posts)
-      else if (embed.$type === 'app.bsky.embed.record' && embed.record) {
-        formattedPost += `\n${indent}💬 Quoted post:`;
-        
-        // Add URI of quoted post
-        if (embed.record.uri) {
-          formattedPost += `\n${indent}  URI: ${embed.record.uri}`;
-        }
-        
-        // If the record is resolved and has data, show details
-        if (embed.record.value || embed.record.author) {
-          // Show the quoted author and text if available
-          const quotedAuthor = embed.record.author || (embed.record.value?.author);
-          const quotedText = embed.record.value?.text;
-          const quotedRecord = embed.record.value || embed.record;
-          
-          if (quotedAuthor) {
-            formattedPost += `\n${indent}  By: ${quotedAuthor.displayName || quotedAuthor.handle} (@${quotedAuthor.handle})`;
-          }
-          
-          if (quotedText) {
-            formattedPost += `\n${indent}  Content: ${quotedText}`;
-          }
-          
-          // Handle stats if available
-          if (embed.record.likeCount !== undefined || embed.record.repostCount !== undefined) {
-            const stats = [
-              embed.record.likeCount !== undefined ? `${embed.record.likeCount} likes` : null,
-              embed.record.repostCount !== undefined ? `${embed.record.repostCount} reposts` : null,
-              embed.record.replyCount !== undefined ? `${embed.record.replyCount} replies` : null
-            ].filter(Boolean).join(', ');
-            
-            if (stats) {
-              formattedPost += `\n${indent}  Stats: ${stats}`;
-            }
-          }
-        }
-      }
-      
-      // If embed has its own embeds array (nested embeds)
-      if (embed.embeds && Array.isArray(embed.embeds)) {
-        formattedPost += `\n${indent}Multiple embedded content items:`;
-        embed.embeds.forEach((subEmbed: any, idx: number) => {
-          formattedPost += `\n${indent}Item #${idx + 1}:`;
-          processEmbed(subEmbed, depth + 1);
-        });
-      }
-    }
-    
-    processEmbed(post.embed);
-  }
-  
-  // Add post timestamp and URI
-  formattedPost += `\nPosted: ${new Date(post.indexedAt).toLocaleString()}`;
-
-   // Add engagement metrics
-   const engagementMetrics = [
-    post.likeCount !== undefined ? `${post.likeCount} likes` : null,
-    post.repostCount !== undefined ? `${post.repostCount} reposts` : null,
-    post.replyCount !== undefined ? `${post.replyCount} replies` : null,
-    post.quoteCount !== undefined ? `${post.quoteCount} quotes` : null
-  ].filter(Boolean);
-  
-  if (engagementMetrics.length > 0) {
-    formattedPost += `\nEngagement: ${engagementMetrics.join(', ')}`;
-  }
-  formattedPost += `\nURI: ${post.uri}`;
-  formattedPost += `\nURL: https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`;
-  formattedPost += `\n---`;
-
-  return formattedPost;
-}
 
 /**
  * Format the summary text for the response

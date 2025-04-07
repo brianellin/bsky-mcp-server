@@ -5,14 +5,14 @@ import { z } from "zod";
 import { AtpAgent } from "@atproto/api";
 import * as dotenv from "dotenv";
 import {  
-  formatPost,
+  cleanHandle,
   formatSummaryText, 
   getFeedNameFromId, 
   validateUri,
   McpErrorResponse,
   McpSuccessResponse
 } from './utils.js';
-import { preprocessPost, preprocessPosts } from "./llm-preprocessor.js";
+import { preprocessPosts } from "./llm-preprocessor.js";
 import { registerResources, resourcesList } from './resources.js';
 import { registerPrompts } from './prompts.js';
 

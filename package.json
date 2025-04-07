@@ -5,13 +5,11 @@
   "main": "build/src/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && chmod 755 build/src/index.js && mkdir -p build/test && cp test/example_feeds/feed_example.json build/test/example_feed.json",
+    "build": "tsc && chmod 755 build/src/index.js && mkdir -p build/test",
     "start": "node build/src/index.js",
     "dev": "tsc && node build/src/index.js",
     "test": "pnpm run build && node build/test/final-test.js",
-    "process-feed": "pnpm run build && node build/src/scripts/process-feed-example.js",
-    "process-posts": "pnpm run build && node build/src/scripts/process-post-examples.js",
-    "process-post-examples": "pnpm run build && node build/src/scripts/process-post-examples.js"
+    "process-posts": "pnpm run build && node build/src/scripts/process-post-examples.js"
   },
   "keywords": [
     "bluesky",
