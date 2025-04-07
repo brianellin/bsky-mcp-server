@@ -106,7 +106,7 @@ export function facetsToMarkdown(text: string, facets?: any[]): string {
  * @param options Optional YAML dump options
  * @returns A string containing the YAML representation of the data
  */
-export function toYaml(data: any, options: yaml.DumpOptions = {}): string {
+export function jsonToYaml(data: any, options: yaml.DumpOptions = {}): string {
   // Default options for better readability
   const defaultOptions: yaml.DumpOptions = {
     indent: 2,
