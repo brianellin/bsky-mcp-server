@@ -9,6 +9,37 @@ import type {
   AppBskyActorDefs,
   AppBskyFeedPost
 } from '@atproto/api';
+import { RichText } from '@atproto/api';
+
+/**
+ * Convert Bluesky post text + facets into Markdown
+ * @param text The post text content
+ * @param facets Optional array of facets from the post
+ * @returns Markdown formatted text with proper links and mentions
+ */
+export function facetsToMarkdown(text: string, facets?: any[]): string {
+  if (!text) return '';
+  
+  // Initialize RichText with the text and facets
+  const rt = new RichText({ text, facets: facets ?? [] });
+  
+  // Transform segments into Markdown
+  let markdown = '';
+  for (const segment of rt.segments()) {
+    if (segment.isLink()) {
+      //markdown += `[${segment.text}](${segment.link?.uri})`;
+      markdown += `<${segment.link?.uri}>`; // use the markdown auto-link syntax for simplicity for the LLM instead of linking the text fragment
+    } else if (segment.isMention()) {
+      markdown += `[${segment.text}](https://bsky.app/profile/${segment.mention?.did})`;
+    } else if (segment.isTag()) {
+      markdown += `#${segment.tag?.tag}`;
+    } else {
+      markdown += segment.text;
+    }
+  }
+  
+  return markdown;
+}
 
 /**
  * Formats a date to a human-readable format
@@ -83,7 +114,7 @@ function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
     
     // Add the post inside the repost
     result += `    <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
-    result += `      <content>\n        ${record.text}\n      </content>\n`;
+    result += `      <content>\n        ${facetsToMarkdown(record.text, record.facets)}\n      </content>\n`;
     
     // Add embeds
     result += formatEmbeds(post, '      ');
@@ -110,7 +141,7 @@ function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
   let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
   
   // Add post content
-  result += `    <content>\n      ${record.text}\n    </content>\n`;
+  result += `    <content>\n      ${facetsToMarkdown(record.text, record.facets)}\n    </content>\n`;
   
   // Handle replies
   if (reply && types.includes('reply')) {
@@ -124,7 +155,7 @@ function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
     
     if (parentRecord) {
       result += `    \n    <reply_to uri="${(reply.parent as AppBskyFeedDefs.PostView).uri}" bsky_url="${parentUrl}" author_name="${(reply.parent as AppBskyFeedDefs.PostView).author.displayName || ''}" author_handle="${(reply.parent as AppBskyFeedDefs.PostView).author.handle}">\n`;
-      result += `      <content>\n        ${parentRecord.text}\n      </content>\n`;
+      result += `      <content>\n        ${facetsToMarkdown(parentRecord.text, parentRecord.facets)}\n      </content>\n`;
       result += `    </reply_to>\n`;
     }
   }
@@ -138,7 +169,7 @@ function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
       const quotedRecord = recordView.value as { text: string; createdAt: string };
       const quotedPostDate = formatDate(quotedRecord.createdAt);
       result += `    \n    <quoted_post uri="${recordView.uri}" bsky_url="${quotedUrl}" author_name="${recordView.author.displayName || ''}" author_handle="${recordView.author.handle}" posted_at="${quotedPostDate}">\n`;
-      result += `      <content>\n        ${quotedRecord.text}\n      </content>\n`;
+      result += `      <content>\n        ${facetsToMarkdown(quotedRecord.text, (quotedRecord as any).facets)}\n      </content>\n`;
       result += `      \n      Engagement: ${recordView.likeCount || 0} likes, ${recordView.repostCount || 0} reposts, ${recordView.replyCount || 0} replies\n`;
       result += `    </quoted_post>\n`;
     }

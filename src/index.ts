@@ -202,7 +202,6 @@ server.tool(
       return mcpSuccessResponse(`${summaryText}\n\n${timelineData}`);
       
     } catch (error) {
-      console.error(error);
       return mcpErrorResponse(`Error fetching timeline: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
