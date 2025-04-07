@@ -275,7 +275,7 @@ server.tool(
     }
 
     try {
-      const response = await agent.getProfile({ actor: handle });
+      const response = await agent.getProfile({ actor: cleanHandle(handle) });
       
       if (!response.success) {
         return mcpErrorResponse(`Failed to get profile for ${handle}.`);
@@ -626,7 +626,7 @@ server.tool(
 
     try {
       // Resolve the handle to a DID
-      const resolveResponse = await agent.resolveHandle({ handle });
+      const resolveResponse = await agent.resolveHandle({ handle: cleanHandle(handle) });
       
       if (!resolveResponse.success) {
         return mcpErrorResponse(`Failed to resolve handle: ${handle}`);
@@ -1007,7 +1007,7 @@ server.tool(
     try {
       // Verify the user exists by trying to get their profile
       try {
-        const profileResponse = await currentAgent.getProfile({ actor: user });
+        const profileResponse = await currentAgent.getProfile({ actor: cleanHandle(user) });
         if (!profileResponse.success) {
           return mcpErrorResponse(`User not found: ${user}`);
         }
@@ -1120,7 +1120,7 @@ server.tool(
     try {
       // First, verify the user exists by trying to get their profile
       try {
-        const profileResponse = await currentAgent.getProfile({ actor: user });
+        const profileResponse = await currentAgent.getProfile({ actor: cleanHandle(user) });
         if (!profileResponse.success) {
           return mcpErrorResponse(`User not found: ${user}`);
         }
@@ -1142,7 +1142,7 @@ server.tool(
           
           // Make the API call with cursor if we have one
           const response = await currentAgent.app.bsky.graph.getFollows({
-            actor: user,
+            actor: cleanHandle(user),
             limit: batchLimit,
             cursor: nextCursor
           });
