@@ -7,10 +7,11 @@ You can use this MCP server to bring context from various Bluesky / ATProtocol A
 ## Features & Tools
 
 - Interact with common Bluesky features via natural language (e.g. "Get recent posts from David Roberts")
-- Fetch and and analyze feeds ("Find me a feed about Seattle and tell me what people are talking about")
+- Fetch and analyze feeds ("Find me a feed about Seattle and tell me what people are talking about")
 - Fetch and analyze lists of followers ("What types of accounts does Mark Cuban follow? Give me a detailed report")
 - Use an LLM to write a post and then post it for you 😱 ("Write a haiku about today's weather in my area and post it to bluesky")
 - Search for feeds, posts, and people ("Find posts about the #teslatakedown and give me a summary of revent events")
+- Analyze who follows you? ("Who follows me on Bluesky? Give me a report")
 
 Here's the current list of tools provided:
 
@@ -21,6 +22,7 @@ Here's the current list of tools provided:
 - **get-user-posts**: returns the specified user's posts
 - **get-profile**: returns the profile details of the specified user
 - **get-follows**: returns the set of users an account follows
+- **get-followers**: returns the set of users who follow an account
 - **get-liked-posts**: returns recent posts liked by the authenticated user
 - **get-trends**: returns current trending topics on Bluesky with post counts
 - **search-posts**: returns posts for a given query. can specify top or lateest
@@ -29,6 +31,12 @@ Here's the current list of tools provided:
 - **like-post**: like a post with a specific URI
 - **create-post**: publish a post 
 - **follow-user**: follow a specific user
+
+Tips:
+- You can ask for post from search, timelines, lists, feeds, or profiles by time range. For example: Summarize posts from my timeline for the last three days" or "Find me the most interesting artcile people have been talknig about this week"
+- Get weird: What the funniest/most unhinged/weirdest/goofiest post you've seen on my timeline in the last 24 hours?"
+- Learn about yourself: "Analyze my liked posts and tell me what I'm into. Give me 3 interesting facts about what you've found and how it relates to my personality on bluesky" or "Who follows me on bluesky? Give me a comprehensive report."
+
 
 ## Installation
 
