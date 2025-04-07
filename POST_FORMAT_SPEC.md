@@ -14,7 +14,6 @@ Posts can have multiple types, including:
 - `standalone` - A regular post
 - `reply` - A response to another post
 - `quote` - A post that embeds another post with added commentary
-- `reply_limited` - A post with limited reply capabilities
 
 ### Repost Structure
 Reposts use a dedicated `<repost>` tag structure containing:
@@ -82,13 +81,12 @@ Embeds can have the following types:
   
   <!-- Example of a repost -->
   <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="4/3/2025, 6:21 PM">
-    <post type="reply_limited" uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="4/3/2025, 5:55 PM">
+    <post type="standalone" uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="4/3/2025, 5:55 PM">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
       Engagement: 523 likes, 108 reposts, 12 replies
-      Thread settings: Replies limited to followers/following
     </post>
   </repost>
   

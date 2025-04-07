@@ -182,13 +182,12 @@ TypeError: Cannot read properties of undefined (reading 'record')
 ### Individual Post:
 ```xml
   <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="2025-04-03 11:21:24">
-    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="2025-04-03 10:55:45">
+    <post type="standalone" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="2025-04-03 10:55:45">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
       Engagement: 523 likes, 108 reposts, 12 replies
-      Thread settings: Replies limited to followers/following
     </post>
   </repost>
 ```
@@ -197,13 +196,12 @@ TypeError: Cannot read properties of undefined (reading 'record')
 ```xml
 <posts>
   <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="2025-04-03 11:21:24">
-    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="2025-04-03 10:55:45">
+    <post type="standalone" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="2025-04-03 10:55:45">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
       Engagement: 523 likes, 108 reposts, 12 replies
-      Thread settings: Replies limited to followers/following
     </post>
   </repost>
 </posts>

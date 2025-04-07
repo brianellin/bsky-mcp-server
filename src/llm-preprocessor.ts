@@ -173,10 +173,7 @@ function determinePostType(post: Post, reason?: any): string[] {
     types.push('quote');
   }
   
-  // Check for reply limitations
-  if (post.threadgate || (post.viewer && post.viewer.replyDisabled)) {
-    types.push('reply_limited');
-  }
+  // We're no longer tracking reply limitations
   
   return types;
 }
@@ -208,18 +205,7 @@ function formatPost(feedItem: FeedItem): string {
     // Add engagement metrics info (without Posted: prefix)
     result += `      \n      Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
     
-    // Add thread settings for reposts if applicable
-    if (post.threadgate) {
-      const allowFollowers = post.threadgate.record.allow.some(a => a.$type === 'app.bsky.feed.threadgate#followerRule');
-      const allowFollowing = post.threadgate.record.allow.some(a => a.$type === 'app.bsky.feed.threadgate#followingRule');
-      if (allowFollowers && allowFollowing) {
-        result += `      Thread settings: Replies limited to followers/following\n`;
-      } else if (allowFollowers) {
-        result += `      Thread settings: Replies limited to followers\n`;
-      } else if (allowFollowing) {
-        result += `      Thread settings: Replies limited to following\n`;
-      }
-    }
+    // No longer tracking thread settings
     
     // Close the post and repost tags
     result += `    </post>\n`;
