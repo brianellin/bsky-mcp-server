@@ -1,133 +1,14 @@
 // Implements the spec described in /POST_FORMAT_SPEC.md
 import { formatISO9075 } from 'date-fns';
-
-// Types for Bluesky posts and feeds
-interface Author {
-  did: string;
-  handle: string;
-  displayName?: string;
-  avatar?: string;
-}
-
-interface Embed {
-  $type: string;
-  [key: string]: any;
-}
-
-interface EmbedView {
-  $type: string;
-  external?: {
-    uri: string;
-    title: string;
-    description: string;
-    thumb?: string;
-  };
-  record?: {
-    $type: string;
-    uri: string;
-    cid: string;
-    author: Author;
-    value: any;
-    likeCount?: number;
-    replyCount?: number;
-    repostCount?: number;
-    quoteCount?: number;
-    embeds?: any[];
-  };
-  images?: Array<{
-    thumb?: string;
-    fullsize?: string;
-    alt?: string;
-  }>;
-  media?: {
-    [key: string]: any;
-  };
-  thumbnail?: string;
-  playlist?: string;
-}
-
-interface PostRecord {
-  $type: string;
-  text: string;
-  createdAt: string;
-  langs?: string[];
-  reply?: {
-    parent: {
-      cid: string;
-      uri: string;
-    };
-    root: {
-      cid: string;
-      uri: string;
-    };
-  };
-  embed?: Embed;
-  facets?: Array<{
-    $type: string;
-    features: Array<{
-      $type: string;
-      did?: string;
-    }>;
-    index: {
-      byteStart: number;
-      byteEnd: number;
-    };
-  }>;
-}
-
-interface ThreadGate {
-  uri: string;
-  cid: string;
-  record: {
-    $type: string;
-    allow: Array<{
-      $type: string;
-    }>;
-    createdAt: string;
-    post: string;
-  };
-  lists: any[];
-}
-
-interface Post {
-  uri: string;
-  cid: string;
-  author: Author;
-  record: PostRecord;
-  embed?: EmbedView;
-  replyCount: number;
-  repostCount: number;
-  likeCount: number;
-  quoteCount: number;
-  indexedAt: string;
-  viewer?: {
-    threadMuted?: boolean;
-    replyDisabled?: boolean;
-    embeddingDisabled?: boolean;
-  };
-  labels: any[];
-  threadgate?: ThreadGate;
-}
-
-interface ThreadReply {
-  root: Post;
-  parent: Post;
-  grandparentAuthor?: Author;
-}
-
-interface FeedItem {
-  post: Post;
-  reply?: ThreadReply;
-  reason?: {
-    $type: string;
-    by?: Author;
-    indexedAt?: string;
-  };
-}
-
-interface Feed {
-  items: FeedItem[];
-}
+import type { 
+  AppBskyFeedDefs,
+  AppBskyEmbedImages,
+  AppBskyEmbedVideo,
+  AppBskyEmbedExternal,
+  AppBskyEmbedRecord,
+  AppBskyActorDefs,
+  AppBskyFeedPost
+} from '@atproto/api';
 
 /**
  * Formats a date to a human-readable format
@@ -158,11 +39,12 @@ function createBskyUrl(uri: string, handle?: string): string {
 /**
  * Determines the post type based on its properties
  */
-function determinePostType(post: Post, reason?: any): string[] {
+function determinePostType(post: AppBskyFeedDefs.PostView, reason?: AppBskyFeedDefs.ReasonRepost): string[] {
   const types: string[] = [];
   
   // Base type
-  if (post.record.reply) {
+  const record = post.record as AppBskyFeedPost.Record;
+  if (record.reply) {
     types.push('reply');
   } else {
     types.push('standalone');
@@ -183,23 +65,25 @@ function determinePostType(post: Post, reason?: any): string[] {
 /**
  * Format a single post according to the spec
  */
-function formatPost(feedItem: FeedItem): string {
+function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
   const { post, reply, reason } = feedItem;
   
   // Handle repost specially
-  if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost' && reason.by) {
+  if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost') {
     // Create a repost element with the reposter's info
-    const formattedDate = formatDate(reason.indexedAt || '');
-    let result = `  <repost author_name="${reason.by.displayName || ''}" author_handle="${reason.by.handle}" reposted_at="${formattedDate}">\n`;
+    const reasonRepost = reason as AppBskyFeedDefs.ReasonRepost;
+    const formattedDate = formatDate(reasonRepost.indexedAt || '');
+    let result = `  <repost author_name="${reasonRepost.by.displayName || ''}" author_handle="${reasonRepost.by.handle}" reposted_at="${formattedDate}">\n`;
     
     // Format the original post (without the repost type)
     const types = determinePostType(post);
     const bskyUrl = createBskyUrl(post.uri, post.author.handle);
-    const postDate = formatDate(post.record.createdAt);
+    const record = post.record as AppBskyFeedPost.Record;
+    const postDate = formatDate(record.createdAt);
     
     // Add the post inside the repost
     result += `    <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
-    result += `      <content>\n        ${post.record.text}\n      </content>\n`;
+    result += `      <content>\n        ${record.text}\n      </content>\n`;
     
     // Add embeds
     result += formatEmbeds(post, '      ');
@@ -217,32 +101,47 @@ function formatPost(feedItem: FeedItem): string {
   }
   
   // For non-reposts, continue with normal formatting
-  const types = determinePostType(post, reason);
+  const types = determinePostType(post, reason as AppBskyFeedDefs.ReasonRepost);
   const bskyUrl = createBskyUrl(post.uri, post.author.handle);
-  const postDate = formatDate(post.record.createdAt);
+  const record = post.record as AppBskyFeedPost.Record;
+  const postDate = formatDate(record.createdAt);
   
   // Start the post tag with all the attributes
   let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
   
   // Add post content
-  result += `    <content>\n      ${post.record.text}\n    </content>\n`;
+  result += `    <content>\n      ${record.text}\n    </content>\n`;
   
   // Handle replies
   if (reply && types.includes('reply')) {
-    const parentUrl = createBskyUrl(reply.parent.uri, reply.parent.author.handle);
-    result += `    \n    <reply_to uri="${reply.parent.uri}" bsky_url="${parentUrl}" author_name="${reply.parent.author.displayName || ''}" author_handle="${reply.parent.author.handle}">\n`;
-    result += `      <content>\n        ${reply.parent.record.text}\n      </content>\n`;
-    result += `    </reply_to>\n`;
+    const parentUrl = createBskyUrl(reply.parent.$type === 'app.bsky.feed.defs#postView' ? 
+      (reply.parent as AppBskyFeedDefs.PostView).uri : '', 
+      reply.parent.$type === 'app.bsky.feed.defs#postView' ? 
+      (reply.parent as AppBskyFeedDefs.PostView).author.handle : '');
+      
+    const parentRecord = reply.parent.$type === 'app.bsky.feed.defs#postView' ? 
+      (reply.parent as AppBskyFeedDefs.PostView).record as AppBskyFeedPost.Record : null;
+    
+    if (parentRecord) {
+      result += `    \n    <reply_to uri="${(reply.parent as AppBskyFeedDefs.PostView).uri}" bsky_url="${parentUrl}" author_name="${(reply.parent as AppBskyFeedDefs.PostView).author.displayName || ''}" author_handle="${(reply.parent as AppBskyFeedDefs.PostView).author.handle}">\n`;
+      result += `      <content>\n        ${parentRecord.text}\n      </content>\n`;
+      result += `    </reply_to>\n`;
+    }
   }
   
   // Handle quote posts
-  if (post.embed && post.embed.$type === 'app.bsky.embed.record#view' && post.embed.record) {
-    const quotedUrl = createBskyUrl(post.embed.record.uri, post.embed.record.author.handle);
-    const quotedPostDate = formatDate(post.embed.record.value.createdAt);
-    result += `    \n    <quoted_post uri="${post.embed.record.uri}" bsky_url="${quotedUrl}" author_name="${post.embed.record.author.displayName || ''}" author_handle="${post.embed.record.author.handle}" posted_at="${quotedPostDate}">\n`;
-    result += `      <content>\n        ${post.embed.record.value.text}\n      </content>\n`;
-    result += `      \n      Engagement: ${post.embed.record.likeCount || 0} likes, ${post.embed.record.repostCount || 0} reposts, ${post.embed.record.replyCount || 0} replies\n`;
-    result += `    </quoted_post>\n`;
+  if (post.embed && post.embed.$type === 'app.bsky.embed.record#view') {
+    const embedRecord = post.embed as AppBskyEmbedRecord.View;
+    if (embedRecord.record && embedRecord.record.$type === 'app.bsky.embed.record#viewRecord') {
+      const recordView = embedRecord.record as AppBskyEmbedRecord.ViewRecord;
+      const quotedUrl = createBskyUrl(recordView.uri, recordView.author.handle);
+      const quotedRecord = recordView.value as { text: string; createdAt: string };
+      const quotedPostDate = formatDate(quotedRecord.createdAt);
+      result += `    \n    <quoted_post uri="${recordView.uri}" bsky_url="${quotedUrl}" author_name="${recordView.author.displayName || ''}" author_handle="${recordView.author.handle}" posted_at="${quotedPostDate}">\n`;
+      result += `      <content>\n        ${quotedRecord.text}\n      </content>\n`;
+      result += `      \n      Engagement: ${recordView.likeCount || 0} likes, ${recordView.repostCount || 0} reposts, ${recordView.replyCount || 0} replies\n`;
+      result += `    </quoted_post>\n`;
+    }
   }
   
   // Add embeds
@@ -260,35 +159,42 @@ function formatPost(feedItem: FeedItem): string {
 /**
  * Format embeds for a post (extracted to a helper function)
  */
-function formatEmbeds(post: Post, indentation: string = ''): string {
+function formatEmbeds(post: AppBskyFeedDefs.PostView, indentation: string = ''): string {
   let result = '';
   
   if (post.embed) {
     // Images
-    if (post.embed.$type === 'app.bsky.embed.images#view' && post.embed.images) {
-      post.embed.images.forEach((image) => {
-        result += `${indentation}\n${indentation}<embed type="image">\n`;
-        result += `${indentation}  Image description: "${image.alt || 'No description provided'}"\n`;
-        result += `${indentation}  Image URL: ${image.fullsize || image.thumb || ''}\n`;
-        result += `${indentation}</embed>\n`;
-      });
+    if (post.embed.$type === 'app.bsky.embed.images#view') {
+      const imagesEmbed = post.embed as AppBskyEmbedImages.View;
+      if (imagesEmbed.images) {
+        imagesEmbed.images.forEach((image) => {
+          result += `${indentation}\n${indentation}<embed type="image">\n`;
+          result += `${indentation}  Image description: "${image.alt || 'No description provided'}"\n`;
+          result += `${indentation}  Image URL: ${image.fullsize || image.thumb || ''}\n`;
+          result += `${indentation}</embed>\n`;
+        });
+      }
     } 
     // External links
-    else if (post.embed.$type === 'app.bsky.embed.external#view' && post.embed.external) {
-      result += `${indentation}\n${indentation}<embed type="link">\n`;
-      result += `${indentation}  Title: "${post.embed.external.title}"\n`;
-      result += `${indentation}  URL: ${post.embed.external.uri}\n`;
-      result += `${indentation}  Description: "${post.embed.external.description}"\n`;
-      result += `${indentation}</embed>\n`;
+    else if (post.embed.$type === 'app.bsky.embed.external#view') {
+      const externalEmbed = post.embed as AppBskyEmbedExternal.View;
+      if (externalEmbed.external) {
+        result += `${indentation}\n${indentation}<embed type="link">\n`;
+        result += `${indentation}  Title: "${externalEmbed.external.title}"\n`;
+        result += `${indentation}  URL: ${externalEmbed.external.uri}\n`;
+        result += `${indentation}  Description: "${externalEmbed.external.description}"\n`;
+        result += `${indentation}</embed>\n`;
+      }
     }
     // Videos
     else if (post.embed.$type.includes('video')) {
+      const videoEmbed = post.embed as AppBskyEmbedVideo.View;
       result += `${indentation}\n${indentation}<embed type="video">\n`;
-      if (post.embed && post.embed.thumbnail) {
-        result += `${indentation}  Thumbnail: ${post.embed.thumbnail || ''}\n`;
+      if (videoEmbed.thumbnail) {
+        result += `${indentation}  Thumbnail: ${videoEmbed.thumbnail || ''}\n`;
       }
-      if (post.embed && post.embed.playlist) {
-        result += `${indentation}  Playlist: ${post.embed.playlist || ''}\n`;
+      if (videoEmbed.playlist) {
+        result += `${indentation}  Playlist: ${videoEmbed.playlist || ''}\n`;
       }
       result += `${indentation}</embed>\n`;
     }
@@ -300,10 +206,12 @@ function formatEmbeds(post: Post, indentation: string = ''): string {
 /**
  * Format replies for a post
  */
-function formatReplies(feedItems: FeedItem[], parentUri: string): string {
+function formatReplies(feedItems: AppBskyFeedDefs.FeedViewPost[], parentUri: string): string {
   // Find direct replies to this post
   const replies = feedItems.filter(item => 
-    item.reply && item.reply.parent.uri === parentUri
+    item.reply && 
+    item.reply.parent.$type === 'app.bsky.feed.defs#postView' &&
+    (item.reply.parent as AppBskyFeedDefs.PostView).uri === parentUri
   );
   
   if (replies.length === 0) {
@@ -346,18 +254,26 @@ function formatReplies(feedItems: FeedItem[], parentUri: string): string {
 /**
  * Group feed items into threads
  */
-function groupThreads(feedItems: FeedItem[]): { threads: Map<string, FeedItem[]>, standalone: FeedItem[] } {
-  const threads = new Map<string, FeedItem[]>();
-  const standalone: FeedItem[] = [];
+function groupThreads(feedItems: AppBskyFeedDefs.FeedViewPost[]): { 
+  threads: Map<string, AppBskyFeedDefs.FeedViewPost[]>, 
+  standalone: AppBskyFeedDefs.FeedViewPost[] 
+} {
+  const threads = new Map<string, AppBskyFeedDefs.FeedViewPost[]>();
+  const standalone: AppBskyFeedDefs.FeedViewPost[] = [];
   
   for (const item of feedItems) {
     if (item.reply) {
       // This is part of a thread
-      const rootUri = item.reply.root.uri;
-      if (!threads.has(rootUri)) {
+      const rootUri = item.reply.root.$type === 'app.bsky.feed.defs#postView' ? 
+        (item.reply.root as AppBskyFeedDefs.PostView).uri : '';
+      
+      if (rootUri && !threads.has(rootUri)) {
         threads.set(rootUri, []);
       }
-      threads.get(rootUri)?.push(item);
+      
+      if (rootUri) {
+        threads.get(rootUri)?.push(item);
+      }
     } else {
       // This is a standalone post
       standalone.push(item);
@@ -370,11 +286,15 @@ function groupThreads(feedItems: FeedItem[]): { threads: Map<string, FeedItem[]>
 /**
  * Format a complete thread
  */
-function formatThread(feedItems: FeedItem[], rootUri: string): string {
+function formatThread(feedItems: AppBskyFeedDefs.FeedViewPost[], rootUri: string): string {
   // Find the root post
   const rootPost = feedItems.find(item => 
     item.post.uri === rootUri || 
-    (item.reply && item.reply.root.uri === rootUri && item.reply.parent.uri === rootUri)
+    (item.reply && 
+     item.reply.root.$type === 'app.bsky.feed.defs#postView' &&
+     (item.reply.root as AppBskyFeedDefs.PostView).uri === rootUri && 
+     item.reply.parent.$type === 'app.bsky.feed.defs#postView' &&
+     (item.reply.parent as AppBskyFeedDefs.PostView).uri === rootUri)
   );
   
   if (!rootPost) {
@@ -403,7 +323,7 @@ function formatThread(feedItems: FeedItem[], rootUri: string): string {
 /**
  * Preprocess multiple posts into the XML format defined in the spec
  */
-export function preprocessPosts(feedItems: FeedItem[]): string {
+export function preprocessPosts(feedItems: AppBskyFeedDefs.FeedViewPost[]): string {
   let result = '<posts>\n';
   
   // Group into threads and standalone posts
@@ -426,12 +346,12 @@ export function preprocessPosts(feedItems: FeedItem[]): string {
 }
 
 // For backward compatibility
-export function preprocessPost(feedItem: FeedItem): string {
+export function preprocessPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
   return formatPost(feedItem);
 }
 
 // For backward compatibility
-export function formatFeed(feed: Feed): string {
+export function formatFeed(feed: { items: AppBskyFeedDefs.FeedViewPost[] }): string {
   return preprocessPosts(feed.items);
 }
 
