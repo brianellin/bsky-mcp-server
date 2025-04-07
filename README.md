@@ -20,7 +20,7 @@ Here's the current list of tools provided:
 - **get-list-posts**: returns posts from the specified list
 - **get-user-posts**: returns the specified user's posts
 - **get-profile**: returns the profile details of the specified user
-- **get-follows**: returns the set of followes this user follows
+- **get-follows**: returns the set of users an account follows
 - **get-liked-posts**: returns recent posts liked by the authenticated user
 - **get-trends**: returns current trending topics on Bluesky with post counts
 - **search-posts**: returns posts for a given query. can specify top or lateest

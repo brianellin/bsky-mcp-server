@@ -324,20 +324,20 @@ server.tool(
         return mcpSuccessResponse(`No results found for query: "${query}"`);
       }
 
-      const results = posts.map((post: any, index: number) => {
-        const author = post.author;
-        
-        return `Result #${index + 1}:
-Author: ${author.displayName || author.handle} (@${author.handle})
-Content: ${post.record.text}
-${post.likeCount !== undefined ? `Likes: ${post.likeCount}` : ''}
-${post.repostCount !== undefined ? `Reposts: ${post.repostCount}` : ''}
-URI: ${post.uri}
-Posted: ${new Date(post.indexedAt).toLocaleString()}
----`;
-      }).join("\n\n");
+      // Transform search posts to FeedViewPost format
+      const feedViewPosts = posts.map(post => ({
+        post: post,
+        reply: undefined,
+        reason: undefined
+      }));
 
-      return mcpSuccessResponse(results);
+      // Format the search results using preprocessPosts
+      const formattedPosts = preprocessPosts(feedViewPosts);
+
+      // Add summary information
+      const summaryText = formatSummaryText(posts.length, "search results");
+
+      return mcpSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
     } catch (error) {
       return mcpErrorResponse(`Error searching posts: ${error instanceof Error ? error.message : String(error)}`);
     }
@@ -502,11 +502,8 @@ server.tool(
         return mcpSuccessResponse(`You haven't liked any posts.`);
       }
       
-      // Format the likes list, focusing on the posts rather than user info
-      const formattedLikes = allLikes.map((like: any, index: number) => {
-        const post = like.post;
-        return formatPost(post, index);
-      }).join("\n\n");
+      // Format the likes list using preprocessPosts
+      const formattedLikes = preprocessPosts(allLikes);
       
       // Create a summary
       const summaryText = formatSummaryText(allLikes.length, "liked posts");
@@ -870,7 +867,7 @@ server.tool(
       }
 
       // Format the posts
-      const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+      const formattedPosts = preprocessPosts(finalPosts);
 
       // Add summary information
       const summaryText = formatSummaryText(finalPosts.length, "feed");
@@ -980,7 +977,7 @@ server.tool(
       }
 
       // Format the posts
-      const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+      const formattedPosts = preprocessPosts(finalPosts);
 
       // Add summary information
       const summaryText = formatSummaryText(finalPosts.length, "list");
@@ -1091,7 +1088,7 @@ server.tool(
         }
 
         // Format the posts
-        const formattedPosts = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+        const formattedPosts = preprocessPosts(finalPosts);
 
         // Add summary information
         const summaryText = formatSummaryText(finalPosts.length, "user");
@@ -1183,7 +1180,7 @@ server.tool(
 Display Name: ${follow.displayName || 'No display name'}
 Handle: @${follow.handle}
 DID: ${follow.did}
-${follow.description ? `Bio: ${follow.description.substring(0, 100)}${follow.description.length > 100 ? '...' : ''}` : 'Bio: No bio provided'}
+${follow.description ? `Bio: ${follow.description}` : 'Bio: No bio provided'}
 ${follow.followersCount !== undefined ? `Followers: ${follow.followersCount}` : ''}
 ${follow.followsCount !== undefined ? `Following: ${follow.followsCount}` : ''}
 ${follow.postsCount !== undefined ? `Posts: ${follow.postsCount}` : ''}
