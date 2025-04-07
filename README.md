@@ -34,7 +34,7 @@ Here's the current list of tools provided:
 
 Tips:
 - You can ask for post from search, timelines, lists, feeds, or profiles by time range. For example: Summarize posts from my timeline for the last three days" or "Find me the most interesting artcile people have been talknig about this week"
-- Get weird: What the funniest/most unhinged/weirdest/goofiest post you've seen on my timeline in the last 24 hours?"
+- Get weird: "What the funniest/most unhinged/weirdest/goofiest post you've seen on my timeline in the last 24 hours?"
 - Learn about yourself: "Analyze my liked posts and tell me what I'm into. Give me 3 interesting facts about what you've found and how it relates to my personality on bluesky" or "Who follows me on bluesky? Give me a comprehensive report."
 
 
