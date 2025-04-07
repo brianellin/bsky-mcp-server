@@ -57,7 +57,7 @@ My small side project - techpays .com - used to generate below 100GB of traffic 
 Meta’s AI crawler + other bots have pushed it to 700GB+ per month
 
 WTH"
-      URL: https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
+      Image URL: https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
     </embed>
     
     Engagement: 6 likes, 0 reposts, 0 replies
@@ -80,7 +80,7 @@ My small side project - techpays .com - used to generate below 100GB of traffic 
 Meta’s AI crawler + other bots have pushed it to 700GB+ per month
 
 WTH"
-      URL: https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
+      Image URL: https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
     </embed>
     
     Engagement: 6 likes, 0 reposts, 0 replies
@@ -140,9 +140,38 @@ Or, you know, there'd be a coup
 
 ## File: post_embed_video.json
 
-Error processing file:
+### Individual Post:
+```xml
+  <post type="standalone" uri="at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u" bsky_url="https://bsky.app/profile/cameron.pfiffer.org/post/3llucfyjpts2u" author_name="Mr. Dr. Cameron Pfiffer" author_handle="cameron.pfiffer.org" posted_at="2025-04-02 14:11:14">
+    <content>
+      Dude my left foot is swollen af (this is normal)
+    </content>
+    
+    <embed type="video">
+      Thumbnail: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/thumbnail.jpg
+      Playlist: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/playlist.m3u8
+    </embed>
+    
+    Engagement: 2 likes, 0 reposts, 3 replies
+  </post>
 ```
-TypeError: Cannot read properties of undefined (reading 'record')
+
+### Using preprocessPosts:
+```xml
+<posts>
+  <post type="standalone" uri="at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u" bsky_url="https://bsky.app/profile/cameron.pfiffer.org/post/3llucfyjpts2u" author_name="Mr. Dr. Cameron Pfiffer" author_handle="cameron.pfiffer.org" posted_at="2025-04-02 14:11:14">
+    <content>
+      Dude my left foot is swollen af (this is normal)
+    </content>
+    
+    <embed type="video">
+      Thumbnail: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/thumbnail.jpg
+      Playlist: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/playlist.m3u8
+    </embed>
+    
+    Engagement: 2 likes, 0 reposts, 3 replies
+  </post>
+</posts>
 ```
 
 

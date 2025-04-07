@@ -42,6 +42,8 @@ interface EmbedView {
   media?: {
     [key: string]: any;
   };
+  thumbnail?: string;
+  playlist?: string;
 }
 
 interface PostRecord {
@@ -267,7 +269,7 @@ function formatEmbeds(post: Post, indentation: string = ''): string {
       post.embed.images.forEach((image) => {
         result += `${indentation}\n${indentation}<embed type="image">\n`;
         result += `${indentation}  Image description: "${image.alt || 'No description provided'}"\n`;
-        result += `${indentation}  URL: ${image.fullsize || image.thumb || ''}\n`;
+        result += `${indentation}  Image URL: ${image.fullsize || image.thumb || ''}\n`;
         result += `${indentation}</embed>\n`;
       });
     } 
@@ -282,11 +284,11 @@ function formatEmbeds(post: Post, indentation: string = ''): string {
     // Videos
     else if (post.embed.$type.includes('video')) {
       result += `${indentation}\n${indentation}<embed type="video">\n`;
-      if (post.embed.media && post.embed.media.thumbnail) {
-        result += `${indentation}  Thumbnail: ${post.embed.media.thumbnail.url || ''}\n`;
+      if (post.embed && post.embed.thumbnail) {
+        result += `${indentation}  Thumbnail: ${post.embed.thumbnail || ''}\n`;
       }
-      if (post.embed.media && post.embed.media.video) {
-        result += `${indentation}  Playlist: ${post.embed.media.video.url || ''}\n`;
+      if (post.embed && post.embed.playlist) {
+        result += `${indentation}  Playlist: ${post.embed.playlist || ''}\n`;
       }
       result += `${indentation}</embed>\n`;
     }
