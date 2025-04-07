@@ -1203,6 +1203,105 @@ ${follow.indexedAt ? `Following since: ${new Date(follow.indexedAt).toLocaleStri
 );
 
 server.tool(
+  "get-followers",
+  "Get a list of users that follow a person",
+  {
+    user: z.string().describe("The handle or DID of the user (e.g., alice.bsky.social)"),
+    limit: z.number().min(1).max(500).default(500).describe("Maximum number of followers to fetch (1-500)"),
+  },
+  async ({ user, limit }) => {
+    if (!agent) {
+      return mcpErrorResponse("Not connected to Bluesky. Check your environment variables.");
+    }
+
+    const currentAgent = agent; // Assign to non-null variable to satisfy TypeScript
+    
+    try {
+      // First, verify the user exists by trying to get their profile
+      try {
+        const profileResponse = await currentAgent.getProfile({ actor: cleanHandle(user) });
+        if (!profileResponse.success) {
+          return mcpErrorResponse(`User not found: ${user}`);
+        }
+        
+        // Use the display name in the summary if available
+        const displayName = profileResponse.data.displayName || user;
+        
+        // Now fetch who follows this user with pagination
+        const MAX_BATCH_SIZE = 100; // Maximum number of followers per API call
+        const MAX_BATCHES = 5;      // Maximum number of API calls to make (100 x 5 = 500)
+        let allFollowers: any[] = [];
+        let nextCursor: string | undefined = undefined;
+        let batchCount = 0;
+        
+        // Loop to fetch followers with pagination
+        while (batchCount < MAX_BATCHES && allFollowers.length < limit) {
+          // Calculate how many followers to fetch in this batch
+          const batchLimit = Math.min(MAX_BATCH_SIZE, limit - allFollowers.length);
+          
+          // Make the API call with cursor if we have one
+          const response = await currentAgent.app.bsky.graph.getFollowers({
+            actor: cleanHandle(user),
+            limit: batchLimit,
+            cursor: nextCursor
+          });
+          
+          if (!response.success) {
+            // If we've already fetched some followers, return those
+            if (allFollowers.length > 0) {
+              break;
+            }
+            return mcpErrorResponse(`Failed to fetch followers for ${user}.`);
+          }
+          
+          const { followers, cursor } = response.data;
+          
+          // Add the fetched followers to our collection
+          allFollowers = allFollowers.concat(followers);
+          
+          // Update cursor for the next batch
+          nextCursor = cursor;
+          batchCount++;
+          
+          // If no cursor returned or we've reached our limit, stop paginating
+          if (!cursor || allFollowers.length >= limit) {
+            break;
+          }
+        }
+        
+        if (allFollowers.length === 0) {
+          return mcpSuccessResponse(`@${user} doesn't have any followers.`);
+        }
+        
+        // Format the followers list
+        const formattedFollowers = allFollowers.map((follower: any, index: number) => {
+          return `User #${index + 1}:
+Display Name: ${follower.displayName || 'No display name'}
+Handle: @${follower.handle}
+DID: ${follower.did}
+${follower.description ? `Bio: ${follower.description}` : 'Bio: No bio provided'}
+${follower.followersCount !== undefined ? `Followers: ${follower.followersCount}` : ''}
+${follower.followsCount !== undefined ? `Following: ${follower.followsCount}` : ''}
+${follower.postsCount !== undefined ? `Posts: ${follower.postsCount}` : ''}
+${follower.indexedAt ? `Following since: ${new Date(follower.indexedAt).toLocaleString()}` : ''}
+---`;
+        }).join("\n\n");
+        
+        // Create a summary
+        const summaryText = `Retrieved ${allFollowers.length} followers of @${user}.${nextCursor ? ' More results are available.' : ''}`;
+        
+        return mcpSuccessResponse(`${summaryText}\n\n${formattedFollowers}`);
+        
+      } catch (profileError) {
+        return mcpErrorResponse(`Error retrieving user profile: ${profileError instanceof Error ? profileError.message : String(profileError)}`);
+      }
+    } catch (error) {
+      return mcpErrorResponse(`Error fetching followers: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
   "get-post-likes",
   "Get information about users who have liked a specific post",
   {
