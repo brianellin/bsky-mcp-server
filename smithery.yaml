@@ -1,0 +1,37 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - blueskyIdentifier
+      - blueskyAppPassword
+      - blueskyServiceUrl
+    properties:
+      blueskyIdentifier:
+        type: string
+        description: Your Bluesky handle/identifier
+      blueskyAppPassword:
+        type: string
+        description: Your Bluesky app password
+      blueskyServiceUrl:
+        type: string
+        description: The URL of the Bluesky service (e.g., https://bsky.social)
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'node',
+      args: ['/app/build/src/index.js'],
+      env: {
+        BLUESKY_IDENTIFIER: config.blueskyIdentifier,
+        BLUESKY_APP_PASSWORD: config.blueskyAppPassword,
+        BLUESKY_SERVICE_URL: config.blueskyServiceUrl
+      }
+    })
+  exampleConfig:
+    blueskyIdentifier: exampleUser
+    blueskyAppPassword: exampleAppPassword123
+    blueskyServiceUrl: https://bsky.social
