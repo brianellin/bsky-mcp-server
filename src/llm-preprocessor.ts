@@ -192,8 +192,13 @@ function formatPost(feedItem: FeedItem): string {
   const types = determinePostType(post, reason);
   const bskyUrl = createBskyUrl(post.uri, post.author.handle);
   
+  // For reposts, use the reposter's information for the main post tag
+  const postAuthor = (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost' && reason.by) 
+    ? reason.by 
+    : post.author;
+  
   // Start the post tag with all the attributes
-  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
+  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${postAuthor?.displayName || ''}" author_handle="${postAuthor?.handle || ''}">\n`;
   
   // Add post content
   result += `    <content>\n      ${post.record.text}\n    </content>\n`;
@@ -221,6 +226,7 @@ function formatPost(feedItem: FeedItem): string {
     result += `      Reposted at: ${formatDate(reason.indexedAt || '')}\n`;
     result += `    </repost_info>\n`;
     
+    // Use the original author's information for the original_post
     result += `    \n    <original_post uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
     result += `      <content>\n        ${post.record.text}\n      </content>\n`;
     result += `      \n      Posted: ${formatDate(post.record.createdAt)} | Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies\n`;

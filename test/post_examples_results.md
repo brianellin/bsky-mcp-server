@@ -181,7 +181,7 @@ TypeError: Cannot read properties of undefined (reading 'record')
 
 ### Individual Post:
 ```xml
-  <post type="standalone,repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+  <post type="standalone,repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Dan Hon" author_handle="danhon.com">
     <content>
       People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
     </content>
@@ -206,7 +206,7 @@ TypeError: Cannot read properties of undefined (reading 'record')
 ### Using preprocessPosts:
 ```xml
 <posts>
-  <post type="standalone,repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+  <post type="standalone,repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Dan Hon" author_handle="danhon.com">
     <content>
       People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
     </content>
