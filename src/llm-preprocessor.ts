@@ -277,9 +277,6 @@ function formatEmbeds(post: Post, indentation: string = ''): string {
       result += `${indentation}  Title: "${post.embed.external.title}"\n`;
       result += `${indentation}  URL: ${post.embed.external.uri}\n`;
       result += `${indentation}  Description: "${post.embed.external.description}"\n`;
-      if (post.embed.external.thumb) {
-        result += `${indentation}  Thumbnail: ${post.embed.external.thumb}\n`;
-      }
       result += `${indentation}</embed>\n`;
     }
     // Videos

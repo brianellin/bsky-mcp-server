@@ -13,7 +13,6 @@
       Title: "Microsoft partners with Anthropic to create official C# SDK for Model Context Protocol"
       URL: https://devblogs.microsoft.com/blog/microsoft-partners-with-anthropic-to-create-official-c-sdk-for-model-context-protocol
       Description: "Microsoft is collaborating with Anthropic to create an official C# SDK for the Model Context Protocol (MCP). MCP has seen rapid adoption in the AI community, and this partnership aims to enhance the i..."
-      Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg
     </embed>
     
     Engagement: 0 likes, 0 reposts, 0 replies
@@ -32,7 +31,6 @@
       Title: "Microsoft partners with Anthropic to create official C# SDK for Model Context Protocol"
       URL: https://devblogs.microsoft.com/blog/microsoft-partners-with-anthropic-to-create-official-c-sdk-for-model-context-protocol
       Description: "Microsoft is collaborating with Anthropic to create an official C# SDK for the Model Context Protocol (MCP). MCP has seen rapid adoption in the AI community, and this partnership aims to enhance the i..."
-      Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg
     </embed>
     
     Engagement: 0 likes, 0 reposts, 0 replies
@@ -228,7 +226,6 @@ TypeError: Cannot read properties of undefined (reading 'record')
       Title: "Hands off...the future"
       URL: https://billmckibben.substack.com/p/hands-offthe-future?publication_id=438146&post_id=159935925&isFreemail=true&r=bzxnl&triedRedirect=true
       Description: "So many ways to wreck an economy, and Trump is trying them all"
-      Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreifubqddrwlp2pvtr3x4xnmwflyfvw7u7tkyxntv7hzka33iojwyhi@jpeg
     </embed>
     
     Engagement: 13 likes, 2 reposts, 0 replies
