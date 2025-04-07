@@ -1,6 +1,5 @@
 // implememts the spec desciebed at /POST_FORMAT_SPEC.md
 // use the exmaples as in /test/example_posts as reference 
-
 import { formatISO9075 } from 'date-fns';
 
 // Types for Bluesky posts and feeds
@@ -205,10 +204,13 @@ function formatDate(dateString: string): string {
 /**
  * Formats a single post according to the LLM-friendly format
  */
-export function formatPost(postItem: FeedItem, id: string): string {
+export function preprocessPost(postItem: FeedItem): string {
   const { post, reply, reason } = postItem;
   const types = determinePostType(post, reason);
-  let result = `<post id="${id}" type="${types.join(',')}">\n`;
+  const postUri = post.uri;
+  const shortId = getShortId(postUri);
+  
+  let result = `<post uri="${postUri}" type="${types.join(',')}">\n`;
   
   // If it's a repost, add repost info
   if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost') {
@@ -244,7 +246,9 @@ export function formatPost(postItem: FeedItem, id: string): string {
   
   // Handle reply to information
   if (reply && post.record.reply) {
-    result += `\n  <reply_to id="${id.split('.')[0] + '.1'}">\n`;
+    const parentUri = reply.parent.uri;
+    const parentShortId = getShortId(parentUri);
+    result += `\n  <reply_to id="${parentShortId}">\n`;
     result += `    Original Post: ${reply.parent.record.text.substring(0, 100)}${reply.parent.record.text.length > 100 ? '...' : ''}\n`;
     result += `    Author: ${reply.parent.author.displayName || ''} (@${reply.parent.author.handle})\n`;
     result += `  </reply_to>\n`;
@@ -252,7 +256,9 @@ export function formatPost(postItem: FeedItem, id: string): string {
   
   // Handle quote post
   if (post.embed && post.embed.$type === 'app.bsky.embed.record#view' && post.embed.record) {
-    result += `\n  <quoted_post id="${id}.quoted">\n`;
+    const quotedUri = post.embed.record.uri;
+    const quotedShortId = getShortId(quotedUri);
+    result += `\n  <quoted_post id="${quotedShortId}">\n`;
     result += `    Post: ${post.embed.record.value.text}\n`;
     result += `    Author: ${post.embed.record.author.displayName || ''} (@${post.embed.record.author.handle})\n`;
     result += `    Posted: ${formatDate(post.embed.record.value.createdAt)} | Engagement: ${post.embed.record.likeCount || 0} likes, ${post.embed.record.repostCount || 0} reposts, ${post.embed.record.replyCount || 0} replies\n`;
@@ -409,7 +415,7 @@ function formatThread(posts: FeedItem[], threadId: string, idMapping: Map<string
   const rootPost = posts.find(p => !p.reply || p.reply.root.uri === p.post.uri);
   if (rootPost) {
     const rootPostId = idMapping.get(rootPost.post.uri)?.id || threadId + '.1';
-    result += formatPostWithReplies(rootPost, rootPostId, posts, idMapping);
+    result += preprocessPostWithReplies(rootPost, rootPostId, posts, idMapping);
   }
   
   result += `  </thread>\n`;
@@ -419,14 +425,14 @@ function formatThread(posts: FeedItem[], threadId: string, idMapping: Map<string
 /**
  * Formats a post with its replies recursively
  */
-function formatPostWithReplies(
+function preprocessPostWithReplies(
   postItem: FeedItem, 
   postId: string, 
   allPosts: FeedItem[], 
   idMapping: Map<string, { id: string, uri: string, short_id: string }>
 ): string {
   // Format the post itself
-  let result = formatPost(postItem, postId);
+  let result = preprocessPost(postItem);
   
   // Find direct replies to this post
   const replies = allPosts.filter(p => 
@@ -444,7 +450,7 @@ function formatPostWithReplies(
     // Add each reply
     replies.forEach(reply => {
       const replyId = idMapping.get(reply.post.uri)?.id || postId + '.reply';
-      result += formatPostWithReplies(reply, replyId, allPosts, idMapping);
+      result += preprocessPostWithReplies(reply, replyId, allPosts, idMapping);
     });
     
     result += '  </replies>\n' + closingTagPart;
@@ -491,7 +497,7 @@ export function formatFeed(feed: Feed): string {
   // Format standalone posts
   standalonePosts.forEach(post => {
     const postId = idMapping.get(post.post.uri)?.id || String(threadCounter++);
-    result += `  ${formatPost(post, postId)}\n`;
+    result += `  ${preprocessPost(post)}\n`;
   });
   
   result += '</feed>';

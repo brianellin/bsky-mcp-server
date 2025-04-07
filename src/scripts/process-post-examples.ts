@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { formatPost, formatFeed } from '../llm-preprocessor.js';
+import { preprocessPost, formatFeed } from '../llm-preprocessor.js';
 
 async function processPostExamples() {
   // Define paths
@@ -45,7 +45,7 @@ async function processPostExamples() {
         };
         
         // Format the post using the new formatter
-        const formattedPost = formatPost(feedItem, '1');
+        const formattedPost = preprocessPost(postData, '1');
         markdownContent += "### Individual Post:\n```xml\n" + formattedPost + "\n```\n\n";
         
         // If it's a thread with reply, also show a full feed example

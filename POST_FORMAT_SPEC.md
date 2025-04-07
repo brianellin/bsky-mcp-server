@@ -2,132 +2,120 @@
 
 ## Format Overview
 
-This format represents Bluesky posts and feeds in a way that maximizes comprehension by Large Language Models while maintaining structural clarity and relationship information.
+This format represents Bluesky posts in a way that maximizes comprehension by Large Language Models while maintaining structural clarity and relationship information.
 
 ## Core Structure
 
-### Feed Container
-All content is wrapped in a `<feed>` tag containing posts and threads.
-
-### Reference Map
-A reference map provides a lookup table for converting between simple IDs used in the format and original Bluesky URIs.
+### Posts Container
+All content is wrapped in a `<posts>` tag containing individual posts.
 
 ### Post Types
 Posts can have multiple types, including:
 - `standalone` - A regular post
-- `thread_root` - The first post in a thread
 - `reply` - A response to another post
 - `repost` - A reshare of another user's post
 - `quote` - A post that embeds another post with added commentary
-- `image` - A post with image media
-- `video` - A post with video media
-- `link` - A post with an external link
-- `mention` - A post that mentions other users
 - `reply_limited` - A post with limited reply capabilities
+
+### Embed Types
+Embeds can have the following types:
+- `image` - An image attachment
+- `video` - A video attachment
+- `link` - An external link
+- `record` - A reference to a Bluesky record
 
 ## Complete Specification Example
 
 ```xml
-<feed>
-  <!-- Reference map for original post URIs -->
-  <reference_map>
-    <ref id="1.1" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" short_id="3llwjm7dgkc2o" />
-    <ref id="1.2" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" short_id="3llwkeghjyk2o" />
-    <ref id="1.3" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" short_id="3llwkkfiias2o" />
-    <ref id="2" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" short_id="3llwhxehrac2o" />
-    <ref id="3" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" short_id="3lluh2z5vxs2m" />
-    <ref id="4" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" short_id="3llud3c2th224" />
-    <ref id="4.quoted" uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" short_id="3lluaqbsgck2g" />
-    <ref id="5" uri="at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u" short_id="3llucfyjpts2u" />
-    <ref id="6" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" short_id="3llueyg4emc2k" />
-  </reference_map>
-
-  <!-- Example of a thread with multiple posts -->
-  <thread id="1">
-    <post id="1.1" type="thread_root,link">
-      Post: "nothing could have prepared us for the breadth or intensity of the assault on climate action that Trump has unleashed during his first months back in office." I know it's hard to keep Trump's horrors straight, but in the fullness of history, this is likely to be seen as the worst.
-      Author: David Roberts (@volts.wtf)
-      
-      <media type="link">
-        Title: "Years of Climate Action Demolished in Days: A Timeline"
-        URL: https://www.bloomberg.com/opinion/features/2025-03-26/years-of-climate-action-are-being-demolished-in-days-by-trump-a-timeline
-        Description: "Trump's environmental directives are gutting basic protections for Americans and the agencies designed to deliver them."
-      </media>
-      
-      Posted: 4/3/2025, 6:25 PM | Engagement: 331 likes, 155 reposts, 19 replies, 10 quotes
-      
-      <replies>
-        <post id="1.2" type="reply,link" parent="1.1">
-          Post: Meanwhile: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach of extreme weather and its aftermath."
-          Author: David Roberts (@volts.wtf)
-          
-          <media type="link">
-            Title: "Climate Change Could Wipe 40% Off Global Economy, Study Predicts"
-            URL: https://www.sciencealert.com/climate-change-could-wipe-40-off-global-economy-study-predicts
-            Description: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated..."
-          </media>
-          
-          Posted: 4/3/2025, 6:38 PM | Engagement: 52 likes, 12 reposts, 2 replies, 1 quote
-          
-          <replies>
-            <post id="1.3" type="reply,link,mention" parent="1.2">
-              Post: By the way, these links came to me via @billmckibben.bsky.social's excellent newsletter, to which I assume you are all already subscribed.
-              Author: David Roberts (@volts.wtf)
-              
-              <mentions>
-                <user>@billmckibben.bsky.social</user>
-              </mentions>
-              
-              <media type="link">
-                Title: "Hands off...the future"
-                URL: https://billmckibben.substack.com/p/hands-offthe-future
-                Description: "So many ways to wreck an economy, and Trump is trying them all"
-              </media>
-              
-              Posted: 4/3/2025, 6:42 PM | Engagement: 13 likes, 2 reposts, 0 replies, 0 quotes
-            </post>
-          </replies>
-        </post>
-      </replies>
-    </post>
-  </thread>
+<posts>
+  <!-- Example of a post with replies -->
+  <post type="standalone" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwjm7dgkc2o" author_name="David Roberts" author_handle="volts.wtf">
+    <content>
+      "nothing could have prepared us for the breadth or intensity of the assault on climate action that Trump has unleashed during his first months back in office." I know it's hard to keep Trump's horrors straight, but in the fullness of history, this is likely to be seen as the worst.
+    </content>
+    
+    <embed type="link">
+      Title: "Years of Climate Action Demolished in Days: A Timeline"
+      URL: https://www.bloomberg.com/opinion/features/2025-03-26/years-of-climate-action-are-being-demolished-in-days-by-trump-a-timeline
+      Description: "Trump's environmental directives are gutting basic protections for Americans and the agencies designed to deliver them."
+    </embed>
+    
+    Posted: 4/3/2025, 6:25 PM | Engagement: 331 likes, 155 reposts, 19 replies, 10 quotes
+    
+    <replies>
+      <post type="reply" parent_uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkeghjyk2o" author_name="David Roberts" author_handle="volts.wtf">
+        <content>
+          Meanwhile: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach of extreme weather and its aftermath."
+        </content>
+        
+        <embed type="link">
+          Title: "Climate Change Could Wipe 40% Off Global Economy, Study Predicts"
+          URL: https://www.sciencealert.com/climate-change-could-wipe-40-off-global-economy-study-predicts
+          Description: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated..."
+        </embed>
+        
+        Posted: 4/3/2025, 6:38 PM | Engagement: 52 likes, 12 reposts, 2 replies, 1 quote
+        
+        <replies>
+          <post type="reply" parent_uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf">
+            <content>
+              By the way, these links came to me via @billmckibben.bsky.social's excellent newsletter, to which I assume you are all already subscribed.
+            </content>
+            
+            <embed type="link">
+              Title: "Hands off...the future"
+              URL: https://billmckibben.substack.com/p/hands-offthe-future
+              Description: "So many ways to wreck an economy, and Trump is trying them all"
+            </embed>
+            
+            Posted: 4/3/2025, 6:42 PM | Engagement: 13 likes, 2 reposts, 0 replies, 0 quotes
+          </post>
+        </replies>
+      </post>
+    </replies>
+  </post>
   
   <!-- Example of a repost -->
-  <post id="2" type="repost,reply_limited">
+  <post type="repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/danhon.com/post/3llwhxehrac2o" author_name="Dan Hon" author_handle="danhon.com">
     <repost_info>
-      Reposted by: Dan Hon (@danhon.com)
       Reposted at: 4/3/2025, 6:21 PM
     </repost_info>
     
-    <original_post>
-      Post: People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
-      Author: Prisonculture (@prisonculture.bsky.social)
+    <original_post uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+      <content>
+        People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
+      </content>
+      
       Posted: 4/3/2025, 5:55 PM | Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
     </original_post>
   </post>
   
   <!-- Example of a post with an image -->
-  <post id="3" type="standalone,image">
-    Post: have you tried not using a platform that charges you $30 / 100GB of bandwidth
-    Author: futur (@futur.blue)
+  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
+    <content>
+      have you tried not using a platform that charges you $30 / 100GB of bandwidth
+    </content>
     
-    <media type="image">
-      Image: "AI crawlers are wrecking the open internet. My small side project - techpays .com - used to generate below 100GB of traffic per month. It's on Render where 500GB/month included, above it's $30 per 100GB. Meta's AI crawler + other bots have pushed it to 700GB+ per month. WTH"
+    <embed type="image">
+      Image description: "AI crawlers are wrecking the open internet. My small side project - techpays .com - used to generate below 100GB of traffic per month. It's on Render where 500GB/month included, above it's $30 per 100GB. Meta's AI crawler + other bots have pushed it to 700GB+ per month. WTH"
       URL: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
-    </media>
+    </embed>
     
     Posted: 4/2/2025, 3:34 PM | Engagement: 6 likes, 0 reposts, 0 replies
   </post>
   
   <!-- Example of a quote post -->
-  <post id="4" type="quote">
-    Post: Congress would impeach, and Democrats would vote with Republicans to remove him from office... Or, you know, there'd be a coup
-    Author: Nick Cunningham (@nickcunningham.bsky.social)
+  <post type="quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social">
+    <content>
+      Congress would impeach, and Democrats would vote with Republicans to remove him from office... Or, you know, there'd be a coup
+    </content>
     
-    <quoted_post id="4.quoted">
-      Post: Can't help but feel that if President Bernie Sanders pulled this move the entirety of American business would try to get him pushed out of office immediately.
-      Author: Chris Hayes (@chrislhayes.bsky.social)
+    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social">
+      <content>
+        Can't help but feel that if President Bernie Sanders pulled this move the entirety of American business would try to get him pushed out of office immediately.
+      </content>
+      
       Posted: 4/2/2025, 8:41 PM | Engagement: 8213 likes, 1098 reposts, 300 replies
     </quoted_post>
     
@@ -135,111 +123,112 @@ Posts can have multiple types, including:
   </post>
   
   <!-- Example of a post with a video -->
-  <post id="5" type="video">
-    Post: Dude my left foot is swollen af (this is normal)
-    Author: Mr. Dr. Cameron Pfiffer (@cameron.pfiffer.org)
+  <post type="standalone" uri="at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u" bsky_url="https://bsky.app/profile/cameron.pfiffer.org/post/3llucfyjpts2u" author_name="Mr. Dr. Cameron Pfiffer" author_handle="cameron.pfiffer.org">
+    <content>
+      Dude my left foot is swollen af (this is normal)
+    </content>
     
-    <media type="video">
+    <embed type="video">
+      Video description: Description of the video
       Thumbnail: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/thumbnail.jpg
       Playlist: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/playlist.m3u8
-      Aspect ratio: 1440x1080
-    </media>
+    </embed>
     
     Posted: 4/2/2025, 9:11 PM | Engagement: 2 likes, 0 reposts, 3 replies
   </post>
   
   <!-- Example of a post with external link -->
-  <post id="6" type="link">
-    Post: We have an official C# MCP SDK
-    Author: Koji (@littleironwaltz.com)
+  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com">
+    <content>
+      We have an official C# MCP SDK
+    </content>
     
-    <media type="link">
+    <embed type="link">
       Title: "Microsoft partners with Anthropic to create official C# SDK for Model Context Protocol"
       URL: https://devblogs.microsoft.com/blog/microsoft-partners-with-anthropic-to-create-official-c-sdk-for-model-context-protocol
       Description: "Microsoft is collaborating with Anthropic to create an official C# SDK for the Model Context Protocol (MCP). MCP has seen rapid adoption in the AI community, and this partnership aims to enhance the i..."
       Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg
-    </media>
+    </embed>
     
     Posted: 4/2/2025, 9:57 PM | Engagement: 0 likes, 0 reposts, 0 replies
   </post>
   
   <!-- Example of a complex post with multiple attributes -->
-  <post id="7" type="reply,quote,image,video">
-    Post: This is an example of a complex post with multiple media types and attributes
-    Author: Complex Example (@complex)
+  <post type="reply,quote" uri="at://did:plc:example/app.bsky.feed.post/complex" bsky_url="https://bsky.app/profile/complex/post/complex" author_name="Complex Example" author_handle="complex">
+    <content>
+      This is an example of a complex post with multiple media types and attributes
+    </content>
     
-    <reply_to id="3">
-      Original Post: have you tried not using a platform that charges you $30 / 100GB of bandwidth
-      Author: futur (@futur.blue)
+    <reply_to uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
+      <content>
+        have you tried not using a platform that charges you $30 / 100GB of bandwidth
+      </content>
     </reply_to>
     
-    <quoted_post id="6">
-      Post: We have an official C# MCP SDK
-      Author: Koji (@littleironwaltz.com)
+    <quoted_post uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com">
+      <content>
+        We have an official C# MCP SDK
+      </content>
     </quoted_post>
     
-    <media type="image">
+    <embed type="image">
       Image: "Description of the first image"
       URL: https://example.com/image1.jpg
-    </media>
+    </embed>
     
-    <media type="image">
+    <embed type="image">
       Image: "Description of the second image"
       URL: https://example.com/image2.jpg
-    </media>
+    </embed>
     
-    <media type="video">
+    <embed type="video">
       Thumbnail: https://example.com/video-thumb.jpg
       URL: https://example.com/video.mp4
-    </media>
+    </embed>
     
     Posted: 4/3/2025, 7:15 PM | Engagement: 8 likes, 1 repost, 2 replies
   </post>
-</feed>
+</posts>
 ```
 
 ## Format Details
 
-### Reference Map
-The `<reference_map>` section provides a lookup table that maps the simple format IDs to original Bluesky URIs:
-- `id` - The simple ID used in the format
-- `uri` - The full Bluesky URI
-- `short_id` - The last segment of the URI (optional, for easier reference)
-
 ### Post Information
 Each post includes:
-- `id` - Simple identifier used within the format
+- `uri` - The full Bluesky URI for the post (used for identification)
+- `bsky_url` - The web URL where the post can be viewed
 - `type` - Comma-separated list of post attributes/types
-- Post content (text)
-- Author information (name and handle)
+- `author_name` - The display name of the post author
+- `author_handle` - The handle of the post author
+- Post content (wrapped in `<content>` tags)
 - Posting timestamp (in human-readable format)
 - Engagement metrics (likes, reposts, replies, quotes)
 
-### Media Information
-Media is contained in `<media>` tags with a type attribute:
+### Embed Information
+Embeds are contained in `<embed>` tags with a type attribute:
 - `type="image"` - For images
 - `type="video"` - For videos
 - `type="link"` - For external links
+- `type="record"` - For references to Bluesky records
 
 ### Special Sections
-- `<quoted_post>` - For embedded/quoted posts
-- `<repost_info>` - Information about who reposted content
-- `<original_post>` - Original content of a repost
-- `<reply_to>` - Reference to the post being replied to
-- `<mentions>` - List of users mentioned in the post
+- `<quoted_post>` - For embedded/quoted posts, includes author attributes
+- `<repost_info>` - Information about repost timestamp
+- `<original_post>` - Original content of a repost, includes author attributes and URI
+- `<reply_to>` - Reference to the post being replied to, includes author attributes
 
 ### Hierarchical Structure
-- Threads use the `<thread>` tag to group related posts
-- Replies are nested in `<replies>` tags under their parent post
-- The `parent` attribute provides explicit relationship information
+- Replies can be nested in `<replies>` tags under their parent post
+- The `parent_uri` attribute provides explicit relationship information by referencing the URI of the parent post
 
 ## Implementation Notes
 
-1. The format separates structure (using XML) from content (using key-value pairs)
-2. Complex posts with multiple attributes are supported through comma-separated types
-3. The reference map provides a clean way to reference original URIs without cluttering the format
-4. The hierarchical ID system makes relationships immediately clear
-5. Content is structured to prioritize the most important information first
-6. All elements maintain clear, consistent formatting for better LLM comprehension
+1. The format separates structure (using XML) from content (using content tags)
+2. Post types indicate the post's function, while embed types indicate the type of embedded content
+3. Post URIs are used as primary identifiers for posts and references
+4. Author information is provided as attributes on each post element
+5. Content is explicitly wrapped in `<content>` tags for better clarity
+6. Posts are grouped in a simple container without complex thread relationships
+7. All elements maintain clear, consistent formatting for better LLM comprehension
 
 This format provides a robust, flexible way to represent Bluesky posts that balances the needs of LLM comprehension with accurate representation of the original content and relationships.
