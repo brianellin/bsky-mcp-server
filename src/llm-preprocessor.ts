@@ -166,10 +166,7 @@ function determinePostType(post: Post, reason?: any): string[] {
     types.push('standalone');
   }
   
-  // Check if it's a repost
-  if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost') {
-    types.push('repost');
-  }
+  // Note: repost is no longer a post type since we're using a dedicated repost structure
   
   // Check if it has a quoted post
   if (post.embed && post.embed.$type === 'app.bsky.embed.record#view') {
@@ -189,16 +186,53 @@ function determinePostType(post: Post, reason?: any): string[] {
  */
 function formatPost(feedItem: FeedItem): string {
   const { post, reply, reason } = feedItem;
+  
+  // Handle repost specially
+  if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost' && reason.by) {
+    // Create a repost element with the reposter's info
+    const formattedDate = formatDate(reason.indexedAt || '');
+    let result = `  <repost author_name="${reason.by.displayName || ''}" author_handle="${reason.by.handle}" reposted_at="${formattedDate}">\n`;
+    
+    // Format the original post (without the repost type)
+    const types = determinePostType(post);
+    const bskyUrl = createBskyUrl(post.uri, post.author.handle);
+    
+    // Add the post inside the repost
+    result += `    <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
+    result += `      <content>\n        ${post.record.text}\n      </content>\n`;
+    
+    // Add embeds
+    result += formatEmbeds(post, '      ');
+    
+    // Add engagement metrics and posting info
+    result += `      \n      Posted: ${formatDate(post.record.createdAt)} | Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
+    
+    // Add thread settings for reposts if applicable
+    if (post.threadgate) {
+      const allowFollowers = post.threadgate.record.allow.some(a => a.$type === 'app.bsky.feed.threadgate#followerRule');
+      const allowFollowing = post.threadgate.record.allow.some(a => a.$type === 'app.bsky.feed.threadgate#followingRule');
+      if (allowFollowers && allowFollowing) {
+        result += `      Thread settings: Replies limited to followers/following\n`;
+      } else if (allowFollowers) {
+        result += `      Thread settings: Replies limited to followers\n`;
+      } else if (allowFollowing) {
+        result += `      Thread settings: Replies limited to following\n`;
+      }
+    }
+    
+    // Close the post and repost tags
+    result += `    </post>\n`;
+    result += `  </repost>`;
+    
+    return result;
+  }
+  
+  // For non-reposts, continue with normal formatting
   const types = determinePostType(post, reason);
   const bskyUrl = createBskyUrl(post.uri, post.author.handle);
   
-  // For reposts, use the reposter's information for the main post tag
-  const postAuthor = (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost' && reason.by) 
-    ? reason.by 
-    : post.author;
-  
   // Start the post tag with all the attributes
-  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${postAuthor?.displayName || ''}" author_handle="${postAuthor?.handle || ''}">\n`;
+  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
   
   // Add post content
   result += `    <content>\n      ${post.record.text}\n    </content>\n`;
@@ -220,73 +254,57 @@ function formatPost(feedItem: FeedItem): string {
     result += `    </quoted_post>\n`;
   }
   
-  // Handle reposts
-  if (reason && reason.$type === 'app.bsky.feed.defs#reasonRepost') {
-    result += `    \n    <repost_info>\n`;
-    result += `      Reposted at: ${formatDate(reason.indexedAt || '')}\n`;
-    result += `    </repost_info>\n`;
-    
-    // Use the original author's information for the original_post
-    result += `    \n    <original_post uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
-    result += `      <content>\n        ${post.record.text}\n      </content>\n`;
-    result += `      \n      Posted: ${formatDate(post.record.createdAt)} | Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies\n`;
-    
-    // Add thread settings for reposts if applicable
-    if (post.threadgate) {
-      const allowFollowers = post.threadgate.record.allow.some(a => a.$type === 'app.bsky.feed.threadgate#followerRule');
-      const allowFollowing = post.threadgate.record.allow.some(a => a.$type === 'app.bsky.feed.threadgate#followingRule');
-      if (allowFollowers && allowFollowing) {
-        result += `      Thread settings: Replies limited to followers/following\n`;
-      } else if (allowFollowers) {
-        result += `      Thread settings: Replies limited to followers\n`;
-      } else if (allowFollowing) {
-        result += `      Thread settings: Replies limited to following\n`;
-      }
-    }
-    
-    result += `    </original_post>\n`;
-  }
-  
-  // Handle embeds
-  if (post.embed) {
-    // Images
-    if (post.embed.$type === 'app.bsky.embed.images#view' && post.embed.images) {
-      post.embed.images.forEach((image) => {
-        result += `    \n    <embed type="image">\n`;
-        result += `      Image description: "${image.alt || 'No description provided'}"\n`;
-        result += `      URL: ${image.fullsize || image.thumb || ''}\n`;
-        result += `    </embed>\n`;
-      });
-    } 
-    // External links
-    else if (post.embed.$type === 'app.bsky.embed.external#view' && post.embed.external) {
-      result += `    \n    <embed type="link">\n`;
-      result += `      Title: "${post.embed.external.title}"\n`;
-      result += `      URL: ${post.embed.external.uri}\n`;
-      result += `      Description: "${post.embed.external.description}"\n`;
-      if (post.embed.external.thumb) {
-        result += `      Thumbnail: ${post.embed.external.thumb}\n`;
-      }
-      result += `    </embed>\n`;
-    }
-    // Videos
-    else if (post.embed.$type.includes('video')) {
-      result += `    \n    <embed type="video">\n`;
-      if (post.embed.media && post.embed.media.thumbnail) {
-        result += `      Thumbnail: ${post.embed.media.thumbnail.url || ''}\n`;
-      }
-      if (post.embed.media && post.embed.media.video) {
-        result += `      Playlist: ${post.embed.media.video.url || ''}\n`;
-      }
-      result += `    </embed>\n`;
-    }
-  }
+  // Add embeds
+  result += formatEmbeds(post, '    ');
   
   // Add engagement and posting info
   result += `    \n    Posted: ${formatDate(post.record.createdAt)} | Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
   
   // Close the post tag
   result += `  </post>`;
+  
+  return result;
+}
+
+/**
+ * Format embeds for a post (extracted to a helper function)
+ */
+function formatEmbeds(post: Post, indentation: string = ''): string {
+  let result = '';
+  
+  if (post.embed) {
+    // Images
+    if (post.embed.$type === 'app.bsky.embed.images#view' && post.embed.images) {
+      post.embed.images.forEach((image) => {
+        result += `${indentation}\n${indentation}<embed type="image">\n`;
+        result += `${indentation}  Image description: "${image.alt || 'No description provided'}"\n`;
+        result += `${indentation}  URL: ${image.fullsize || image.thumb || ''}\n`;
+        result += `${indentation}</embed>\n`;
+      });
+    } 
+    // External links
+    else if (post.embed.$type === 'app.bsky.embed.external#view' && post.embed.external) {
+      result += `${indentation}\n${indentation}<embed type="link">\n`;
+      result += `${indentation}  Title: "${post.embed.external.title}"\n`;
+      result += `${indentation}  URL: ${post.embed.external.uri}\n`;
+      result += `${indentation}  Description: "${post.embed.external.description}"\n`;
+      if (post.embed.external.thumb) {
+        result += `${indentation}  Thumbnail: ${post.embed.external.thumb}\n`;
+      }
+      result += `${indentation}</embed>\n`;
+    }
+    // Videos
+    else if (post.embed.$type.includes('video')) {
+      result += `${indentation}\n${indentation}<embed type="video">\n`;
+      if (post.embed.media && post.embed.media.thumbnail) {
+        result += `${indentation}  Thumbnail: ${post.embed.media.thumbnail.url || ''}\n`;
+      }
+      if (post.embed.media && post.embed.media.video) {
+        result += `${indentation}  Playlist: ${post.embed.media.video.url || ''}\n`;
+      }
+      result += `${indentation}</embed>\n`;
+    }
+  }
   
   return result;
 }
@@ -383,7 +401,12 @@ function formatThread(feedItems: FeedItem[], rootUri: string): string {
   if (replies) {
     // Insert before the closing post tag
     const lastPostTagIndex = result.lastIndexOf('</post>');
-    result = result.substring(0, lastPostTagIndex) + replies + result.substring(lastPostTagIndex);
+    // If the post is a repost, we need to insert the replies into the nested post
+    if (result.includes('<repost') && result.includes('</post>')) {
+      result = result.substring(0, lastPostTagIndex) + replies + result.substring(lastPostTagIndex);
+    } else {
+      result = result.substring(0, lastPostTagIndex) + replies + result.substring(lastPostTagIndex);
+    }
   }
   
   return result;

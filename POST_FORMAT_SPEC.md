@@ -13,9 +13,14 @@ All content is wrapped in a `<posts>` tag containing individual posts.
 Posts can have multiple types, including:
 - `standalone` - A regular post
 - `reply` - A response to another post
-- `repost` - A reshare of another user's post
 - `quote` - A post that embeds another post with added commentary
 - `reply_limited` - A post with limited reply capabilities
+
+### Repost Structure
+Reposts use a dedicated `<repost>` tag structure containing:
+- Attributes of the person who reposted it (author_name, author_handle, resposted_at)
+- A timestamp for when the repost occurred
+- The full original post structure inside the repost tag
 
 ### Embed Types
 Embeds can have the following types:
@@ -76,20 +81,16 @@ Embeds can have the following types:
   </post>
   
   <!-- Example of a repost -->
-  <post type="repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/danhon.com/post/3llwhxehrac2o" author_name="Dan Hon" author_handle="danhon.com">
-    <repost_info>
-      Reposted at: 4/3/2025, 6:21 PM
-    </repost_info>
-    
-    <original_post uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+  <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="4/3/2025, 6:21 PM">
+    <post type="reply_limited" uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
       Posted: 4/3/2025, 5:55 PM | Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
-    </original_post>
-  </post>
+    </post>
+  </repost>
   
   <!-- Example of a post with an image -->
   <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
@@ -204,6 +205,14 @@ Each post includes:
 - Posting timestamp (in human-readable format)
 - Engagement metrics (likes, reposts, replies, quotes)
 
+### Repost Information
+Reposts use a dedicated structure containing:
+- `<repost>` - Container for the repost with attributes:
+  - `author_name` - Display name of the user who reposted
+  - `author_handle` - Handle of the user who reposted
+  - `reposted_at` - Timestamp of when the repost occurred
+- The original post is nested within the repost container with its full structure
+
 ### Embed Information
 Embeds are contained in `<embed>` tags with a type attribute:
 - `type="image"` - For images
@@ -213,8 +222,6 @@ Embeds are contained in `<embed>` tags with a type attribute:
 
 ### Special Sections
 - `<quoted_post>` - For embedded/quoted posts, includes author attributes
-- `<repost_info>` - Information about repost timestamp
-- `<original_post>` - Original content of a repost, includes author attributes and URI
 - `<reply_to>` - Reference to the post being replied to, includes author attributes
 
 ### Hierarchical Structure
@@ -230,5 +237,6 @@ Embeds are contained in `<embed>` tags with a type attribute:
 5. Content is explicitly wrapped in `<content>` tags for better clarity
 6. Posts are grouped in a simple container without complex thread relationships
 7. All elements maintain clear, consistent formatting for better LLM comprehension
+8. Reposts use a dedicated `<repost>` container that wraps the original post structure
 
 This format provides a robust, flexible way to represent Bluesky posts that balances the needs of LLM comprehension with accurate representation of the original content and relationships.

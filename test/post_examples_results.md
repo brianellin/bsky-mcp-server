@@ -181,51 +181,31 @@ TypeError: Cannot read properties of undefined (reading 'record')
 
 ### Individual Post:
 ```xml
-  <post type="standalone,repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Dan Hon" author_handle="danhon.com">
-    <content>
-      People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
-    </content>
-    
-    <repost_info>
-      Reposted at: 2025-04-03 11:21:24
-    </repost_info>
-    
-    <original_post uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+  <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="2025-04-03 11:21:24">
+    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
       Posted: 2025-04-03 10:55:45 | Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
-    </original_post>
-    
-    Posted: 2025-04-03 10:55:45 | Engagement: 523 likes, 108 reposts, 12 replies
-  </post>
+    </post>
+  </repost>
 ```
 
 ### Using preprocessPosts:
 ```xml
 <posts>
-  <post type="standalone,repost,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Dan Hon" author_handle="danhon.com">
-    <content>
-      People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
-    </content>
-    
-    <repost_info>
-      Reposted at: 2025-04-03 11:21:24
-    </repost_info>
-    
-    <original_post uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+  <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="2025-04-03 11:21:24">
+    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
       Posted: 2025-04-03 10:55:45 | Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
-    </original_post>
-    
-    Posted: 2025-04-03 10:55:45 | Engagement: 523 likes, 108 reposts, 12 replies
-  </post>
+    </post>
+  </repost>
 </posts>
 ```
 
