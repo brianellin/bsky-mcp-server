@@ -12,7 +12,7 @@ import {
   McpErrorResponse,
   McpSuccessResponse
 } from './utils.js';
-import { formatPost as formatPostNew } from "./llm-formatter.js";
+import { formatPost as formatPostNew } from "./llm-preprocessor.js";
 import { registerResources, resourcesList } from './resources.js';
 import { registerPrompts } from './prompts.js';
 

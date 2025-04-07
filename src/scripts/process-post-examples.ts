@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { formatPost, formatFeed } from '../llm-formatter.js';
+import { formatPost, formatFeed } from '../llm-preprocessor.js';
 
 async function processPostExamples() {
   // Define paths
