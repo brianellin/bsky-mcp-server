@@ -196,16 +196,17 @@ function formatPost(feedItem: FeedItem): string {
     // Format the original post (without the repost type)
     const types = determinePostType(post);
     const bskyUrl = createBskyUrl(post.uri, post.author.handle);
+    const postDate = formatDate(post.record.createdAt);
     
     // Add the post inside the repost
-    result += `    <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
+    result += `    <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
     result += `      <content>\n        ${post.record.text}\n      </content>\n`;
     
     // Add embeds
     result += formatEmbeds(post, '      ');
     
-    // Add engagement metrics and posting info
-    result += `      \n      Posted: ${formatDate(post.record.createdAt)} | Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
+    // Add engagement metrics info (without Posted: prefix)
+    result += `      \n      Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
     
     // Add thread settings for reposts if applicable
     if (post.threadgate) {
@@ -230,9 +231,10 @@ function formatPost(feedItem: FeedItem): string {
   // For non-reposts, continue with normal formatting
   const types = determinePostType(post, reason);
   const bskyUrl = createBskyUrl(post.uri, post.author.handle);
+  const postDate = formatDate(post.record.createdAt);
   
   // Start the post tag with all the attributes
-  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}">\n`;
+  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
   
   // Add post content
   result += `    <content>\n      ${post.record.text}\n    </content>\n`;
@@ -248,17 +250,18 @@ function formatPost(feedItem: FeedItem): string {
   // Handle quote posts
   if (post.embed && post.embed.$type === 'app.bsky.embed.record#view' && post.embed.record) {
     const quotedUrl = createBskyUrl(post.embed.record.uri, post.embed.record.author.handle);
-    result += `    \n    <quoted_post uri="${post.embed.record.uri}" bsky_url="${quotedUrl}" author_name="${post.embed.record.author.displayName || ''}" author_handle="${post.embed.record.author.handle}">\n`;
+    const quotedPostDate = formatDate(post.embed.record.value.createdAt);
+    result += `    \n    <quoted_post uri="${post.embed.record.uri}" bsky_url="${quotedUrl}" author_name="${post.embed.record.author.displayName || ''}" author_handle="${post.embed.record.author.handle}" posted_at="${quotedPostDate}">\n`;
     result += `      <content>\n        ${post.embed.record.value.text}\n      </content>\n`;
-    result += `      \n      Posted: ${formatDate(post.embed.record.value.createdAt)} | Engagement: ${post.embed.record.likeCount || 0} likes, ${post.embed.record.repostCount || 0} reposts, ${post.embed.record.replyCount || 0} replies\n`;
+    result += `      \n      Engagement: ${post.embed.record.likeCount || 0} likes, ${post.embed.record.repostCount || 0} reposts, ${post.embed.record.replyCount || 0} replies\n`;
     result += `    </quoted_post>\n`;
   }
   
   // Add embeds
   result += formatEmbeds(post, '    ');
   
-  // Add engagement and posting info
-  result += `    \n    Posted: ${formatDate(post.record.createdAt)} | Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
+  // Add engagement metrics (without Posted: prefix)
+  result += `    \n    Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
   
   // Close the post tag
   result += `  </post>`;

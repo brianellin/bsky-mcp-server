@@ -34,7 +34,7 @@ Embeds can have the following types:
 ```xml
 <posts>
   <!-- Example of a post with replies -->
-  <post type="standalone" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwjm7dgkc2o" author_name="David Roberts" author_handle="volts.wtf">
+  <post type="standalone" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwjm7dgkc2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="4/3/2025, 6:25 PM">
     <content>
       "nothing could have prepared us for the breadth or intensity of the assault on climate action that Trump has unleashed during his first months back in office." I know it's hard to keep Trump's horrors straight, but in the fullness of history, this is likely to be seen as the worst.
     </content>
@@ -45,10 +45,10 @@ Embeds can have the following types:
       Description: "Trump's environmental directives are gutting basic protections for Americans and the agencies designed to deliver them."
     </embed>
     
-    Posted: 4/3/2025, 6:25 PM | Engagement: 331 likes, 155 reposts, 19 replies, 10 quotes
+    Engagement: 331 likes, 155 reposts, 19 replies, 10 quotes
     
     <replies>
-      <post type="reply" parent_uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkeghjyk2o" author_name="David Roberts" author_handle="volts.wtf">
+      <post type="reply" parent_uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwjm7dgkc2o" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkeghjyk2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="4/3/2025, 6:38 PM">
         <content>
           Meanwhile: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach of extreme weather and its aftermath."
         </content>
@@ -59,10 +59,10 @@ Embeds can have the following types:
           Description: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated..."
         </embed>
         
-        Posted: 4/3/2025, 6:38 PM | Engagement: 52 likes, 12 reposts, 2 replies, 1 quote
+        Engagement: 52 likes, 12 reposts, 2 replies, 1 quote
         
         <replies>
-          <post type="reply" parent_uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf">
+          <post type="reply" parent_uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="4/3/2025, 6:42 PM">
             <content>
               By the way, these links came to me via @billmckibben.bsky.social's excellent newsletter, to which I assume you are all already subscribed.
             </content>
@@ -73,7 +73,7 @@ Embeds can have the following types:
               Description: "So many ways to wreck an economy, and Trump is trying them all"
             </embed>
             
-            Posted: 4/3/2025, 6:42 PM | Engagement: 13 likes, 2 reposts, 0 replies, 0 quotes
+            Engagement: 13 likes, 2 reposts, 0 replies, 0 quotes
           </post>
         </replies>
       </post>
@@ -82,18 +82,18 @@ Embeds can have the following types:
   
   <!-- Example of a repost -->
   <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="4/3/2025, 6:21 PM">
-    <post type="reply_limited" uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+    <post type="reply_limited" uri="at://did:plc:original/app.bsky.feed.post/original" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/original" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="4/3/2025, 5:55 PM">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
-      Posted: 4/3/2025, 5:55 PM | Engagement: 523 likes, 108 reposts, 12 replies
+      Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
     </post>
   </repost>
   
   <!-- Example of a post with an image -->
-  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
+  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue" posted_at="4/2/2025, 3:34 PM">
     <content>
       have you tried not using a platform that charges you $30 / 100GB of bandwidth
     </content>
@@ -103,28 +103,28 @@ Embeds can have the following types:
       URL: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
     </embed>
     
-    Posted: 4/2/2025, 3:34 PM | Engagement: 6 likes, 0 reposts, 0 replies
+    Engagement: 6 likes, 0 reposts, 0 replies
   </post>
   
   <!-- Example of a quote post -->
-  <post type="quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social">
+  <post type="quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social" posted_at="4/2/2025, 9:23 PM">
     <content>
       Congress would impeach, and Democrats would vote with Republicans to remove him from office... Or, you know, there'd be a coup
     </content>
     
-    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social">
+    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social" posted_at="4/2/2025, 8:41 PM">
       <content>
         Can't help but feel that if President Bernie Sanders pulled this move the entirety of American business would try to get him pushed out of office immediately.
       </content>
       
-      Posted: 4/2/2025, 8:41 PM | Engagement: 8213 likes, 1098 reposts, 300 replies
+      Engagement: 8213 likes, 1098 reposts, 300 replies
     </quoted_post>
     
-    Posted: 4/2/2025, 9:23 PM | Engagement: 1 like, 0 reposts, 0 replies
+    Engagement: 1 like, 0 reposts, 0 replies
   </post>
   
   <!-- Example of a post with a video -->
-  <post type="standalone" uri="at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u" bsky_url="https://bsky.app/profile/cameron.pfiffer.org/post/3llucfyjpts2u" author_name="Mr. Dr. Cameron Pfiffer" author_handle="cameron.pfiffer.org">
+  <post type="standalone" uri="at://did:plc:gfrmhdmjvxn2sjedzboeudef/app.bsky.feed.post/3llucfyjpts2u" bsky_url="https://bsky.app/profile/cameron.pfiffer.org/post/3llucfyjpts2u" author_name="Mr. Dr. Cameron Pfiffer" author_handle="cameron.pfiffer.org" posted_at="4/2/2025, 9:11 PM">
     <content>
       Dude my left foot is swollen af (this is normal)
     </content>
@@ -135,11 +135,11 @@ Embeds can have the following types:
       Playlist: https://video.bsky.app/watch/did%3Aplc%3Agfrmhdmjvxn2sjedzboeudef/bafkreibfzgezk2jhlef5i3du5yw3p6qn6wxynakf53seqahf743i6yzbpa/playlist.m3u8
     </embed>
     
-    Posted: 4/2/2025, 9:11 PM | Engagement: 2 likes, 0 reposts, 3 replies
+    Engagement: 2 likes, 0 reposts, 3 replies
   </post>
   
   <!-- Example of a post with external link -->
-  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com">
+  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com" posted_at="4/2/2025, 9:57 PM">
     <content>
       We have an official C# MCP SDK
     </content>
@@ -151,11 +151,11 @@ Embeds can have the following types:
       Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg
     </embed>
     
-    Posted: 4/2/2025, 9:57 PM | Engagement: 0 likes, 0 reposts, 0 replies
+    Engagement: 0 likes, 0 reposts, 0 replies
   </post>
   
   <!-- Example of a complex post with multiple attributes -->
-  <post type="reply,quote" uri="at://did:plc:example/app.bsky.feed.post/complex" bsky_url="https://bsky.app/profile/complex/post/complex" author_name="Complex Example" author_handle="complex">
+  <post type="reply,quote" uri="at://did:plc:example/app.bsky.feed.post/complex" bsky_url="https://bsky.app/profile/complex/post/complex" author_name="Complex Example" author_handle="complex" posted_at="4/3/2025, 7:15 PM">
     <content>
       This is an example of a complex post with multiple media types and attributes
     </content>
@@ -166,7 +166,7 @@ Embeds can have the following types:
       </content>
     </reply_to>
     
-    <quoted_post uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com">
+    <quoted_post uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com" posted_at="4/2/2025, 9:57 PM">
       <content>
         We have an official C# MCP SDK
       </content>
@@ -187,7 +187,7 @@ Embeds can have the following types:
       URL: https://example.com/video.mp4
     </embed>
     
-    Posted: 4/3/2025, 7:15 PM | Engagement: 8 likes, 1 repost, 2 replies
+    Engagement: 8 likes, 1 repost, 2 replies
   </post>
 </posts>
 ```
@@ -201,8 +201,8 @@ Each post includes:
 - `type` - Comma-separated list of post attributes/types
 - `author_name` - The display name of the post author
 - `author_handle` - The handle of the post author
+- `posted_at` - Timestamp when the post was created
 - Post content (wrapped in `<content>` tags)
-- Posting timestamp (in human-readable format)
 - Engagement metrics (likes, reposts, replies, quotes)
 
 ### Repost Information
@@ -238,5 +238,6 @@ Embeds are contained in `<embed>` tags with a type attribute:
 6. Posts are grouped in a simple container without complex thread relationships
 7. All elements maintain clear, consistent formatting for better LLM comprehension
 8. Reposts use a dedicated `<repost>` container that wraps the original post structure
+9. Timestamps are included as attributes on post elements rather than in the text content
 
 This format provides a robust, flexible way to represent Bluesky posts that balances the needs of LLM comprehension with accurate representation of the original content and relationships.

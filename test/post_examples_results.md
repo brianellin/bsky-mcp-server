@@ -4,7 +4,7 @@
 
 ### Individual Post:
 ```xml
-  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com">
+  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com" posted_at="2025-04-02 14:57:19">
     <content>
       We have an official C# MCP SDK
     </content>
@@ -16,14 +16,14 @@
       Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg
     </embed>
     
-    Posted: 2025-04-02 14:57:19 | Engagement: 0 likes, 0 reposts, 0 replies
+    Engagement: 0 likes, 0 reposts, 0 replies
   </post>
 ```
 
 ### Using preprocessPosts:
 ```xml
 <posts>
-  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com">
+  <post type="standalone" uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com" posted_at="2025-04-02 14:57:19">
     <content>
       We have an official C# MCP SDK
     </content>
@@ -35,7 +35,7 @@
       Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:pxfxhbwjtscbmvbe62shdqbe/bafkreig4gxjejqcb2dsuvqgk7edi24vjmwtricry5qn7wycenescq52inq@jpeg
     </embed>
     
-    Posted: 2025-04-02 14:57:19 | Engagement: 0 likes, 0 reposts, 0 replies
+    Engagement: 0 likes, 0 reposts, 0 replies
   </post>
 </posts>
 ```
@@ -46,7 +46,7 @@
 
 ### Individual Post:
 ```xml
-  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
+  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue" posted_at="2025-04-02 15:34:34">
     <content>
       have you tried not using a platform that charges you $30 / 100GB of bandwidth
     </content>
@@ -62,14 +62,14 @@ WTH"
       URL: https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
     </embed>
     
-    Posted: 2025-04-02 15:34:34 | Engagement: 6 likes, 0 reposts, 0 replies
+    Engagement: 6 likes, 0 reposts, 0 replies
   </post>
 ```
 
 ### Using preprocessPosts:
 ```xml
 <posts>
-  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
+  <post type="standalone" uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue" posted_at="2025-04-02 15:34:34">
     <content>
       have you tried not using a platform that charges you $30 / 100GB of bandwidth
     </content>
@@ -85,7 +85,7 @@ WTH"
       URL: https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uu5axsmbm2or2dngy4gwchec/bafkreid63xdhokzxbc7oafwf3vcad6tzsuwkalhm4swkhjkp4sqylnkcba@jpeg
     </embed>
     
-    Posted: 2025-04-02 15:34:34 | Engagement: 6 likes, 0 reposts, 0 replies
+    Engagement: 6 likes, 0 reposts, 0 replies
   </post>
 </posts>
 ```
@@ -96,44 +96,44 @@ WTH"
 
 ### Individual Post:
 ```xml
-  <post type="standalone,quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social">
+  <post type="standalone,quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social" posted_at="2025-04-02 14:23:08">
     <content>
       Congress would impeach, and Democrats would vote with Republicans to remove him from office 
 
 Or, you know, there'd be a coup
     </content>
     
-    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social">
+    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social" posted_at="2025-04-02 13:41:12">
       <content>
         Can’t help but feel that if President Bernie Sanders pulled this move the entirety of American business would try to get him pushed out of office immediately.
       </content>
       
-      Posted: 2025-04-02 13:41:12 | Engagement: 8213 likes, 1098 reposts, 300 replies
+      Engagement: 8213 likes, 1098 reposts, 300 replies
     </quoted_post>
     
-    Posted: 2025-04-02 14:23:08 | Engagement: 1 likes, 0 reposts, 0 replies
+    Engagement: 1 likes, 0 reposts, 0 replies
   </post>
 ```
 
 ### Using preprocessPosts:
 ```xml
 <posts>
-  <post type="standalone,quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social">
+  <post type="standalone,quote" uri="at://did:plc:7r5xfysukluplxs2hufswhe4/app.bsky.feed.post/3llud3c2th224" bsky_url="https://bsky.app/profile/nickcunningham.bsky.social/post/3llud3c2th224" author_name="Nick Cunningham" author_handle="nickcunningham.bsky.social" posted_at="2025-04-02 14:23:08">
     <content>
       Congress would impeach, and Democrats would vote with Republicans to remove him from office 
 
 Or, you know, there'd be a coup
     </content>
     
-    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social">
+    <quoted_post uri="at://did:plc:e62gb2ushvtvjvqcbrxeaw2n/app.bsky.feed.post/3lluaqbsgck2g" bsky_url="https://bsky.app/profile/chrislhayes.bsky.social/post/3lluaqbsgck2g" author_name="Chris Hayes" author_handle="chrislhayes.bsky.social" posted_at="2025-04-02 13:41:12">
       <content>
         Can’t help but feel that if President Bernie Sanders pulled this move the entirety of American business would try to get him pushed out of office immediately.
       </content>
       
-      Posted: 2025-04-02 13:41:12 | Engagement: 8213 likes, 1098 reposts, 300 replies
+      Engagement: 8213 likes, 1098 reposts, 300 replies
     </quoted_post>
     
-    Posted: 2025-04-02 14:23:08 | Engagement: 1 likes, 0 reposts, 0 replies
+    Engagement: 1 likes, 0 reposts, 0 replies
   </post>
 </posts>
 ```
@@ -153,24 +153,24 @@ TypeError: Cannot read properties of undefined (reading 'record')
 
 ### Individual Post:
 ```xml
-  <post type="standalone" uri="at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.feed.post/3lmagyhnygs2b" bsky_url="https://bsky.app/profile/tessa.germnetwork.com/post/3lmagyhnygs2b" author_name="tessalaprofessa" author_handle="tessa.germnetwork.com">
+  <post type="standalone" uri="at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.feed.post/3lmagyhnygs2b" bsky_url="https://bsky.app/profile/tessa.germnetwork.com/post/3lmagyhnygs2b" author_name="tessalaprofessa" author_handle="tessa.germnetwork.com" posted_at="2025-04-07 10:05:05">
     <content>
       you know it's bad when you're checking the 10 year range
     </content>
     
-    Posted: 2025-04-07 10:05:05 | Engagement: 1 likes, 0 reposts, 0 replies
+    Engagement: 1 likes, 0 reposts, 0 replies
   </post>
 ```
 
 ### Using preprocessPosts:
 ```xml
 <posts>
-  <post type="standalone" uri="at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.feed.post/3lmagyhnygs2b" bsky_url="https://bsky.app/profile/tessa.germnetwork.com/post/3lmagyhnygs2b" author_name="tessalaprofessa" author_handle="tessa.germnetwork.com">
+  <post type="standalone" uri="at://did:plc:ad4m72ykh2evfdqen3qowxmg/app.bsky.feed.post/3lmagyhnygs2b" bsky_url="https://bsky.app/profile/tessa.germnetwork.com/post/3lmagyhnygs2b" author_name="tessalaprofessa" author_handle="tessa.germnetwork.com" posted_at="2025-04-07 10:05:05">
     <content>
       you know it's bad when you're checking the 10 year range
     </content>
     
-    Posted: 2025-04-07 10:05:05 | Engagement: 1 likes, 0 reposts, 0 replies
+    Engagement: 1 likes, 0 reposts, 0 replies
   </post>
 </posts>
 ```
@@ -182,12 +182,12 @@ TypeError: Cannot read properties of undefined (reading 'record')
 ### Individual Post:
 ```xml
   <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="2025-04-03 11:21:24">
-    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="2025-04-03 10:55:45">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
-      Posted: 2025-04-03 10:55:45 | Engagement: 523 likes, 108 reposts, 12 replies
+      Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
     </post>
   </repost>
@@ -197,12 +197,12 @@ TypeError: Cannot read properties of undefined (reading 'record')
 ```xml
 <posts>
   <repost author_name="Dan Hon" author_handle="danhon.com" reposted_at="2025-04-03 11:21:24">
-    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social">
+    <post type="standalone,reply_limited" uri="at://did:plc:6tr6tuzlx2db3rduzr2d6r24/app.bsky.feed.post/3llwhxehrac2o" bsky_url="https://bsky.app/profile/prisonculture.bsky.social/post/3llwhxehrac2o" author_name="Prisonculture" author_handle="prisonculture.bsky.social" posted_at="2025-04-03 10:55:45">
       <content>
         People who told everyone that masking was the worst possible thing to be asked to do are now telling USians that "sacrifice" and it's so ridiculous.
       </content>
       
-      Posted: 2025-04-03 10:55:45 | Engagement: 523 likes, 108 reposts, 12 replies
+      Engagement: 523 likes, 108 reposts, 12 replies
       Thread settings: Replies limited to followers/following
     </post>
   </repost>
@@ -215,7 +215,7 @@ TypeError: Cannot read properties of undefined (reading 'record')
 
 ### Individual Post:
 ```xml
-  <post type="reply" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf">
+  <post type="reply" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="2025-04-03 11:42:11">
     <content>
       By the way, these links came to me via @billmckibben.bsky.social's excellent newsletter, to which I assume you are all already subscribed.
     </content>
@@ -233,7 +233,7 @@ TypeError: Cannot read properties of undefined (reading 'record')
       Thumbnail: https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:twjze4qqf6fgxz33ct52wlnl/bafkreifubqddrwlp2pvtr3x4xnmwflyfvw7u7tkyxntv7hzka33iojwyhi@jpeg
     </embed>
     
-    Posted: 2025-04-03 11:42:11 | Engagement: 13 likes, 2 reposts, 0 replies
+    Engagement: 13 likes, 2 reposts, 0 replies
   </post>
 ```
 
