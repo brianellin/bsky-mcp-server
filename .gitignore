@@ -57,3 +57,5 @@ sessions/
 
 # Cursor stuff
 .cursorrules
+
+POST_FORMAT_SPEC.md

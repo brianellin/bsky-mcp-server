@@ -242,7 +242,7 @@ Or, you know, there'd be a coup
 ```xml
   <post type="reply" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="2025-04-03 11:42:11">
     <content>
-      By the way, these links came to me via @billmckibben.bsky.social's excellent newsletter, to which I assume you are all already subscribed.
+      By the way, these links came to me via [@billmckibben.bsky.social](https://bsky.app/profile/did:plc:t6ylzujdaa3f6mlpxn6gjqf5)'s excellent newsletter, to which I assume you are all already subscribed.
     </content>
     
     <reply_to uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkeghjyk2o" author_name="David Roberts" author_handle="volts.wtf">
