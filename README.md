@@ -10,7 +10,7 @@ You can use this MCP server to bring context from various Bluesky / ATProtocol A
 - Fetch and analyze feeds ("Find me a feed about Seattle and tell me what people are talking about")
 - Fetch and analyze lists of followers ("What types of accounts does Mark Cuban follow? Give me a detailed report")
 - Use an LLM to write a post and then post it for you 😱 ("Write a haiku about today's weather in my area and post it to bluesky")
-- Search for feeds, posts, and people ("Find posts about the #teslatakedown and give me a summary of revent events")
+- Search for feeds, posts, and people ("Find posts about the #teslatakedown and give me a summary of recent events")
 - Analyze who follows you? ("Who follows me on Bluesky? Give me a report")
 
 Here's the current list of tools provided:
@@ -25,7 +25,7 @@ Here's the current list of tools provided:
 - **get-followers**: returns the set of users who follow an account
 - **get-liked-posts**: returns recent posts liked by the authenticated user
 - **get-trends**: returns current trending topics on Bluesky with post counts
-- **search-posts**: returns posts for a given query. can specify top or lateest
+- **search-posts**: returns posts for a given query. can specify top or latest
 - **search-people**: returns people for a given search query
 - **search-feeds**: returns feeds for a given query
 - **like-post**: like a post with a specific URI
@@ -33,7 +33,7 @@ Here's the current list of tools provided:
 - **follow-user**: follow a specific user
 
 Tips:
-- You can ask for post from search, timelines, lists, feeds, or profiles by time range. For example: Summarize posts from my timeline for the last three days" or "Find me the most interesting artcile people have been talknig about this week"
+- You can ask for post from search, timelines, lists, feeds, or profiles by time range. For example: Summarize posts from my timeline for the last three days" or "Find me the most interesting article people have been talking about this week"
 - Get weird: "What the funniest/most unhinged/weirdest/goofiest post you've seen on my timeline in the last 24 hours?"
 - Learn about yourself: "Analyze my liked posts and tell me what I'm into. Give me 3 interesting facts about what you've found and how it relates to my personality on bluesky" or "Who follows me on bluesky? Give me a comprehensive report."
 
@@ -58,7 +58,7 @@ You can test the bluesky tools directly without connecting to an LLM via the ama
 npx @modelcontextprotocol/inspector node build/src/index.js
 ```
 
-Navigate to the local URL provided in your terminal, and then set your BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD, and BLUESKY_SERVICE_URL environment variables from the panel on the left. Try the get-timeline tool to see the most revent posts from your home timeline. 
+Navigate to the local URL provided in your terminal, and then set your BLUESKY_IDENTIFIER, BLUESKY_APP_PASSWORD, and BLUESKY_SERVICE_URL environment variables from the panel on the left. Try the get-timeline tool to see the most recent posts from your home timeline. 
 
 ## MCP Client Configuration 
 
