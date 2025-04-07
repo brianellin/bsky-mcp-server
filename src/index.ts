@@ -4,14 +4,15 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { AtpAgent } from "@atproto/api";
 import * as dotenv from "dotenv";
-import { 
-  formatPost, 
+import {  
+  formatPost,
   formatSummaryText, 
   getFeedNameFromId, 
   validateUri,
   McpErrorResponse,
   McpSuccessResponse
 } from './utils.js';
+import { formatPost as formatPostNew } from "./llm-formatter.js";
 import { registerResources, resourcesList } from './resources.js';
 import { registerPrompts } from './prompts.js';
 
@@ -194,7 +195,7 @@ server.tool(
       }
       
       // Format the posts
-      const timelineData = finalPosts.map((item, index) => formatPost(item, index)).join("\n\n");
+      const timelineData = finalPosts.map((item, index) => formatPostNew(item, index.toString())).join("\n\n");
       
       const summaryText = formatSummaryText(finalPosts.length, "timeline");
       
