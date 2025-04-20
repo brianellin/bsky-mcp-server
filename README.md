@@ -22,6 +22,7 @@ Here's the current list of tools provided:
 - **get-feed-posts**: returns posts from the specified feed
 - **get-list-posts**: returns posts from the specified list
 - **get-user-posts**: returns the specified user's posts
+- **get-post-thread**: returns the thread of conversation for a specific post
 - **get-profile**: returns the profile details of the specified user
 - **get-follows**: returns the set of users an account follows
 - **get-followers**: returns the set of users who follow an account
