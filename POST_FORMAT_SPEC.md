@@ -28,6 +28,39 @@ Embeds can have the following types:
 - `link` - An external link
 - `record` - A reference to a Bluesky record
 
+## Thread Representation
+
+Threads are represented hierarchically with nested <replies> elements:
+
+```xml
+<post type="standalone" uri="..."> <!-- Root post -->
+  <content>...</content>
+  <replies>
+    <post type="reply" uri="..."> <!-- First-level reply -->
+      <content>...</content>
+      <reply_to uri="..."></reply_to>
+      <replies>
+        <post type="reply" uri="..."> <!-- Second-level reply -->
+          <content>...</content>
+          <reply_to uri="..."></reply_to>
+        </post>
+      </replies>
+    </post>
+    <post type="reply" uri="..."> <!-- Another first-level reply -->
+      <content>...</content>
+      <reply_to uri="..."></reply_to>
+    </post>
+  </replies>
+</post>
+```
+
+Key elements for thread representation:
+- The root post is placed at the top level
+- Each `<post>` with replies contains a `<replies>` section
+- Each reply includes a `<reply_to>` element with the URI of its parent
+- Nesting directly represents the conversation structure
+- Indentation in the XML visually clarifies the thread hierarchy
+
 ## Complete Specification Example
 
 ```xml

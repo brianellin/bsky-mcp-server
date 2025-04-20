@@ -10,9 +10,10 @@ import {
   getFeedNameFromId, 
   validateUri,
   McpErrorResponse,
-  McpSuccessResponse
+  McpSuccessResponse,
+  escapeXml
 } from './utils.js';
-import { preprocessPosts } from "./llm-preprocessor.js";
+import { preprocessPosts, formatPostThread } from "./llm-preprocessor.js";
 import { registerResources, resourcesList } from './resources.js';
 import { registerPrompts } from './prompts.js';
 
@@ -340,6 +341,43 @@ server.tool(
       return mcpSuccessResponse(`${summaryText}\n\n${formattedPosts}`);
     } catch (error) {
       return mcpErrorResponse(`Error searching posts: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
+  "get-post-thread",
+  "Get a full conversation thread for a specific post, showing replies and context",
+  {
+    uri: z.string().describe("URI of the post to fetch the thread for (e.g., at://did:plc:abcdef/app.bsky.feed.post/123)"),
+    depth: z.number().min(1).max(100).default(20).optional().describe("Maximum depth of replies to fetch (1-100)")
+  },
+  async ({ uri, depth = 20 }) => {
+    if (!agent) {
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
+    }
+
+    try {
+      // Validate the URI format
+      if (!uri.startsWith('at://did:plc:') || !uri.includes('/app.bsky.feed.post/')) {
+        return mcpErrorResponse("Invalid post URI format. Expected format: at://did:plc:abcdef/app.bsky.feed.post/123");
+      }
+
+      const response = await agent.app.bsky.feed.getPostThread({
+        uri,
+        depth
+      });
+      
+      if (!response.success) {
+        return mcpErrorResponse("Failed to fetch post thread.");
+      }
+
+      // Process the thread structure and format it according to POST_FORMAT_SPEC
+      const threadData = formatPostThread(response.data.thread);
+      
+      return mcpSuccessResponse(threadData);
+    } catch (error) {
+      return mcpErrorResponse(`Error fetching post thread: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );

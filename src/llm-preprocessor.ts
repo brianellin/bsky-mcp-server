@@ -10,6 +10,7 @@ import type {
   AppBskyFeedPost
 } from '@atproto/api';
 import { RichText } from '@atproto/api';
+import { escapeXml } from './utils.js';
 
 /**
  * Convert Bluesky post text + facets into Markdown
@@ -384,6 +385,175 @@ export function preprocessPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
 // For backward compatibility
 export function formatFeed(feed: { items: AppBskyFeedDefs.FeedViewPost[] }): string {
   return preprocessPosts(feed.items);
+}
+
+/**
+ * Format a post thread according to our format spec
+ */
+export function formatPostThread(threadView: any): string {
+  // Start building the posts XML container
+  let output = "<posts>\n";
+  
+  // Process the root post and all of its replies
+  output += processThreadViewPost(threadView, 0);
+  
+  // Close the posts container
+  output += "</posts>";
+  
+  return output;
+}
+
+/**
+ * Process a single post and all of its replies in the thread
+ */
+export function processThreadViewPost(threadViewPost: any, indentLevel: number): string {
+  if (!threadViewPost || threadViewPost.$type !== 'app.bsky.feed.defs#threadViewPost') {
+    return '';
+  }
+  
+  const post = threadViewPost.post;
+  if (!post) return '';
+  
+  const indent = '  '.repeat(indentLevel);
+  let output = '';
+  
+  try {
+    // Determine post type (standalone, reply, quote)
+    const record = post.record;
+    if (!record) {
+      console.error('Record missing for post:', post.uri);
+      return '';
+    }
+    
+    const isReply = record.reply != null;
+    const isQuote = post.embed?.$type === 'app.bsky.embed.record#view';
+    
+    let postType = 'standalone';
+    if (isReply) postType = 'reply';
+    if (isQuote) {
+      postType = isReply ? 'reply,quote' : 'quote';
+    }
+    
+    // Check for required fields
+    if (!post.uri) {
+      console.error('URI missing for post');
+      return '';
+    }
+    
+    if (!post.author || !post.author.handle) {
+      console.error('Author or handle missing for post:', post.uri);
+      return '';
+    }
+    
+    // Format the post
+    output += `${indent}<post type="${postType}" uri="${post.uri}" bsky_url="https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}" `;
+    output += `author_name="${escapeXml(post.author.displayName || post.author.handle)}" author_handle="${post.author.handle}" `;
+    output += `posted_at="${new Date(post.indexedAt || record.createdAt).toLocaleString()}">\n`;
+    
+    // Add content
+    output += `${indent}  <content>\n${indent}    ${escapeXml(record.text || '')}\n${indent}  </content>\n`;
+    
+    // Add reply_to information if it's a reply
+    if (isReply && record.reply && record.reply.parent && record.reply.parent.uri) {
+      const replyUri = record.reply.parent.uri;
+      output += `${indent}  <reply_to uri="${replyUri}"></reply_to>\n`;
+    }
+    
+    // Add quoted post if present
+    if (isQuote && post.embed && post.embed.record) {
+      const quoted = post.embed.record;
+      if (quoted.uri && quoted.author && quoted.author.handle) {
+        output += `${indent}  <quoted_post uri="${quoted.uri}" `;
+        output += `bsky_url="https://bsky.app/profile/${quoted.author.handle}/post/${quoted.uri.split('/').pop()}" `;
+        output += `author_name="${escapeXml(quoted.author.displayName || quoted.author.handle)}" `;
+        output += `author_handle="${quoted.author.handle}" `;
+        output += `posted_at="${new Date(quoted.indexedAt || Date.now()).toLocaleString()}">\n`;
+        output += `${indent}    <content>\n${indent}      ${escapeXml((quoted.value && quoted.value.text) || '')}\n${indent}    </content>\n`;
+        
+        // Add engagement metrics for quoted post
+        if (quoted.likeCount || quoted.repostCount || quoted.replyCount) {
+          output += `${indent}    Engagement: ${quoted.likeCount || 0} likes, ${quoted.repostCount || 0} reposts, ${quoted.replyCount || 0} replies`;
+          if (quoted.quoteCount) output += `, ${quoted.quoteCount} quotes`;
+          output += '\n';
+        }
+        
+        output += `${indent}  </quoted_post>\n`;
+      }
+    }
+    
+    // Add embeds if present
+    if (post.embed && post.embed.$type !== 'app.bsky.embed.record#view') {
+      // Handle images
+      if (post.embed.$type === 'app.bsky.embed.images#view') {
+        const images = post.embed.images || [];
+        for (const image of images) {
+          if (!image) continue;
+          output += `${indent}  <embed type="image">\n`;
+          if (image.alt) {
+            output += `${indent}    Image description: "${escapeXml(image.alt)}"\n`;
+          }
+          if (image.fullsize || image.thumb) {
+            output += `${indent}    URL: ${image.fullsize || image.thumb}\n`;
+          }
+          output += `${indent}  </embed>\n`;
+        }
+      }
+      // Handle external links
+      else if (post.embed.$type === 'app.bsky.embed.external#view' && post.embed.external) {
+        output += `${indent}  <embed type="link">\n`;
+        if (post.embed.external.title) {
+          output += `${indent}    Title: "${escapeXml(post.embed.external.title)}"\n`;
+        }
+        if (post.embed.external.uri) {
+          output += `${indent}    URL: ${post.embed.external.uri}\n`;
+        }
+        if (post.embed.external.description) {
+          output += `${indent}    Description: "${escapeXml(post.embed.external.description)}"\n`;
+        }
+        if (post.embed.external.thumb) {
+          output += `${indent}    Thumbnail: ${post.embed.external.thumb}\n`;
+        }
+        output += `${indent}  </embed>\n`;
+      }
+      // Handle videos
+      else if (post.embed.$type === 'app.bsky.embed.video#view' && post.embed.video) {
+        output += `${indent}  <embed type="video">\n`;
+        if (post.embed.video.alt) {
+          output += `${indent}    Video description: ${escapeXml(post.embed.video.alt)}\n`;
+        }
+        if (post.embed.video.thumb) {
+          output += `${indent}    Thumbnail: ${post.embed.video.thumb}\n`;
+        }
+        if (post.embed.video.url) {
+          output += `${indent}    URL: ${post.embed.video.url}\n`;
+        }
+        output += `${indent}  </embed>\n`;
+      }
+    }
+    
+    // Add engagement metrics
+    if (post.likeCount || post.repostCount || post.replyCount) {
+      output += `${indent}  Engagement: ${post.likeCount || 0} likes, ${post.repostCount || 0} reposts, ${post.replyCount || 0} replies`;
+      if (post.quoteCount) output += `, ${post.quoteCount} quotes`;
+      output += '\n';
+    }
+    
+    // Add replies recursively if present
+    if (threadViewPost.replies && Array.isArray(threadViewPost.replies) && threadViewPost.replies.length > 0) {
+      output += `${indent}  <replies>\n`;
+      for (const reply of threadViewPost.replies) {
+        output += processThreadViewPost(reply, indentLevel + 2);
+      }
+      output += `${indent}  </replies>\n`;
+    }
+    
+    output += `${indent}</post>\n`;
+  } catch (error) {
+    console.error(`Error processing post: ${error instanceof Error ? error.message : String(error)}`);
+    return ''; // Skip this post if there's an error
+  }
+  
+  return output;
 }
 
 

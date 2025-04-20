@@ -208,3 +208,18 @@ export function debugPostStructure(post: any): void {
   }
 }
 
+/**
+ * Helper function to escape XML special characters
+ * @param unsafe The string to escape 
+ * @returns The escaped string
+ */
+export function escapeXml(unsafe: string): string {
+  if (!unsafe) return '';
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
