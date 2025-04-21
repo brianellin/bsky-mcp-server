@@ -7,13 +7,13 @@
 <posts>
 <post type="standalone" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyulsoc2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" requested="true">
   <content>
-    why bluesky &quot;feeds&quot; don&apos;t work, a thread
+    why bluesky "feeds" don't work, a thread
   </content>
   Engagement: 494 likes, 74 reposts, 18 replies, 26 quotes
   <replies>
     <post type="reply" uri="at://did:plc:zjbq26wybii5ojoypkso2mso/app.bsky.feed.post/3lmq52kcous2q" bsky_url="https://bsky.app/profile/jauntywk.bsky.social/post/3lmq52kcous2q" author_name="JauntyWunderKind" author_handle="jauntywk.bsky.social" posted_at="4/13/2025, 3:49:54 PM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n">
       <content>
-        /cc @jus7curious.bsky.social
+        /cc [@jus7curious.bsky.social](https://bsky.app/profile/did:plc:qkcpjc2gscaempigcya5gwj3)
       </content>
     </post>
     <post type="reply" uri="at://did:plc:xxw6nvpnleocmp3nqurrc3vm/app.bsky.feed.post/3lmn5gtno6k2t" bsky_url="https://bsky.app/profile/mrmurphy.dev/post/3lmn5gtno6k2t" author_name="Murphy R" author_handle="mrmurphy.dev" posted_at="4/12/2025, 11:18:47 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n">
@@ -28,27 +28,27 @@ I love the BlueSky ethos though, and want it to persist!
       <content>
         Is the abstractions wrong or tooling? I want an easy way to mark a post I found somewhere else to show up in my Network Nook feed. A way to tag in the main BlueSky app could facilitate that.
 
-bsky.app/profile/cove...
+<https://bsky.app/profile/coverfire.com/feed/networking>
       </content>
       Engagement: 1 likes, 0 reposts, 2 replies
       <replies>
         <post type="reply" uri="at://did:plc:zvinwh7vy4tjegch2hxvopdd/app.bsky.feed.post/3lmmwb3u4xs2m" bsky_url="https://bsky.app/profile/tentacle.expert/post/3lmmwb3u4xs2m" author_name="xormetric" author_handle="tentacle.expert" posted_at="4/12/2025, 9:10:19 AM" reply_to="at://did:plc:xk32a4krl4hoty3hk3axjdz4/app.bsky.feed.post/3lmmvizjllk2q">
           <content>
-            i just run a &quot;labeler&quot; that doesnt emit any labels. you can do whatever you want with the report endpoint. it *is* 4 clicks to actually do a report but it&apos;s an easy way to integrate into the current app
+            i just run a "labeler" that doesnt emit any labels. you can do whatever you want with the report endpoint. it *is* 4 clicks to actually do a report but it's an easy way to integrate into the current app
           </content>
           Engagement: 9 likes, 0 reposts, 2 replies
           <replies>
             <post type="reply" uri="at://did:plc:xk32a4krl4hoty3hk3axjdz4/app.bsky.feed.post/3lmmwsgfems2q" bsky_url="https://bsky.app/profile/coverfire.com/post/3lmmwsgfems2q" author_name="Dan Siemon" author_handle="coverfire.com" posted_at="4/12/2025, 9:19:59 AM" reply_to="at://did:plc:zvinwh7vy4tjegch2hxvopdd/app.bsky.feed.post/3lmmwb3u4xs2m">
               <content>
-                Interesting. Your labeler backend adds the post to a DB or something that serves the feed? I use Supercell for my feed. It doesn&apos;t separate matching and serving with an out of process DB.
+                Interesting. Your labeler backend adds the post to a DB or something that serves the feed? I use Supercell for my feed. It doesn't separate matching and serving with an out of process DB.
               </content>
               Engagement: 1 likes, 0 reposts, 1 replies
               <replies>
                 <post type="reply" uri="at://did:plc:zvinwh7vy4tjegch2hxvopdd/app.bsky.feed.post/3lmmypbdohc2m" bsky_url="https://bsky.app/profile/tentacle.expert/post/3lmmypbdohc2m" author_name="xormetric" author_handle="tentacle.expert" posted_at="4/12/2025, 9:54:05 AM" reply_to="at://did:plc:xk32a4krl4hoty3hk3axjdz4/app.bsky.feed.post/3lmmwsgfems2q">
                   <content>
-                    basically, yeah (although in my case it&apos;s remove a post from the DB). same server process as the feed generation (and technically the DB too since it&apos;s sqlite) just serving the labeler report route too.
+                    basically, yeah (although in my case it's remove a post from the DB). same server process as the feed generation (and technically the DB too since it's sqlite) just serving the labeler report route too.
 
-codeberg.org/xormetric/pi...
+<https://codeberg.org/xormetric/picofeedgen/src/commit/a5f53e7cf92bbf72a8121250a511bfae38c66a6d/piracy_feed.py#L132>
                   </content>
                   Engagement: 1 likes, 0 reposts, 0 replies
                 </post>
@@ -81,9 +81,9 @@ maybe just let you run arbitrary javascript tbh
                       <replies>
                         <post type="reply" uri="at://did:plc:zvinwh7vy4tjegch2hxvopdd/app.bsky.feed.post/3lmnaku77j22b" bsky_url="https://bsky.app/profile/tentacle.expert/post/3lmnaku77j22b" author_name="xormetric" author_handle="tentacle.expert" posted_at="4/12/2025, 12:14:46 PM" reply_to="at://did:plc:jx4g6baqkwdlonylsetvpu7c/app.bsky.feed.post/3lmmzp5u2ec2a">
                           <content>
-                            hmm yeah there&apos;s definitely a need for more flexibility than just templating
+                            hmm yeah there's definitely a need for more flexibility than just templating
 
-a fake labeler works particularly well for integration because it also integrates auth i can verify on my end. but i wouldn&apos;t expect/want all the services i put into a config to get my did
+a fake labeler works particularly well for integration because it also integrates auth i can verify on my end. but i wouldn't expect/want all the services i put into a config to get my did
                           </content>
                           Engagement: 3 likes, 0 reposts, 1 replies
                           <replies>
@@ -113,7 +113,7 @@ that way you can decide what to include and how to structure the request as need
           <replies>
             <post type="reply" uri="at://did:plc:xk32a4krl4hoty3hk3axjdz4/app.bsky.feed.post/3lmmvr36dmk2q" bsky_url="https://bsky.app/profile/coverfire.com/post/3lmmvr36dmk2q" author_name="Dan Siemon" author_handle="coverfire.com" posted_at="4/12/2025, 9:01:20 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmvlr2aok2k">
               <content>
-                Right. A third party app that had a quick way to add a post to a feed might help too but I really don&apos;t want to use a third party app all the time.
+                Right. A third party app that had a quick way to add a post to a feed might help too but I really don't want to use a third party app all the time.
               </content>
               Engagement: 1 likes, 0 reposts, 0 replies
             </post>
@@ -135,14 +135,14 @@ that way you can decide what to include and how to structure the request as need
           <replies>
             <post type="reply" uri="at://did:plc:uyex2smrqix2fy3f6bx6o4jd/app.bsky.feed.post/3lmmys7nsjs2q" bsky_url="https://bsky.app/profile/timonsku.zip/post/3lmmys7nsjs2q" author_name="Timon" author_handle="timonsku.zip" posted_at="4/12/2025, 9:55:41 AM" reply_to="at://did:plc:uyex2smrqix2fy3f6bx6o4jd/app.bsky.feed.post/3lmmys7nrkk2q">
               <content>
-                Also the ability to block/opt-out of feeds becomes important as we can see with Discover. You should have the ability to say you don&apos;t want your posts be ingested by a particular feed if that spills people into your mentions that you don&apos;t like to be interacting with.
+                Also the ability to block/opt-out of feeds becomes important as we can see with Discover. You should have the ability to say you don't want your posts be ingested by a particular feed if that spills people into your mentions that you don't like to be interacting with.
               </content>
               Engagement: 0 likes, 0 reposts, 1 replies
               <replies>
                 <post type="reply" uri="at://did:plc:uyex2smrqix2fy3f6bx6o4jd/app.bsky.feed.post/3lmmywzon6s2q" bsky_url="https://bsky.app/profile/timonsku.zip/post/3lmmywzon6s2q" author_name="Timon" author_handle="timonsku.zip" posted_at="4/12/2025, 9:58:22 AM" reply_to="at://did:plc:uyex2smrqix2fy3f6bx6o4jd/app.bsky.feed.post/3lmmys7nsjs2q">
                   <content>
                     At the end of the day, a feed is what makes or breaks a social network.
-If you don&apos;t do that well you are just a chronological single topic forum like Mastodon.
+If you don't do that well you are just a chronological single topic forum like Mastodon.
                   </content>
                 </post>
               </replies>
@@ -153,7 +153,7 @@ If you don&apos;t do that well you are just a chronological single topic forum l
     </post>
     <post type="reply" uri="at://did:plc:uvuzsptk4b22b63xowm62chr/app.bsky.feed.post/3lmnio5kcvs22" bsky_url="https://bsky.app/profile/reedharmeyer.bsky.social/post/3lmnio5kcvs22" author_name="Reed Harmeyer" author_handle="reedharmeyer.bsky.social" posted_at="4/12/2025, 2:39:44 PM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n">
       <content>
-        I’ve been thinking about this a lot with @skylight.social.
+        I’ve been thinking about this a lot with [@skylight.social](https://bsky.app/profile/did:plc:4adlzwqtkv4dirxjwq4c3tlm).
 
 The analogy I came up with is that if the FYP is like a DJ then maybe a custom video feed could be like a list of song requests.
 
@@ -212,7 +212,7 @@ Do you think feeds design could have something to do with this?
     </post>
     <post type="reply" uri="at://did:plc:kpc5tukpvvbvy556u4ltdltl/app.bsky.feed.post/3lmnqqqhojs2n" bsky_url="https://bsky.app/profile/columk.bsky.social/post/3lmnqqqhojs2n" author_name="Colum Kelly" author_handle="columk.bsky.social" posted_at="4/12/2025, 5:04:19 PM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n">
       <content>
-        My Discover page is all cute pets and nature photos no matter how many times I select &quot;see less of this&quot; on those posts. Something is definitely broken.
+        My Discover page is all cute pets and nature photos no matter how many times I select "see less of this" on those posts. Something is definitely broken.
       </content>
       Engagement: 8 likes, 0 reposts, 0 replies
     </post>
@@ -224,19 +224,19 @@ Do you think feeds design could have something to do with this?
     </post>
     <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum3hk2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyum3hk2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n">
       <content>
-        i no longer work at bluesky so i feel a bit more open about my grievances (and if bluesky co isn&apos;t gonna solve it — which it eventually might! — i&apos;d like to see others try)
+        i no longer work at bluesky so i feel a bit more open about my grievances (and if bluesky co isn't gonna solve it — which it eventually might! — i'd like to see others try)
       </content>
       Engagement: 132 likes, 4 reposts, 2 replies
       <replies>
         <post type="reply" uri="at://did:plc:opw3iapscc55nlgrx6q2yjah/app.bsky.feed.post/3lmmz4z6qsc2d" bsky_url="https://bsky.app/profile/beaussan.io/post/3lmmz4z6qsc2d" author_name="Nicolas Beaussart " author_handle="beaussan.io" posted_at="4/12/2025, 10:01:43 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum3hk2n">
           <content>
-            That&apos;s news to me! They were lucky to have you, where are you heading next?
+            That's news to me! They were lucky to have you, where are you heading next?
           </content>
           Engagement: 1 likes, 0 reposts, 0 replies
         </post>
         <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum4gs2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyum4gs2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum3hk2n">
           <content>
-            i think fundamentally &quot;feeds&quot; are a wrong abstraction. they conflate two very different competencies: curation and ranking
+            i think fundamentally "feeds" are a wrong abstraction. they conflate two very different competencies: curation and ranking
           </content>
           Engagement: 144 likes, 3 reposts, 1 replies, 3 quotes
           <replies>
@@ -244,7 +244,7 @@ Do you think feeds design could have something to do with this?
               <content>
                 1. curation
 
-there&apos;s many models of curation. there can be exclusive curation like carefully newsletters. there can be &quot;small world&quot; curation like friends&apos; picks. and there can be &quot;large world&quot; curation like subreddits. but there&apos;s some human judgement in the loop in different forms
+there's many models of curation. there can be exclusive curation like carefully newsletters. there can be "small world" curation like friends' picks. and there can be "large world" curation like subreddits. but there's some human judgement in the loop in different forms
               </content>
               Engagement: 111 likes, 1 reposts, 1 replies
               <replies>
@@ -252,32 +252,32 @@ there&apos;s many models of curation. there can be exclusive curation like caref
                   <content>
                     2. ranking
 
-ranking is about the algorithm picking out the noise from the signal. it could be based on hotness (like HN or Reddit), some variation of &quot;top&quot; (like reddit &quot;top for this week&quot; mode), it could be friend-adjacent, or even basic &quot;latest&quot;.
+ranking is about the algorithm picking out the noise from the signal. it could be based on hotness (like HN or Reddit), some variation of "top" (like reddit "top for this week" mode), it could be friend-adjacent, or even basic "latest".
                   </content>
                   Engagement: 99 likes, 1 reposts, 1 replies, 1 quotes
                   <replies>
                     <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum6fd2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyum6fd2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum6fc2n">
                       <content>
-                        these things are completely different competencies!! there is absolutely no reason to expect good curators to implement their own ranking algorithms (that&apos;s ridiculous). there&apos;s also absolutely no reason that developers good at ranking stuff should be good at curation
+                        these things are completely different competencies!! there is absolutely no reason to expect good curators to implement their own ranking algorithms (that's ridiculous). there's also absolutely no reason that developers good at ranking stuff should be good at curation
 
-&quot;feeds&quot; conflate the two
+"feeds" conflate the two
                       </content>
                       Engagement: 130 likes, 7 reposts, 6 replies, 1 quotes
                       <replies>
                         <post type="reply" uri="at://did:plc:pjww3lv3ogt2fvnavri27xgm/app.bsky.feed.post/3lmpyhqgqsk2u" bsky_url="https://bsky.app/profile/ezraboeth.com/post/3lmpyhqgqsk2u" author_name="Ezra🦋" author_handle="ezraboeth.com" posted_at="4/13/2025, 2:27:49 PM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum6fd2n">
                           <content>
-                            one problem I see is that if a feed is going to both a curator then a ranker the time to generate the feed skeleton could be much longer. what if we could create pre-packaged &quot;black-box&quot; algorithms for curation and ranking, then feedgens import them both at runtime?
+                            one problem I see is that if a feed is going to both a curator then a ranker the time to generate the feed skeleton could be much longer. what if we could create pre-packaged "black-box" algorithms for curation and ranking, then feedgens import them both at runtime?
                           </content>
                           Engagement: 1 likes, 0 reposts, 3 replies
                           <replies>
                             <post type="reply" uri="at://did:plc:pjww3lv3ogt2fvnavri27xgm/app.bsky.feed.post/3lmpyiztifs2u" bsky_url="https://bsky.app/profile/ezraboeth.com/post/3lmpyiztifs2u" author_name="Ezra🦋" author_handle="ezraboeth.com" posted_at="4/13/2025, 2:28:33 PM" reply_to="at://did:plc:pjww3lv3ogt2fvnavri27xgm/app.bsky.feed.post/3lmpyhqgqsk2u">
                               <content>
-                                oh oops this should say &quot;import them both at build time&quot;
+                                oh oops this should say "import them both at build time"
                               </content>
                             </post>
                             <post type="reply" uri="at://did:plc:pjww3lv3ogt2fvnavri27xgm/app.bsky.feed.post/3lmpyhr5wyk2u" bsky_url="https://bsky.app/profile/ezraboeth.com/post/3lmpyhr5wyk2u" author_name="Ezra🦋" author_handle="ezraboeth.com" posted_at="4/13/2025, 2:27:49 PM" reply_to="at://did:plc:pjww3lv3ogt2fvnavri27xgm/app.bsky.feed.post/3lmpyhqgqsk2u">
                               <content>
-                                also, many times the ranking choices you make are educated by the curation algorithm bc you have to know why a post made it into the feed in the first place to know &quot;how well the post fits the feed&quot;, so I&apos;m not sure you can decouple them
+                                also, many times the ranking choices you make are educated by the curation algorithm bc you have to know why a post made it into the feed in the first place to know "how well the post fits the feed", so I'm not sure you can decouple them
                               </content>
                             </post>
                             <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmqkpwasms2k" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmqkpwasms2k" author_name="dan" author_handle="danabra.mov" posted_at="4/13/2025, 7:54:32 PM" reply_to="at://did:plc:pjww3lv3ogt2fvnavri27xgm/app.bsky.feed.post/3lmpyhqgqsk2u">
@@ -298,13 +298,13 @@ ranking is about the algorithm picking out the noise from the signal. it could b
                         </post>
                         <post type="reply" uri="at://did:plc:ip3trmvdbnlm4g7cdc5xs7ub/app.bsky.feed.post/3lmn7mlbczs2g" bsky_url="https://bsky.app/profile/skillstopractice.com/post/3lmn7mlbczs2g" author_name="Gregory Brown" author_handle="skillstopractice.com" posted_at="4/12/2025, 11:57:46 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum6fd2n">
                           <content>
-                            This is 100% the issue I have in that most of the tooling that I have seen around feeds is actively hostile to curation (which is what I focus on) because the assumption is it&apos;s going to be algorithmically processed... 1 of 2
+                            This is 100% the issue I have in that most of the tooling that I have seen around feeds is actively hostile to curation (which is what I focus on) because the assumption is it's going to be algorithmically processed... 1 of 2
                           </content>
                           Engagement: 0 likes, 0 reposts, 1 replies
                           <replies>
                             <post type="reply" uri="at://did:plc:ip3trmvdbnlm4g7cdc5xs7ub/app.bsky.feed.post/3lmn7owrjfc2g" bsky_url="https://bsky.app/profile/skillstopractice.com/post/3lmn7owrjfc2g" author_name="Gregory Brown" author_handle="skillstopractice.com" posted_at="4/12/2025, 11:59:06 AM" reply_to="at://did:plc:ip3trmvdbnlm4g7cdc5xs7ub/app.bsky.feed.post/3lmn7mlbczs2g">
                               <content>
-                                What would solve the problem for me entirely is if it were possible for people to pin an account in the same way they can a list or feed, then I would just run my &quot;feed&quot; by reposting from an alt account.
+                                What would solve the problem for me entirely is if it were possible for people to pin an account in the same way they can a list or feed, then I would just run my "feed" by reposting from an alt account.
 
 Oh wait... I can make a list with just one account on it that does exactly that... Hmmm....
                               </content>
@@ -312,7 +312,7 @@ Oh wait... I can make a list with just one account on it that does exactly that.
                               <replies>
                                 <post type="reply" uri="at://did:plc:ip3trmvdbnlm4g7cdc5xs7ub/app.bsky.feed.post/3lmnglsdgzs2t" bsky_url="https://bsky.app/profile/skillstopractice.com/post/3lmnglsdgzs2t" author_name="Gregory Brown" author_handle="skillstopractice.com" posted_at="4/12/2025, 2:02:39 PM" reply_to="at://did:plc:ip3trmvdbnlm4g7cdc5xs7ub/app.bsky.feed.post/3lmn7owrjfc2g">
                                   <content>
-                                    Nope... that doesn&apos;t actually work because lists don&apos;t include reposts.
+                                    Nope... that doesn't actually work because lists don't include reposts.
 
 *sighs*
                                   </content>
@@ -323,7 +323,7 @@ Oh wait... I can make a list with just one account on it that does exactly that.
                         </post>
                         <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum7el2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyum7el2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum6fd2n">
                           <content>
-                            the problem with &quot;feeds&quot; is they&apos;re mostly junk content. that&apos;s because they&apos;re either bad at curation, or bad at ranking, or both. there&apos;s all kinds of userland conventions built on top of feeds, and some of *those* may eventually make sense. i think what needs to happen is decoupling of the two
+                            the problem with "feeds" is they're mostly junk content. that's because they're either bad at curation, or bad at ranking, or both. there's all kinds of userland conventions built on top of feeds, and some of *those* may eventually make sense. i think what needs to happen is decoupling of the two
                           </content>
                           Engagement: 147 likes, 8 reposts, 5 replies, 4 quotes
                           <replies>
@@ -340,7 +340,7 @@ Oh wait... I can make a list with just one account on it that does exactly that.
                             </post>
                             <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyumadt2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyumadt2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum7el2n">
                               <content>
-                                one way this could look like is a different primitive that is more set-like (in a mathematical sense). like &quot;collections&quot;. you can add stuff to collections but they don&apos;t impose any ranking. they&apos;re more like profiles in that sense. completely predictable. and then *those things* could be ranked
+                                one way this could look like is a different primitive that is more set-like (in a mathematical sense). like "collections". you can add stuff to collections but they don't impose any ranking. they're more like profiles in that sense. completely predictable. and then *those things* could be ranked
                               </content>
                               Engagement: 95 likes, 2 reposts, 6 replies, 3 quotes
                               <replies>
@@ -358,7 +358,7 @@ Oh wait... I can make a list with just one account on it that does exactly that.
                                       <replies>
                                         <post type="reply" uri="at://did:plc:ycacaebnhvkyptw7dna4ns2c/app.bsky.feed.post/3lmmxudbinc2p" bsky_url="https://bsky.app/profile/sethfeldkamp.com/post/3lmmxudbinc2p" author_name="Seth" author_handle="sethfeldkamp.com" posted_at="4/12/2025, 9:38:57 AM" reply_to="at://did:plc:ycacaebnhvkyptw7dna4ns2c/app.bsky.feed.post/3lmmxudbfpk2p">
                                           <content>
-                                            Sorry to hear you&apos;re no longer at Bluesky.  That&apos;s a loss for them and us.
+                                            Sorry to hear you're no longer at Bluesky.  That's a loss for them and us.
                                           </content>
                                           Engagement: 3 likes, 0 reposts, 1 replies
                                         </post>
@@ -377,10 +377,10 @@ Oh wait... I can make a list with just one account on it that does exactly that.
 Given overlaps between:
 
 A = Following
-B = @why.bsky.team&apos;s Quiet Posters
-C = @pfrazee.com&apos;s Discover 
+B = [@why.bsky.team](https://bsky.app/profile/did:plc:vpkhqolt662uhesyj6nxm7ys)'s Quiet Posters
+C = [@pfrazee.com](https://bsky.app/profile/did:plc:ragtjsm2j2vknwkz3zp4oxrd)'s Discover 
 
-I&apos;d love to be able to browse:
+I'd love to be able to browse:
 
 A - B ~= Noisy posters
 C - A ~= Recommended 
@@ -394,7 +394,7 @@ A ∩ C ~= Likely bangers
                                 </post>
                                 <post type="reply" uri="at://did:plc:fxnw2wkzf23zya6shq4pxvh6/app.bsky.feed.post/3lmmzqh64ke2x" bsky_url="https://bsky.app/profile/aeshna-cyanea.bsky.social/post/3lmmzqh64ke2x" author_name="Autumn" author_handle="aeshna-cyanea.bsky.social" posted_at="4/12/2025, 10:12:35 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyumadt2n">
                                   <content>
-                                    Ok this may sound insane but &quot;collections&quot; are already an atproto concept, and lexicons have a built in namespace hierarchy.
+                                    Ok this may sound insane but "collections" are already an atproto concept, and lexicons have a built in namespace hierarchy.
 
  What are the drawbacks of just storing posts (meant to be included in feeds) in specially named repo collections under a parent namespace in your repo
                                   </content>
@@ -410,7 +410,7 @@ A ∩ C ~= Likely bangers
                                 </post>
                                 <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyumadu2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyumadu2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyumadt2n">
                                   <content>
-                                    if bluesky itself is not building this right now, then i think somebody else should. the thing that makes or breaks the platform is the content. twitter &quot;communities&quot; are not good because they act more like folders than tags. there&apos;s a real opportunity here imo and it&apos;s worth prototyping
+                                    if bluesky itself is not building this right now, then i think somebody else should. the thing that makes or breaks the platform is the content. twitter "communities" are not good because they act more like folders than tags. there's a real opportunity here imo and it's worth prototyping
                                   </content>
                                   Engagement: 124 likes, 9 reposts, 2 replies
                                   <replies>
@@ -424,7 +424,7 @@ A ∩ C ~= Likely bangers
                                           <content>
                                             yeeessss
 
-I think two of the ideas dropped pretty early on (scenes &amp; per-profile outline hashtag filtering) would together tie into this pretty well
+I think two of the ideas dropped pretty early on (scenes & per-profile outline hashtag filtering) would together tie into this pretty well
 
 stuff needs to belong somewhere — open data lake is fine at the appview level, becomes more awkward as it becomes more granular
                                           </content>
@@ -497,12 +497,12 @@ Not sure if spheres solve curation-ranking tho
                                 </post>
                                 <post type="reply" uri="at://did:plc:5qtf47soyj3stuno5vknxfb6/app.bsky.feed.post/3lmnj7j2kqs26" bsky_url="https://bsky.app/profile/natanael.bsky.social/post/3lmnj7j2kqs26" author_name="Natanael, Tech janitor" author_handle="natanael.bsky.social" posted_at="4/12/2025, 2:49:29 PM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyumadt2n">
                                   <content>
-                                    That could be built on top of content and community based labelers, allowing feeds to quickly collect what&apos;s relevant without needing its own methods of identifying relevant posts, then applying rankings on top of that
+                                    That could be built on top of content and community based labelers, allowing feeds to quickly collect what's relevant without needing its own methods of identifying relevant posts, then applying rankings on top of that
                                   </content>
                                 </post>
                                 <post type="reply" uri="at://did:plc:2zxlmj2dvub7smpul2lvwqfk/app.bsky.feed.post/3lmotue32l225" bsky_url="https://bsky.app/profile/mathewlowry.bsky.social/post/3lmotue32l225" author_name="Mathew Lowry" author_handle="mathewlowry.bsky.social" posted_at="4/13/2025, 3:32:43 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyumadt2n">
                                   <content>
-                                    Fwiw, each visitor to a Hub can create a near-infinite set of collections of its content by combining tags &amp; type (like/think/do) - eg myhub.ai/@mathewlowry...
+                                    Fwiw, each visitor to a Hub can create a near-infinite set of collections of its content by combining tags & type (like/think/do) - eg <https://myhub.ai/@mathewlowry/?tags=psychology&types=like&types=do&types=think&timeframe=anytime&quality=all&tags=social+media>
 
 Each has its own RSS feed, but resources are currently presented reverse chrono. Maybe I should provide other sort options. Thoughts?
                                   </content>
@@ -511,7 +511,7 @@ Each has its own RSS feed, but resources are currently presented reverse chrono.
                             </post>
                             <post type="reply" uri="at://did:plc:dbulwkpel5g7wql2tyfmifcc/app.bsky.feed.post/3lmmvh2rmpc25" bsky_url="https://bsky.app/profile/cmpell.bsky.social/post/3lmmvh2rmpc25" author_name="Valentino &amp; auntchristine" author_handle="cmpell.bsky.social" posted_at="4/12/2025, 8:55:45 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum7el2n">
                               <content>
-                                I sincerely hate feeds.  Give me the old Shitter format. I prefer a reverse chrono timeline and maybe only an additional &quot;Following&quot; (accounts not topics) feed with great hashtag searching &amp; Trending.. I bet public figures, city &amp; state agencies &amp; news sources prefer it also.
+                                I sincerely hate feeds.  Give me the old Shitter format. I prefer a reverse chrono timeline and maybe only an additional "Following" (accounts not topics) feed with great hashtag searching & Trending.. I bet public figures, city & state agencies & news sources prefer it also.
                               </content>
                               Engagement: 4 likes, 0 reposts, 0 replies
                             </post>
@@ -532,7 +532,7 @@ Frankly, for me, I don’t see this is a problem in today’s world because none
                         </post>
                         <post type="reply" uri="at://did:plc:7mnpet2pvof2llhpcwattscf/app.bsky.feed.post/3lmmvvoawx22v" bsky_url="https://bsky.app/profile/piss.beauty/post/3lmmvvoawx22v" author_name="stellz" author_handle="piss.beauty" posted_at="4/12/2025, 9:03:53 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyum6fd2n">
                           <content>
-                            what about a feed implies ranking? I&apos;ve never gone to a feed expecting a ranked order of posts
+                            what about a feed implies ranking? I've never gone to a feed expecting a ranked order of posts
                           </content>
                           Engagement: 15 likes, 0 reposts, 3 replies
                           <replies>
@@ -544,13 +544,13 @@ Frankly, for me, I don’t see this is a problem in today’s world because none
                             </post>
                             <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwdudhj222" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmwdudhj222" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 9:11:52 AM" reply_to="at://did:plc:7mnpet2pvof2llhpcwattscf/app.bsky.feed.post/3lmmvvoawx22v">
                               <content>
-                                oh i just mean the fact that the feed generator makes a decision about the order. which is usually &apos;latest&apos; but could be something else. in my opinion the thing that acts as a curation mechanism should not be making these decisions at all
+                                oh i just mean the fact that the feed generator makes a decision about the order. which is usually 'latest' but could be something else. in my opinion the thing that acts as a curation mechanism should not be making these decisions at all
                               </content>
                               Engagement: 12 likes, 0 reposts, 1 replies
                               <replies>
                                 <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwfni53k22" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmwfni53k22" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 9:12:52 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwdudhj222">
                                   <content>
-                                    i.e. if i subscribe to an &quot;adhd feed&quot; on skyfeed, i find it ridiculous that content filtering (matching for adhd-related content) and content ranking (whatever skyfeed is doing to choose the ordering) are performed by the same entity. as a user i don&apos;t want this at all!
+                                    i.e. if i subscribe to an "adhd feed" on skyfeed, i find it ridiculous that content filtering (matching for adhd-related content) and content ranking (whatever skyfeed is doing to choose the ordering) are performed by the same entity. as a user i don't want this at all!
                                   </content>
                                   Engagement: 10 likes, 0 reposts, 3 replies
                                   <replies>
@@ -570,13 +570,13 @@ Frankly, for me, I don’t see this is a problem in today’s world because none
                                     </post>
                                     <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwinapik22" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmwinapik22" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 9:14:32 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwfni53k22">
                                       <content>
-                                        what i want is closer to a reddit model. where there&apos;s a hub for people to manually submit stuff (and maybe some stuff does get pulled in automatically). and there&apos;s a few algorithmic &quot;views&quot; of that content (latest, top, hot, whatever). and i don&apos;t want skyfeed to be responsible for those &quot;views&quot;
+                                        what i want is closer to a reddit model. where there's a hub for people to manually submit stuff (and maybe some stuff does get pulled in automatically). and there's a few algorithmic "views" of that content (latest, top, hot, whatever). and i don't want skyfeed to be responsible for those "views"
                                       </content>
                                       Engagement: 13 likes, 1 reposts, 1 replies
                                       <replies>
                                         <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwncdkic22" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmwncdkic22" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 9:17:08 AM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmwinapik22">
                                           <content>
-                                            the &quot;views&quot; imo are an appview concern. cache them across all users as an optimization. Discover and such should be aware of my &quot;sets&quot; so they can act as &quot;views&quot; too. basically imagine &quot;sets&quot; are like profiles. ofc Discover and such can use that information, just like they know who i follow
+                                            the "views" imo are an appview concern. cache them across all users as an optimization. Discover and such should be aware of my "sets" so they can act as "views" too. basically imagine "sets" are like profiles. ofc Discover and such can use that information, just like they know who i follow
                                           </content>
                                           Engagement: 8 likes, 0 reposts, 1 replies
                                         </post>
@@ -596,9 +596,9 @@ ordering of this stuff is a requirement imposed by the form factor of screens an
                                           <content>
                                             I was thinking about this with pagination recently
 
-the need to paginate data in my API responses actually _imposes_ a need for total ordering on a dataset that didn&apos;t previously have it. no order, no consistent pages.
+the need to paginate data in my API responses actually _imposes_ a need for total ordering on a dataset that didn't previously have it. no order, no consistent pages.
 
-it&apos;s the same with feeds. you need to be able to get paginated posts
+it's the same with feeds. you need to be able to get paginated posts
                                           </content>
                                           Engagement: 20 likes, 1 reposts, 0 replies, 1 quotes
                                         </post>
@@ -622,13 +622,13 @@ it&apos;s the same with feeds. you need to be able to get paginated posts
                                 </post>
                                 <post type="reply" uri="at://did:plc:7mnpet2pvof2llhpcwattscf/app.bsky.feed.post/3lmmw6vhmvc2v" bsky_url="https://bsky.app/profile/piss.beauty/post/3lmmw6vhmvc2v" author_name="stellz" author_handle="piss.beauty" posted_at="4/12/2025, 9:09:05 AM" reply_to="at://did:plc:7ixolzataqsaxfm2ams6zrg6/app.bsky.feed.post/3lmmvxxhkss2y">
                                   <content>
-                                    order doesn&apos;t imply meaning. scroll is just scroll because of the form factor
+                                    order doesn't imply meaning. scroll is just scroll because of the form factor
                                   </content>
                                   Engagement: 9 likes, 0 reposts, 1 replies
                                   <replies>
                                     <post type="reply" uri="at://did:plc:7ixolzataqsaxfm2ams6zrg6/app.bsky.feed.post/3lmmwbrelak2g" bsky_url="https://bsky.app/profile/valkyrie.hacker.gf/post/3lmmwbrelak2g" author_name="Andrea" author_handle="valkyrie.hacker.gf" posted_at="4/12/2025, 9:10:41 AM" reply_to="at://did:plc:7mnpet2pvof2llhpcwattscf/app.bsky.feed.post/3lmmw6vhmvc2v">
                                       <content>
-                                        it&apos;s still determined by the feed generator, which could have made n! other choices
+                                        it's still determined by the feed generator, which could have made n! other choices
                                       </content>
                                       Engagement: 5 likes, 0 reposts, 0 replies
                                     </post>
@@ -659,7 +659,7 @@ it&apos;s the same with feeds. you need to be able to get paginated posts
       <replies>
         <post type="reply" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmodqumwk223" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmodqumwk223" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 10:44:26 PM" reply_to="at://did:plc:cjinybngj7dlvspewakwjab2/app.bsky.feed.post/3lmocqovhbk2d">
           <content>
-            that&apos;s good :)
+            that's good :)
           </content>
           Engagement: 5 likes, 0 reposts, 0 replies
         </post>
@@ -681,7 +681,7 @@ Would a tool like graze help? Using lists from people to provide curation, whils
           <replies>
             <post type="reply" uri="at://did:plc:kkf4naxqmweop7dv4l2iqqf5/app.bsky.feed.post/3lmmyvbxho22j" bsky_url="https://bsky.app/profile/aendra.com/post/3lmmyvbxho22j" author_name="ændra." author_handle="aendra.com" posted_at="4/12/2025, 9:57:23 AM" reply_to="at://did:plc:kkf4naxqmweop7dv4l2iqqf5/app.bsky.feed.post/3lmmxwxrzks2j">
               <content>
-                It&apos;s also really opened up what I can do with sorting because it provides so much signal versus when I was running my own firehose consumer. The other night someone was moaning about  Trending News having a lot of stale news, so I edited the sorting algo, from my phone in the bathtub, in &lt;5 minutes.
+                It's also really opened up what I can do with sorting because it provides so much signal versus when I was running my own firehose consumer. The other night someone was moaning about  Trending News having a lot of stale news, so I edited the sorting algo, from my phone in the bathtub, in <5 minutes.
               </content>
               Engagement: 9 likes, 0 reposts, 0 replies
             </post>
@@ -723,13 +723,13 @@ tbh, I fully expect Bluesky to buy Graze
       <content>
         (maybe?) Interestingly – like you say, feeds are less sticky, you will never hit fb/ig/tiktok levels of engagement with them, but at the same time I really LIKE the slower pace/lower volume, or even lower quality of the content at times.
 
-I&apos;ve been trying to reduce the amount I intake social...
+I've been trying to reduce the amount I intake social...
       </content>
       Engagement: 12 likes, 0 reposts, 1 replies
       <replies>
         <post type="reply" uri="at://did:plc:5dnwnjydruv7wmbi33xchkr6/app.bsky.feed.post/3lmmxnjqqis2z" bsky_url="https://bsky.app/profile/nate.rip/post/3lmmxnjqqis2z" author_name="Nate Butler" author_handle="nate.rip" posted_at="4/12/2025, 9:35:09 AM" reply_to="at://did:plc:5dnwnjydruv7wmbi33xchkr6/app.bsky.feed.post/3lmmxnjoj7k2z">
           <content>
-            media and it is really nice to hit &quot;oh, I&apos;ve already seen this&quot; or &quot;I guess I&apos;m out of content&quot; vs the constantly changing, never ending content of most platforms. It tips my brain off it&apos;s time to stop/I&apos;ve been consuming too much today.
+            media and it is really nice to hit "oh, I've already seen this" or "I guess I'm out of content" vs the constantly changing, never ending content of most platforms. It tips my brain off it's time to stop/I've been consuming too much today.
 
 Does it make sense from a business perspective? No...
           </content>
@@ -739,7 +739,7 @@ Does it make sense from a business perspective? No...
               <content>
                 but from a social health perspective? Maybe?
 
-Idk, I feel like the thing that stuck with me the most leaving FB after being on feed for quite a while was IMO people weren&apos;t meant to be exposed to numbers as big as social media exposes us to constantly.
+Idk, I feel like the thing that stuck with me the most leaving FB after being on feed for quite a while was IMO people weren't meant to be exposed to numbers as big as social media exposes us to constantly.
 
 I guess that is why I like the slower feeds
               </content>
@@ -829,13 +829,13 @@ Right now the hyper-activity is being rewarded and there is no path for the cura
     </post>
     <post type="reply" uri="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73rzek2v" bsky_url="https://bsky.app/profile/intellog.com/post/3lmsr73rzek2v" author_name="Intellog Inc." author_handle="intellog.com" posted_at="4/14/2025, 4:55:43 PM" reply_to="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n">
       <content>
-        Interesting thread, Dan. Although we won&apos;t profess to understand all the nuances of your comments, what you say seems to make sense in broad terms. Hopefully, Bluesky is paying attention to your worthwhile recommendations. | 🦋 | 🧵 1/8
+        Interesting thread, Dan. Although we won't profess to understand all the nuances of your comments, what you say seems to make sense in broad terms. Hopefully, Bluesky is paying attention to your worthwhile recommendations. | 🦋 | 🧵 1/8
       </content>
       Engagement: 0 likes, 0 reposts, 1 replies
       <replies>
         <post type="reply" uri="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yhgc2v" bsky_url="https://bsky.app/profile/intellog.com/post/3lmsr73yhgc2v" author_name="Intellog Inc." author_handle="intellog.com" posted_at="4/14/2025, 4:55:43 PM" reply_to="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73rzek2v">
           <content>
-            That said, we&apos;ve found Bluesky feeds as they are currently constituted meet our admittedly modest requirements (see last post of thread for example). With one significant exception, however: the inability to optionally configure some sort of alert when something new appears in the feed. | 🦋 | 🧵 2/8
+            That said, we've found Bluesky feeds as they are currently constituted meet our admittedly modest requirements (see last post of thread for example). With one significant exception, however: the inability to optionally configure some sort of alert when something new appears in the feed. | 🦋 | 🧵 2/8
           </content>
           Engagement: 0 likes, 0 reposts, 1 replies
           <replies>
@@ -847,19 +847,19 @@ Right now the hyper-activity is being rewarded and there is no path for the cura
               <replies>
                 <post type="reply" uri="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yjet2v" bsky_url="https://bsky.app/profile/intellog.com/post/3lmsr73yjet2v" author_name="Intellog Inc." author_handle="intellog.com" posted_at="4/14/2025, 4:55:43 PM" reply_to="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yjes2v">
                   <content>
-                    If we could configure an alert — similar to the one where we&apos;re tagged in a post, for example — that would be great. That would draw feed subscribers&apos; attention back to the feed when there&apos;s actually something new to see. | 🦋 | 🧵 4/8
+                    If we could configure an alert — similar to the one where we're tagged in a post, for example — that would be great. That would draw feed subscribers' attention back to the feed when there's actually something new to see. | 🦋 | 🧵 4/8
                   </content>
                   Engagement: 0 likes, 0 reposts, 1 replies
                   <replies>
                     <post type="reply" uri="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yke32v" bsky_url="https://bsky.app/profile/intellog.com/post/3lmsr73yke32v" author_name="Intellog Inc." author_handle="intellog.com" posted_at="4/14/2025, 4:55:43 PM" reply_to="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yjet2v">
                       <content>
-                        In effect, it enables the feed to be monitored passively rather than actively. If Bluesky can do just this one thing, we&apos;d be good for a while, at least. The last post in this thread has an example of one of the feeds we manage, BluFly. | 🦋 | 🧵 5/8
+                        In effect, it enables the feed to be monitored passively rather than actively. If Bluesky can do just this one thing, we'd be good for a while, at least. The last post in this thread has an example of one of the feeds we manage, BluFly. | 🦋 | 🧵 5/8
                       </content>
                       Engagement: 0 likes, 0 reposts, 1 replies
                       <replies>
                         <post type="reply" uri="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yke42v" bsky_url="https://bsky.app/profile/intellog.com/post/3lmsr73yke42v" author_name="Intellog Inc." author_handle="intellog.com" posted_at="4/14/2025, 4:55:43 PM" reply_to="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73yke32v">
                           <content>
-                            We speak of it as being &apos;double curated&apos;: our curation is by identifying and vetting Trusted Contributors (TC). In turn, the TC&apos;s curate their posts by adding an &apos;Emojitag&apos; (specifically 🛩️ in BluFly’s case) to signal whether their post should be in the feed, or not. It&apos;s really simple. | 🦋 | 🧵 6/8
+                            We speak of it as being 'double curated': our curation is by identifying and vetting Trusted Contributors (TC). In turn, the TC's curate their posts by adding an 'Emojitag' (specifically 🛩️ in BluFly’s case) to signal whether their post should be in the feed, or not. It's really simple. | 🦋 | 🧵 6/8
                           </content>
                           Engagement: 0 likes, 0 reposts, 1 replies
                           <replies>
@@ -871,7 +871,7 @@ Right now the hyper-activity is being rewarded and there is no path for the cura
                               <replies>
                                 <post type="reply" uri="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73ymcm2v" bsky_url="https://bsky.app/profile/intellog.com/post/3lmsr73ymcm2v" author_name="Intellog Inc." author_handle="intellog.com" posted_at="4/14/2025, 4:55:43 PM" reply_to="at://did:plc:2rksch7psuzxuyajs542twor/app.bsky.feed.post/3lmsr73ylde2v">
                                   <content>
-                                    This order, if nothing else, is clearly understood by all concerned. Here&apos;s that feed we mentioned above. While sadly still all but invisible in the Bluesky landscape, we&apos;re pleased with both the aesthetics and content and are going to be patient with it. Alerts would really help. | 🦋 | 🧵 8/8
+                                    This order, if nothing else, is clearly understood by all concerned. Here's that feed we mentioned above. While sadly still all but invisible in the Bluesky landscape, we're pleased with both the aesthetics and content and are going to be patient with it. Alerts would really help. | 🦋 | 🧵 8/8
                                   </content>
                                   <embed type="link">
                                     Title: "The Humans-in-the-Loop Feed for the Aviation Community"
@@ -906,7 +906,7 @@ Right now the hyper-activity is being rewarded and there is no path for the cura
 <posts>
 <post type="quote" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnonx22j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:56 AM">
   <content>
-    In retrospect, this wasn&apos;t a great thought. Let me try to explore it 🧵️
+    In retrospect, this wasn't a great thought. Let me try to explore it 🧵️
 
 The thought comes a place of:
 
@@ -926,13 +926,13 @@ The thought comes a place of:
   <replies>
     <post type="reply" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnp5l22j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:56 AM" reply_to="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j">
       <content>
-        The &quot;am I elitist&quot; part is, I think, my insecurity as to whether this mode of exploring morality is meaningful or correlated with actual truth. In other words: &quot;Am I just being elitist about something orthogonal to what is meaningful?&quot;
+        The "am I elitist" part is, I think, my insecurity as to whether this mode of exploring morality is meaningful or correlated with actual truth. In other words: "Am I just being elitist about something orthogonal to what is meaningful?"
       </content>
       Engagement: 0 likes, 0 reposts, 1 replies
       <replies>
         <post type="reply" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l32j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnp5l32j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:35 AM" reply_to="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j" requested="true">
           <content>
-            &quot;Am just better than other people&quot; is my edgy framing of the alternative that I hope is true—that examining moral questions with curiosity is valuable, and I am a better person than the me that neglected to engage in that work.
+            "Am just better than other people" is my edgy framing of the alternative that I hope is true—that examining moral questions with curiosity is valuable, and I am a better person than the me that neglected to engage in that work.
           </content>
         </post>
       </replies>

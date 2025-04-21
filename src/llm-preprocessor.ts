@@ -478,8 +478,8 @@ function processThreadViewPostChain(postChain: any[], indentLevel: number): stri
     // Format the post opening tag with all attributes
     output += `${indent}<post ${postAttrs}>\n`;
     
-    // Add content
-    output += `${indent}  <content>\n${indent}    ${escapeXml(record.text || '')}\n${indent}  </content>\n`;
+    // Add content, using facetsToMarkdown to properly handle links, mentions, hashtags
+    output += `${indent}  <content>\n${indent}    ${facetsToMarkdown(record.text || '', record.facets)}\n${indent}  </content>\n`;
     
     // Add quoted post if present
     if (isQuote && post.embed && post.embed.record) {
@@ -490,7 +490,9 @@ function processThreadViewPostChain(postChain: any[], indentLevel: number): stri
         output += `author_name="${escapeXml(quoted.author.displayName || quoted.author.handle)}" `;
         output += `author_handle="${quoted.author.handle}" `;
         output += `posted_at="${new Date(quoted.indexedAt || Date.now()).toLocaleString()}">\n`;
-        output += `${indent}    <content>\n${indent}      ${escapeXml((quoted.value && quoted.value.text) || '')}\n${indent}    </content>\n`;
+        
+        // Use facetsToMarkdown for quoted content as well
+        output += `${indent}    <content>\n${indent}      ${facetsToMarkdown((quoted.value && quoted.value.text) || '', (quoted.value && quoted.value.facets) || [])}\n${indent}    </content>\n`;
         
         // Add engagement metrics for quoted post
         if (quoted.likeCount || quoted.repostCount || quoted.replyCount) {
@@ -645,8 +647,8 @@ export function processThreadViewPost(threadViewPost: any, indentLevel: number):
     // Format the post opening tag with all attributes
     output += `${indent}<post ${postAttrs}>\n`;
     
-    // Add content
-    output += `${indent}  <content>\n${indent}    ${escapeXml(record.text || '')}\n${indent}  </content>\n`;
+    // Add content, using facetsToMarkdown to properly handle links, mentions, hashtags
+    output += `${indent}  <content>\n${indent}    ${facetsToMarkdown(record.text || '', record.facets)}\n${indent}  </content>\n`;
     
     // Add quoted post if present
     if (isQuote && post.embed && post.embed.record) {
@@ -657,7 +659,9 @@ export function processThreadViewPost(threadViewPost: any, indentLevel: number):
         output += `author_name="${escapeXml(quoted.author.displayName || quoted.author.handle)}" `;
         output += `author_handle="${quoted.author.handle}" `;
         output += `posted_at="${new Date(quoted.indexedAt || Date.now()).toLocaleString()}">\n`;
-        output += `${indent}    <content>\n${indent}      ${escapeXml((quoted.value && quoted.value.text) || '')}\n${indent}    </content>\n`;
+        
+        // Use facetsToMarkdown for quoted content as well
+        output += `${indent}    <content>\n${indent}      ${facetsToMarkdown((quoted.value && quoted.value.text) || '', (quoted.value && quoted.value.facets) || [])}\n${indent}    </content>\n`;
         
         // Add engagement metrics for quoted post
         if (quoted.likeCount || quoted.repostCount || quoted.replyCount) {
