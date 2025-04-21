@@ -123,8 +123,6 @@ function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
     // Add engagement metrics info (without Posted: prefix)
     result += `      \n      Engagement: ${post.likeCount} likes, ${post.repostCount} reposts, ${post.replyCount} replies${post.quoteCount ? ', ' + post.quoteCount + ' quotes' : ''}\n`;
     
-    // No longer tracking thread settings
-    
     // Close the post and repost tags
     result += `    </post>\n`;
     result += `  </repost>`;
@@ -138,28 +136,20 @@ function formatPost(feedItem: AppBskyFeedDefs.FeedViewPost): string {
   const record = post.record as AppBskyFeedPost.Record;
   const postDate = formatDate(record.createdAt);
   
-  // Start the post tag with all the attributes
-  let result = `  <post type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}">\n`;
+  // Start building the post tag with all the attributes
+  let postAttrs = `type="${types.join(',')}" uri="${post.uri}" bsky_url="${bskyUrl}" author_name="${post.author.displayName || ''}" author_handle="${post.author.handle}" posted_at="${postDate}"`;
+  
+  // Add reply_to attribute if this is a reply
+  if (reply && types.includes('reply') && reply.parent.$type === 'app.bsky.feed.defs#postView') {
+    const parentUri = (reply.parent as AppBskyFeedDefs.PostView).uri;
+    postAttrs += ` reply_to="${parentUri}"`;
+  }
+  
+  // Start the post tag with all attributes
+  let result = `  <post ${postAttrs}>\n`;
   
   // Add post content
   result += `    <content>\n      ${facetsToMarkdown(record.text, record.facets)}\n    </content>\n`;
-  
-  // Handle replies
-  if (reply && types.includes('reply')) {
-    const parentUrl = createBskyUrl(reply.parent.$type === 'app.bsky.feed.defs#postView' ? 
-      (reply.parent as AppBskyFeedDefs.PostView).uri : '', 
-      reply.parent.$type === 'app.bsky.feed.defs#postView' ? 
-      (reply.parent as AppBskyFeedDefs.PostView).author.handle : '');
-      
-    const parentRecord = reply.parent.$type === 'app.bsky.feed.defs#postView' ? 
-      (reply.parent as AppBskyFeedDefs.PostView).record as AppBskyFeedPost.Record : null;
-    
-    if (parentRecord) {
-      result += `    \n    <reply_to uri="${(reply.parent as AppBskyFeedDefs.PostView).uri}" bsky_url="${parentUrl}" author_name="${(reply.parent as AppBskyFeedDefs.PostView).author.displayName || ''}" author_handle="${(reply.parent as AppBskyFeedDefs.PostView).author.handle}">\n`;
-      result += `      <content>\n        ${facetsToMarkdown(parentRecord.text, parentRecord.facets)}\n      </content>\n`;
-      result += `    </reply_to>\n`;
-    }
-  }
   
   // Handle quote posts
   if (post.embed && post.embed.$type === 'app.bsky.embed.record#view') {
@@ -445,19 +435,21 @@ export function processThreadViewPost(threadViewPost: any, indentLevel: number):
       return '';
     }
     
-    // Format the post
-    output += `${indent}<post type="${postType}" uri="${post.uri}" bsky_url="https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}" `;
-    output += `author_name="${escapeXml(post.author.displayName || post.author.handle)}" author_handle="${post.author.handle}" `;
-    output += `posted_at="${new Date(post.indexedAt || record.createdAt).toLocaleString()}">\n`;
+    // Start building post tag attributes
+    let postAttrs = `type="${postType}" uri="${post.uri}" bsky_url="https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}" `;
+    postAttrs += `author_name="${escapeXml(post.author.displayName || post.author.handle)}" author_handle="${post.author.handle}" `;
+    postAttrs += `posted_at="${new Date(post.indexedAt || record.createdAt).toLocaleString()}"`;
+    
+    // Add reply_to attribute if it's a reply
+    if (isReply && record.reply && record.reply.parent && record.reply.parent.uri) {
+      postAttrs += ` reply_to="${record.reply.parent.uri}"`;
+    }
+    
+    // Format the post opening tag with all attributes
+    output += `${indent}<post ${postAttrs}>\n`;
     
     // Add content
     output += `${indent}  <content>\n${indent}    ${escapeXml(record.text || '')}\n${indent}  </content>\n`;
-    
-    // Add reply_to information if it's a reply
-    if (isReply && record.reply && record.reply.parent && record.reply.parent.uri) {
-      const replyUri = record.reply.parent.uri;
-      output += `${indent}  <reply_to uri="${replyUri}"></reply_to>\n`;
-    }
     
     // Add quoted post if present
     if (isQuote && post.embed && post.embed.record) {

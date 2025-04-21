@@ -95,19 +95,21 @@ function processThreadViewPost(threadViewPost: any, indentLevel: number): string
       return '';
     }
     
-    // Format the post
-    output += `${indent}<post type="${postType}" uri="${post.uri}" bsky_url="https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}" `;
-    output += `author_name="${escapeXml(post.author.displayName || post.author.handle)}" author_handle="${post.author.handle}" `;
-    output += `posted_at="${new Date(post.indexedAt || record.createdAt).toLocaleString()}">\n`;
+    // Start building post tag attributes
+    let postAttrs = `type="${postType}" uri="${post.uri}" bsky_url="https://bsky.app/profile/${post.author.handle}/post/${post.uri.split('/').pop()}" `;
+    postAttrs += `author_name="${escapeXml(post.author.displayName || post.author.handle)}" author_handle="${post.author.handle}" `;
+    postAttrs += `posted_at="${new Date(post.indexedAt || record.createdAt).toLocaleString()}"`;
+    
+    // Add reply_to attribute if it's a reply
+    if (isReply && record.reply && record.reply.parent && record.reply.parent.uri) {
+      postAttrs += ` reply_to="${record.reply.parent.uri}"`;
+    }
+    
+    // Format the post opening tag with all attributes
+    output += `${indent}<post ${postAttrs}>\n`;
     
     // Add content
     output += `${indent}  <content>\n${indent}    ${escapeXml(record.text || '')}\n${indent}  </content>\n`;
-    
-    // Add reply_to information if it's a reply
-    if (isReply && record.reply && record.reply.parent && record.reply.parent.uri) {
-      const replyUri = record.reply.parent.uri;
-      output += `${indent}  <reply_to uri="${replyUri}"></reply_to>\n`;
-    }
     
     // Add quoted post if present
     if (isQuote && post.embed && post.embed.record) {

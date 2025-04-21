@@ -36,19 +36,16 @@ Threads are represented hierarchically with nested <replies> elements:
 <post type="standalone" uri="..."> <!-- Root post -->
   <content>...</content>
   <replies>
-    <post type="reply" uri="..."> <!-- First-level reply -->
+    <post type="reply" uri="..." reply_to="parent_uri"> <!-- First-level reply -->
       <content>...</content>
-      <reply_to uri="..."></reply_to>
       <replies>
         <post type="reply" uri="..."> <!-- Second-level reply -->
           <content>...</content>
-          <reply_to uri="..."></reply_to>
         </post>
       </replies>
     </post>
     <post type="reply" uri="..."> <!-- Another first-level reply -->
       <content>...</content>
-      <reply_to uri="..."></reply_to>
     </post>
   </replies>
 </post>
@@ -186,16 +183,10 @@ Key elements for thread representation:
   </post>
   
   <!-- Example of a complex post with multiple attributes -->
-  <post type="reply,quote" uri="at://did:plc:example/app.bsky.feed.post/complex" bsky_url="https://bsky.app/profile/complex/post/complex" author_name="Complex Example" author_handle="complex" posted_at="4/3/2025, 7:15 PM">
+  <post type="reply,quote" uri="at://did:plc:example/app.bsky.feed.post/complex" bsky_url="https://bsky.app/profile/complex/post/complex" author_name="Complex Example" author_handle="complex" posted_at="4/3/2025, 7:15 PM" reply_to="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m">
     <content>
       This is an example of a complex post with multiple media types and attributes
     </content>
-    
-    <reply_to uri="at://did:plc:uu5axsmbm2or2dngy4gwchec/app.bsky.feed.post/3lluh2z5vxs2m" bsky_url="https://bsky.app/profile/futur.blue/post/3lluh2z5vxs2m" author_name="futur" author_handle="futur.blue">
-      <content>
-        have you tried not using a platform that charges you $30 / 100GB of bandwidth
-      </content>
-    </reply_to>
     
     <quoted_post uri="at://did:plc:pxfxhbwjtscbmvbe62shdqbe/app.bsky.feed.post/3llueyg4emc2k" bsky_url="https://bsky.app/profile/littleironwaltz.com/post/3llueyg4emc2k" author_name="Koji" author_handle="littleironwaltz.com" posted_at="4/2/2025, 9:57 PM">
       <content>
@@ -233,8 +224,9 @@ Each post includes:
 - `author_name` - The display name of the post author
 - `author_handle` - The handle of the post author
 - `posted_at` - Timestamp when the post was created
+- `reply_to` - at uri of post this is a reply to
+- ` engement` - likes, reposts, replies, quotes 
 - Post content (wrapped in `<content>` tags)
-- Engagement metrics (likes, reposts, replies, quotes)
 
 ### Repost Information
 Reposts use a dedicated structure containing:
@@ -253,7 +245,6 @@ Embeds are contained in `<embed>` tags with a type attribute:
 
 ### Special Sections
 - `<quoted_post>` - For embedded/quoted posts, includes author attributes
-- `<reply_to>` - Reference to the post being replied to, includes author attributes
 
 ### Hierarchical Structure
 - Replies can be nested in `<replies>` tags under their parent post
