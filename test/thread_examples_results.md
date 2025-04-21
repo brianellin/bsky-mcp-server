@@ -5,7 +5,7 @@
 ### Thread:
 ```xml
 <posts>
-<post type="standalone" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyulsoc2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM">
+<post type="standalone" uri="at://did:plc:fpruhuo22xkm5o7ttr2ktxdo/app.bsky.feed.post/3lmmuyulsoc2n" bsky_url="https://bsky.app/profile/danabra.mov/post/3lmmuyulsoc2n" author_name="dan" author_handle="danabra.mov" posted_at="4/12/2025, 8:47:49 AM" requested="true">
   <content>
     why bluesky &quot;feeds&quot; don&apos;t work, a thread
   </content>
@@ -904,10 +904,40 @@ Right now the hyper-activity is being rewarded and there is no path for the cura
 ### Thread:
 ```xml
 <posts>
-<post type="reply" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l32j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnp5l32j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:35 AM" reply_to="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j">
+<post type="quote" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnonx22j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:56 AM">
   <content>
-    &quot;Am just better than other people&quot; is my edgy framing of the alternative that I hope is true—that examining moral questions with curiosity is valuable, and I am a better person than the me that neglected to engage in that work.
+    In retrospect, this wasn&apos;t a great thought. Let me try to explore it 🧵️
+
+The thought comes a place of:
+
+- I think about questions of right/wrong a lot
+- I get the impression I do it more than most people
+- Over time, this careful consideration and thoughtfulness has become a part of my identity
   </content>
+  <quoted_post uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3llxkmoufox2l" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3llxkmoufox2l" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/3/2025, 9:16:10 PM">
+    <content>
+      Am I elitist about morality or am I just better than other people
+
+- my brain
+    </content>
+    Engagement: 0 likes, 0 reposts, 1 replies, 1 quotes
+  </quoted_post>
+  Engagement: 0 likes, 0 reposts, 1 replies
+  <replies>
+    <post type="reply" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnp5l22j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:56 AM" reply_to="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j">
+      <content>
+        The &quot;am I elitist&quot; part is, I think, my insecurity as to whether this mode of exploring morality is meaningful or correlated with actual truth. In other words: &quot;Am I just being elitist about something orthogonal to what is meaningful?&quot;
+      </content>
+      Engagement: 0 likes, 0 reposts, 1 replies
+      <replies>
+        <post type="reply" uri="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l32j" bsky_url="https://bsky.app/profile/joshuashew.bsky.social/post/3lmcunnp5l32j" author_name="Joshua Shew" author_handle="joshuashew.bsky.social" posted_at="4/8/2025, 9:14:35 AM" reply_to="at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j" requested="true">
+          <content>
+            &quot;Am just better than other people&quot; is my edgy framing of the alternative that I hope is true—that examining moral questions with curiosity is valuable, and I am a better person than the me that neglected to engage in that work.
+          </content>
+        </post>
+      </replies>
+    </post>
+  </replies>
 </post>
 </posts>
 ```

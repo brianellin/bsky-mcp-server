@@ -240,16 +240,10 @@ Or, you know, there'd be a coup
 
 ### Individual Post:
 ```xml
-  <post type="reply" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="2025-04-03 11:42:11">
+  <post type="reply" uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkkfiias2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkkfiias2o" author_name="David Roberts" author_handle="volts.wtf" posted_at="2025-04-03 11:42:11" reply_to="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o">
     <content>
       By the way, these links came to me via [@billmckibben.bsky.social](https://bsky.app/profile/did:plc:t6ylzujdaa3f6mlpxn6gjqf5)'s excellent newsletter, to which I assume you are all already subscribed.
     </content>
-    
-    <reply_to uri="at://did:plc:twjze4qqf6fgxz33ct52wlnl/app.bsky.feed.post/3llwkeghjyk2o" bsky_url="https://bsky.app/profile/volts.wtf/post/3llwkeghjyk2o" author_name="David Roberts" author_handle="volts.wtf">
-      <content>
-        Meanwhile: "The damage climate change will inflict on the world's economy is likely to have been massively underestimated, according to new research by my colleagues and I which accounts for the full global reach of extreme weather and its aftermath."
-      </content>
-    </reply_to>
     
     <embed type="link">
       Title: "Hands off...the future"
