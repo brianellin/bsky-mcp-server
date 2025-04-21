@@ -22,12 +22,13 @@ Here's the current list of tools provided:
 - **get-feed-posts**: returns posts from the specified feed
 - **get-list-posts**: returns posts from the specified list
 - **get-user-posts**: returns the specified user's posts
-- **get-post-thread**: returns the thread of conversation for a specific post
 - **get-profile**: returns the profile details of the specified user
 - **get-follows**: returns the set of users an account follows
 - **get-followers**: returns the set of users who follow an account
 - **get-liked-posts**: returns recent posts liked by the authenticated user
 - **get-trends**: returns current trending topics on Bluesky with post counts
+- **get-post-thread**: returns a full conversation thread for a specific post, showing all replies and context
+- **convert-url-to-uri**: converts a Bluesky web URL to an AT URI format that can be used with other tools
 - **search-posts**: returns posts for a given query. can specify top or latest
 - **search-people**: returns people for a given search query
 - **search-feeds**: returns feeds for a given query

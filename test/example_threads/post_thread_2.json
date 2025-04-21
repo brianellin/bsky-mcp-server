@@ -1,0 +1,197 @@
+{
+    "thread": {
+        "$type": "app.bsky.feed.defs#threadViewPost",
+        "post": {
+            "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l32j",
+            "cid": "bafyreiczau76vdcq2phrida2qscmx6wprq4q6ghpsqqucpfftiq74ivlhq",
+            "author": {
+                "did": "did:plc:sfmur4r4wzriaupbgmz7sshy",
+                "handle": "joshuashew.bsky.social",
+                "displayName": "Joshua Shew",
+                "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:sfmur4r4wzriaupbgmz7sshy/bafkreifjkecmcovrhccukl76tvss67icgw6jlkupgzjk3scg6ljumhqbje@jpeg",
+                "viewer": {
+                    "muted": false,
+                    "blockedBy": false,
+                    "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3ln6c6wplh42j",
+                    "followedBy": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.graph.follow/3ln5jm5w6pb2d"
+                },
+                "labels": [],
+                "createdAt": "2024-11-13T14:36:17.226Z"
+            },
+            "record": {
+                "$type": "app.bsky.feed.post",
+                "createdAt": "2025-04-08T16:14:54.983Z",
+                "langs": [
+                    "en"
+                ],
+                "reply": {
+                    "parent": {
+                        "cid": "bafyreicu4vcquril23hfexzcntgp6t5oytc4rjoxv3zbqu7256ris2zpre",
+                        "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j"
+                    },
+                    "root": {
+                        "cid": "bafyreifreaj4kh5dj4dircbtl4dvpykrujuryhlkrrcnjzaffkzm4e23qy",
+                        "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j"
+                    }
+                },
+                "text": "\"Am just better than other people\" is my edgy framing of the alternative that I hope is true—that examining moral questions with curiosity is valuable, and I am a better person than the me that neglected to engage in that work."
+            },
+            "replyCount": 0,
+            "repostCount": 0,
+            "likeCount": 0,
+            "quoteCount": 0,
+            "indexedAt": "2025-04-08T16:14:35.693Z",
+            "viewer": {
+                "threadMuted": false,
+                "embeddingDisabled": false
+            },
+            "labels": []
+        },
+        "parent": {
+            "$type": "app.bsky.feed.defs#threadViewPost",
+            "post": {
+                "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnp5l22j",
+                "cid": "bafyreicu4vcquril23hfexzcntgp6t5oytc4rjoxv3zbqu7256ris2zpre",
+                "author": {
+                    "did": "did:plc:sfmur4r4wzriaupbgmz7sshy",
+                    "handle": "joshuashew.bsky.social",
+                    "displayName": "Joshua Shew",
+                    "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:sfmur4r4wzriaupbgmz7sshy/bafkreifjkecmcovrhccukl76tvss67icgw6jlkupgzjk3scg6ljumhqbje@jpeg",
+                    "viewer": {
+                        "muted": false,
+                        "blockedBy": false,
+                        "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3ln6c6wplh42j",
+                        "followedBy": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.graph.follow/3ln5jm5w6pb2d"
+                    },
+                    "labels": [],
+                    "createdAt": "2024-11-13T14:36:17.226Z"
+                },
+                "record": {
+                    "$type": "app.bsky.feed.post",
+                    "createdAt": "2025-04-08T16:14:54.982Z",
+                    "langs": [
+                        "en"
+                    ],
+                    "reply": {
+                        "parent": {
+                            "cid": "bafyreifreaj4kh5dj4dircbtl4dvpykrujuryhlkrrcnjzaffkzm4e23qy",
+                            "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j"
+                        },
+                        "root": {
+                            "cid": "bafyreifreaj4kh5dj4dircbtl4dvpykrujuryhlkrrcnjzaffkzm4e23qy",
+                            "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j"
+                        }
+                    },
+                    "text": "The \"am I elitist\" part is, I think, my insecurity as to whether this mode of exploring morality is meaningful or correlated with actual truth. In other words: \"Am I just being elitist about something orthogonal to what is meaningful?\""
+                },
+                "replyCount": 1,
+                "repostCount": 0,
+                "likeCount": 0,
+                "quoteCount": 0,
+                "indexedAt": "2025-04-08T16:14:56.069Z",
+                "viewer": {
+                    "threadMuted": false,
+                    "embeddingDisabled": false
+                },
+                "labels": []
+            },
+            "parent": {
+                "$type": "app.bsky.feed.defs#threadViewPost",
+                "post": {
+                    "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3lmcunnonx22j",
+                    "cid": "bafyreifreaj4kh5dj4dircbtl4dvpykrujuryhlkrrcnjzaffkzm4e23qy",
+                    "author": {
+                        "did": "did:plc:sfmur4r4wzriaupbgmz7sshy",
+                        "handle": "joshuashew.bsky.social",
+                        "displayName": "Joshua Shew",
+                        "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:sfmur4r4wzriaupbgmz7sshy/bafkreifjkecmcovrhccukl76tvss67icgw6jlkupgzjk3scg6ljumhqbje@jpeg",
+                        "viewer": {
+                            "muted": false,
+                            "blockedBy": false,
+                            "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3ln6c6wplh42j",
+                            "followedBy": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.graph.follow/3ln5jm5w6pb2d"
+                        },
+                        "labels": [],
+                        "createdAt": "2024-11-13T14:36:17.226Z"
+                    },
+                    "record": {
+                        "$type": "app.bsky.feed.post",
+                        "createdAt": "2025-04-08T16:14:54.981Z",
+                        "embed": {
+                            "$type": "app.bsky.embed.record",
+                            "record": {
+                                "cid": "bafyreibadcdn6xv7esvcualwu4kjsetggo42ym4agaumcylzgpgpo4kkkq",
+                                "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3llxkmoufox2l"
+                            }
+                        },
+                        "langs": [
+                            "en"
+                        ],
+                        "text": "In retrospect, this wasn't a great thought. Let me try to explore it 🧵️\n\nThe thought comes a place of:\n\n- I think about questions of right/wrong a lot\n- I get the impression I do it more than most people\n- Over time, this careful consideration and thoughtfulness has become a part of my identity"
+                    },
+                    "embed": {
+                        "$type": "app.bsky.embed.record#view",
+                        "record": {
+                            "$type": "app.bsky.embed.record#viewRecord",
+                            "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3llxkmoufox2l",
+                            "cid": "bafyreibadcdn6xv7esvcualwu4kjsetggo42ym4agaumcylzgpgpo4kkkq",
+                            "author": {
+                                "did": "did:plc:sfmur4r4wzriaupbgmz7sshy",
+                                "handle": "joshuashew.bsky.social",
+                                "displayName": "Joshua Shew",
+                                "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:sfmur4r4wzriaupbgmz7sshy/bafkreifjkecmcovrhccukl76tvss67icgw6jlkupgzjk3scg6ljumhqbje@jpeg",
+                                "viewer": {
+                                    "muted": false,
+                                    "blockedBy": false,
+                                    "following": "at://did:plc:hluqcgwbbxtglofzk53gmwbw/app.bsky.graph.follow/3ln6c6wplh42j",
+                                    "followedBy": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.graph.follow/3ln5jm5w6pb2d"
+                                },
+                                "labels": [],
+                                "createdAt": "2024-11-13T14:36:17.226Z"
+                            },
+                            "value": {
+                                "$type": "app.bsky.feed.post",
+                                "createdAt": "2025-04-04T04:16:08.105Z",
+                                "langs": [
+                                    "en"
+                                ],
+                                "reply": {
+                                    "parent": {
+                                        "cid": "bafyreifwzkbhaooymuv4koq3zzikbbgtmujfthrzqnzpsw5s7yhjb2z2ci",
+                                        "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3llxkmoufow2l"
+                                    },
+                                    "root": {
+                                        "cid": "bafyreigpcis7m5lt4b3ckcbg23ko5l274ltlhqnutf4x3vmmvyhlmwhr3y",
+                                        "uri": "at://did:plc:sfmur4r4wzriaupbgmz7sshy/app.bsky.feed.post/3llxkmotfhc2l"
+                                    }
+                                },
+                                "text": "Am I elitist about morality or am I just better than other people\n\n- my brain"
+                            },
+                            "labels": [],
+                            "likeCount": 0,
+                            "replyCount": 1,
+                            "repostCount": 0,
+                            "quoteCount": 1,
+                            "indexedAt": "2025-04-04T04:16:10.680Z",
+                            "embeds": []
+                        }
+                    },
+                    "replyCount": 1,
+                    "repostCount": 0,
+                    "likeCount": 0,
+                    "quoteCount": 0,
+                    "indexedAt": "2025-04-08T16:14:56.050Z",
+                    "viewer": {
+                        "threadMuted": false,
+                        "embeddingDisabled": false
+                    },
+                    "labels": []
+                },
+                "threadContext": {}
+            },
+            "threadContext": {}
+        },
+        "replies": [],
+        "threadContext": {}
+    }
+}

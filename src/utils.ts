@@ -223,3 +223,55 @@ export function escapeXml(unsafe: string): string {
     .replace(/'/g, '&apos;');
 }
 
+/**
+ * Parse a Bluesky web URL and extract the handle and rkey
+ * @param url The Bluesky web URL (e.g., https://bsky.app/profile/username.bsky.social/post/postid)
+ * @returns An object containing the handle and rkey, or null if the URL is invalid
+ */
+export function parseBskyUrl(url: string): { handle: string, rkey: string } | null {
+  try {
+    // Remove any @ prefix if provided
+    const cleanUrl = url.trim().replace(/^@/, '');
+    
+    // Match patterns like https://bsky.app/profile/username.bsky.social/post/postid
+    const regex = /https?:\/\/bsky\.app\/profile\/([^\/]+)\/post\/([^\/\?#]+)/;
+    const match = cleanUrl.match(regex);
+    
+    if (!match) return null;
+    
+    return {
+      handle: match[1],
+      rkey: match[2]
+    };
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
+ * Convert a Bluesky post URL to an AT URI
+ * @param url The Bluesky web URL (e.g., https://bsky.app/profile/username.bsky.social/post/postid)
+ * @param agent The AtpAgent instance to use for handle resolution
+ * @returns The AT URI or null if conversion failed
+ */
+export async function convertBskyUrlToAtUri(url: string, agent: AtpAgent): Promise<string | null> {
+  try {
+    const parsed = parseBskyUrl(url);
+    if (!parsed) return null;
+    
+    // Resolve the handle to a DID
+    const resolveResponse = await agent.resolveHandle({ handle: parsed.handle });
+    
+    if (!resolveResponse.success) {
+      return null;
+    }
+    
+    const did = resolveResponse.data.did;
+    
+    // Construct the AT URI
+    return `at://${did}/app.bsky.feed.post/${parsed.rkey}`;
+  } catch (error) {
+    return null;
+  }
+}
+

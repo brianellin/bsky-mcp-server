@@ -11,7 +11,8 @@ import {
   validateUri,
   McpErrorResponse,
   McpSuccessResponse,
-  escapeXml
+  escapeXml,
+  convertBskyUrlToAtUri
 } from './utils.js';
 import { preprocessPosts, formatPostThread } from "./llm-preprocessor.js";
 import { registerResources, resourcesList } from './resources.js';
@@ -350,9 +351,8 @@ server.tool(
   "Get a full conversation thread for a specific post, showing replies and context",
   {
     uri: z.string().describe("URI of the post to fetch the thread for (e.g., at://did:plc:abcdef/app.bsky.feed.post/123)"),
-    depth: z.number().min(1).max(100).default(20).optional().describe("Maximum depth of replies to fetch (1-100)")
   },
-  async ({ uri, depth = 20 }) => {
+  async ({ uri }) => {
     if (!agent) {
       return mcpErrorResponse("Not logged in. Please check your environment variables.");
     }
@@ -365,7 +365,8 @@ server.tool(
 
       const response = await agent.app.bsky.feed.getPostThread({
         uri,
-        depth
+        depth: 100,
+        parentHeight: 100
       });
       
       if (!response.success) {
@@ -378,6 +379,31 @@ server.tool(
       return mcpSuccessResponse(threadData);
     } catch (error) {
       return mcpErrorResponse(`Error fetching post thread: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+);
+
+server.tool(
+  "convert-url-to-uri",
+  "Convert a Bluesky web URL to an AT URI format that can be used with other tools",
+  {
+    url: z.string().describe("Bluesky post URL to convert (e.g., https://bsky.app/profile/username.bsky.social/post/postid)")
+  },
+  async ({ url }) => {
+    if (!agent) {
+      return mcpErrorResponse("Not logged in. Please check your environment variables.");
+    }
+
+    try {
+      const atUri = await convertBskyUrlToAtUri(url, agent);
+      
+      if (!atUri) {
+        return mcpErrorResponse(`Failed to convert URL: ${url}. Make sure it's a valid Bluesky post URL.`);
+      }
+      
+      return mcpSuccessResponse(`Successfully converted to AT URI: ${atUri}`);
+    } catch (error) {
+      return mcpErrorResponse(`Error converting URL: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 );

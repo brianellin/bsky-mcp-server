@@ -10,7 +10,9 @@
     "dev": "tsc && node build/src/index.js",
     "test": "pnpm run build && node build/test/final-test.js",
     "test:get-thread": "pnpm run build && node build/test/tools/test-get-post-thread.js",
-    "process-posts": "pnpm run build && node build/src/scripts/process-post-examples.js"
+    "test:url-converter": "pnpm run build && node build/test/url-converter/test-url-converter.js",
+    "process-posts": "pnpm run build && node build/src/scripts/process-post-examples.js",
+    "process-threads": "pnpm run build && node build/src/scripts/process-thread-examples.js"
   },
   "keywords": [
     "bluesky",
