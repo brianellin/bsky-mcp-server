@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/brianellin-bsky-mcp-server-badge.png)](https://mseep.ai/app/brianellin-bsky-mcp-server)
+
 # Bluesky MCP Server
 
 [![smithery badge](https://smithery.ai/badge/@brianellin/bsky-mcp-server)](https://smithery.ai/server/@brianellin/bsky-mcp-server)
